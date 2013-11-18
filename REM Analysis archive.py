@@ -7,13 +7,15 @@ Tim Lucas
 
 from sympy import *
 from numpy import arange
-import matplotlib.pyplot as pl
+import os
+import pylab as pl
 
 
-# Use LaTeX printing
-%load_ext sympyprinting 
-# Make LaTeX output white. Because I use a dark theme
-init_printing(forecolor="White") 
+%load_ext sympyprinting
+
+
+# Set working directory
+os.chdir('/home/tim/Dropbox/phd/Analysis/REM-chapter')
 
 
 # Load symbols used for symbolic maths
@@ -48,12 +50,16 @@ integrate(r+r*cos(g4-s/2), (g4, s/2, pi)).subs(rep73).n()
 
 xRange = arange(pi,2*pi, 0.01)
 yRange = [p73.subs({r:1, s:i}).n() for i in xRange]
-plot73 = pl.plot(xRange, yRange)
-pl.savefig('/home/tim/Dropbox/phd/Analysis/REM-chapter/imgs/p73Profile.pdf')
+plot73 = plot(xRange, yRange)
+savefig('imgs/p73Profile.pdf')
 
 # LaTeX output
 
 latexOutput.insert(0,'p75 = ' + latex(p73))
+
+# Start testing against other functions
+
+p73.subs({s:pi}).together()
 
 
 
@@ -85,8 +91,8 @@ integrate( r, (g3, s - pi/2, pi/2) ).subs(rep75).n()
 
 xRange = arange(pi/2,pi, 0.01)
 yRange = [p75.subs({r:1, s:i}).n() for i in xRange]
-plot73 = pl.plot(xRange, yRange)
-pl.savefig('/home/tim/Dropbox/phd/Analysis/REM-chapter/imgs/p75Profile.pdf')
+plot73 = plot(xRange, yRange)
+savefig('imgs/p75Profile.pdf')
 
 # LaTeX output
 
@@ -315,12 +321,12 @@ p7101.subs(rep7101).n()
 # Are the individuals integrals >0r
 integrate( 2*r*sin(s/2)*sin(g1), (g1, pi/2 - a/2 + s/2, pi/2) ).subs(rep7101).n()
 integrate( p2, (g1, pi/2 - s/2, pi/2 -a/2 +s/2) ).subs(rep7101).n()
-integrate( r*sin(a/2), (g2, 0, s - pi/2 + a/2) ).subs(rep7101).n()
+integrate( r*sin(a/2), (g2, 0, s - pi/2 + a/2) ) ).subs(rep7101).n()
 
 # Check sizes of integral bounds 
 pi/2 - a.subs(rep7101)/2 + s.subs(rep7101)/2 < pi/2 and \
 pi/2 - s.subs(rep7101)/2 <  pi/2 - a.subs(rep7101)/2 + s.subs(rep7101)/2 and \
-0 < s.subs(rep7101) - pi/2 + a.subs(rep7101)/2
+0 < s.subs(rep7101) - pi/2 + a.subs(rep(7101)/2
 
 
 # LaTeX output
@@ -348,9 +354,9 @@ a.subs(rep7102) < pi and pi/2 < s.subs(rep7102) < pi and a.subs(rep7102) < s.sub
 p7102.subs(rep7102).n()
 
 # Are the individuals integrals >0r
-integrate( p1, (g1, pi/2 - a/2 + s/2, pi/2) ).subs(rep7102).n()
+integrate( p, (g1, pi/2 - a/2 + s/2, pi/2) ).subs(rep7102).n()
 integrate( p2, (g1, pi/2 - s/2, pi/2 -a/2 +s/2) ).subs(rep7102).n()
-integrate( r*sin(a/2), (g2, 0, s - pi/2 + a/2) ).subs(rep7102).n()
+integrate( r*sin(a/2), (g2, 0, s - pi/2 + a/2) ) ).subs(rep7102).n()
 
 # Check sizes of integral bounds 
 pi/2 - a.subs(rep7102)/2 + s.subs(rep7102)/2 < pi/2 and \
@@ -453,10 +459,10 @@ p793.subs(rep793).n()
 # Are the individuals integrals >0r
 integrate( 2*r*sin(s/2)*sin(g1), (g1, pi/2 - s/2, pi/2) ).subs(rep793).n()
 integrate( r*sin(g2), (g2, s, a/2) ).subs(rep793).n()
-integrate( p3, (g2, a/2, s + a/2) ).n()
+integrate( p3, (g2, a/2, s + a/2) ) ).n()
 
 # Check sizes of integral bounds 
-pi/2 - s.subs(rep793)/2 < pi/2 and \
+ pi/2 - s.subs(rep793)/2 < pi/2 and \
 s.subs(rep793) < a.subs(rep793)/2 and \
 a.subs(rep793)/2 < s.subs(rep793) + a.subs(rep793)/2
 
@@ -564,7 +570,7 @@ p796.subs(rep796).n()
 # Are the individuals integrals >0r
 integrate( 2*r*sin(s/2)*sin(g1), (g1, pi/2 - s/2, pi/2) ).subs(rep796).n()
 integrate( r*sin(g2), (g2, s, a/2) ).subs(rep796).n()
-integrate( p3, (g3, a/2, pi/2) ).subs(rep796).n()
+integrate( p3, (g3, a/2, pi/2) ) ).subs(rep796).n()
 
 # Check sizes of integral bounds 
 pi/2 - s.subs(rep796)/2 < pi/2 and \
@@ -598,7 +604,7 @@ p761.subs(rep761).n()
 
 # Are the individuals integrals >0r
 integrate( 2*r*sin(a/2), (g4, pi/2, pi) ).subs(rep761).n()
-integrate( r*sin(a/2), (g4, pi, 2*pi - s/2) ).subs(rep761).n()
+integrate( r*sin(a/2), (g4, pi, 2*pi - s/2) ) ).subs(rep761).n()
 
 
 # Check sizes of integral bounds 
@@ -624,7 +630,7 @@ latexOutput.insert(13,'p761 = ' + latex(p761))
 p762 = (1/pi) * ( integrate( 2*r*sin(a/2), (g4, pi/2, s/2) )       \
                 + integrate( r*sin(a/2) - r*cos(g4), (g4, s/2, pi) ) \
                 + integrate( r*sin(a/2), (g4, pi, 2*pi - s/2) ) \
-                + integrate( 2*r*(sin(a/2) + sin(s/2)*sin(g4) ), (g4, 2*pi - s/2, 3*pi/2) ) ).simplify().trigsimp()
+                + integrate( 2*r*(sin(a/2) + sin(d/2)*sin(g4) ), (g4, 2*pi - s/2, 3*pi/2) ) ).simplify().trigsimp()
 
 rep762 = {s:3*pi/2, a:2*pi/3} # Replacement values in range
 # Confirm replacements
@@ -638,7 +644,7 @@ p762.subs(rep762).n()
 integrate( 2*r*sin(a/2), (g4, pi/2, s/2) ) .subs(rep762).n()
 integrate( r*sin(a/2) - r*cos(g4), (g4, s/2, pi) ).subs(rep762).n()
 integrate( r*sin(a/2), (g4, pi, 2*pi - s/2) ).subs(rep762).n()
-integrate( 2*r*(sin(a/2) + sin(s/2)*sin(g4) ), (g4, 2*pi - s/2, 3*pi/2) ).subs(rep762).n()
+integrate( 2*r*(sin(a/2) + sin(d/2)*sin(g4) ), (g4, 2*pi - s/2, 3*pi/2) ).subs(rep762).n()
 
 
 # Check sizes of integral bounds 
@@ -650,17 +656,6 @@ pi < 2*pi - s.subs(rep762)/2 and \
 # LaTeX output
 
 latexOutput.insert(14,'p762 = ' + latex(p762))
-
-
-
-
-
-
-
-
-
-
-
 
 
 
