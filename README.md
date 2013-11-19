@@ -32,6 +32,9 @@ For most models in the pdf, there should be a section in the script that gives
 ##### Model number and region
 The model number relates to the numbers in the pdf and my notebook. Each model should have the all the inequalities that define the region in the top code block as well. 
 
+##### Model description
+A list that contains 4 colunmns. Each row relates to one integral and has 4 elements: the expression in the integral, the variable that is integrated and the lower and upper bound. All analysis and tests should derive from this list so its impossible to test one model and save output from a differently typed model.
+
 ##### Model solution
 Saved to object `pModelNumber` the solved and simplified model
 
@@ -39,7 +42,10 @@ Saved to object `pModelNumber` the solved and simplified model
 A dictionary named `repModelNumber` with an example parameter set which is then used to test aspects of the models. The values in the dictionary should be tested against the inequalities.
 
 ##### Individual integrals
-Each integral in the model solution should be positive. If this is not true either the expression in the integral is wrong or the limits are wrong or *wrong way around*.
+Total of each integral in the model solution should be positive. If this is not true either the expression in the integral is wrong or the limits are wrong or *wrong way around*.
+
+##### Individual integrals.
+Average of each integral (sum divided by difference between bounds) should be between 0 and 2r.
 
 ##### Potentiall a plot of the function. 
 The results should always be increasing for either angle parameter
