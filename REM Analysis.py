@@ -17,7 +17,7 @@ init_printing(forecolor="White")
 
 
 # Load symbols used for symbolic maths
-s, a, r, g1, g2, g3, g4 = symbols('theta_s theta_a r gamma_1 gamma_2 gamma_3 gamma_4')
+s, a, r, g1, g2, g3, g4 = symbols('theta_s theta_a r gamma_1 gamma_2 gamma_3 gamma_4', positive=True)
 r1 = {r:1} # useful for lots of checks
 
 
@@ -39,8 +39,10 @@ p73 = ((2*integrate(m73[0][0], m73[0][1:]) + 2*integrate(m73[1][0], m73[1][1:]))
 # Replacement values in range
 rep73 = {s:3*pi/2} 
 
+# Define conditions for model
+cond73 = [pi <= s]
 # Confirm replacements
-if not pi <= s.subs(rep73):
+if not all([c.subs(rep73) for c in cond73]):
         print('rep73 incorrect')
 
 # is average profile in range 0r-2r?
@@ -68,6 +70,7 @@ xRange = np.arange(pi,2*pi, 0.01)
 yRange = [p73.subs({r:1, s:i}).n() for i in xRange]
 plot73 = pl.plot(xRange, yRange)
 pl.savefig('/home/tim/Dropbox/phd/Analysis/REM-chapter/imgs/p73Profile.pdf')
+pl.close()
 
 # LaTeX output
 
@@ -89,8 +92,10 @@ p75 = pi**-1 * (2*integrate(m75[0][0], m75[0][1:]) + 2*integrate(m75[1][0], m75[
 # Replacement values in range
 rep75 = {s:3*pi/4} 
 
+# Define conditions for model
+cond75 = [pi/2 <= s, s <= pi]
 # Confirm replacements
-if not pi/2 <= s.subs(rep75) <= pi:
+if not all([c.subs(rep75) for c in cond75]):
         print('rep75 incorrect')
 
 # is average profile in range 0r-2r?
@@ -119,6 +124,7 @@ xRange = np.arange(pi/2,pi, 0.01)
 yRange = [p75.subs({r:1, s:i}).n() for i in xRange]
 plot75 = pl.plot(xRange, yRange)
 pl.savefig('/home/tim/Dropbox/phd/Analysis/REM-chapter/imgs/p75Profile.pdf')
+pl.close()
 
 # LaTeX output
 
@@ -147,10 +153,11 @@ p771 = pi**-1 * (integrate(m771[0][0], m771[0][1:]) + integrate(m771[1][0], m771
 
 rep771 = {s:pi/9, a:10*pi/9} # Replacement values in range
 
+# Define conditions for model
+cond771 = [s <= pi/2, a >= pi, a/2 <= pi - s]
 # Confirm replacements
-if not (s.subs(rep771) <= pi/2 and a.subs(rep771) > pi and a.subs(rep771)/2 < pi - s.subs(rep771)):
+if not all([c.subs(rep771) for c in cond771]):
         print('rep771 incorrect')
-
 # is average profile in range 0r-2r?
 if not 0 < p771.subs(dict(rep771, **r1)) < 2:
         print('Total p771 not in 0, 2r')
@@ -191,8 +198,10 @@ p772 = pi**-1 * (integrate(m772[0][0], m772[0][1:]) + 2*integrate(m772[1][0], m7
 
 rep772 = {s:3*pi/8, a:3*pi/2} # Replacement values in range
 
+# Define conditions for model
+cond772 = [a >= pi, s <= pi/2, pi - s <= a/2, a/2 <= pi - s/2]
 # Confirm replacements
-if not (a.subs(rep772) > pi and s.subs(rep772) < pi/2 and pi - s.subs(rep772) < a.subs(rep772)/2 < pi - s.subs(rep772)/2):
+if not all([c.subs(rep772) for c in cond772]):
         print('rep772 incorrect')
 
 # is average profile in range 0r-2r?
@@ -235,8 +244,10 @@ p773 = pi**-1 * (integrate(m773[0][0], m773[0][1:]) + 2*integrate(m773[1][0], m7
 
 rep773 = {s:3*pi/8, a:29*pi/16} # Replacement values in range
 
+# Define conditions for model
+cond773 = [a >= pi, s <= pi/2, pi - s/2 <= a/2]
 # Confirm replacements
-if not (a.subs(rep773) > pi and s.subs(rep773) <= pi/2 and pi - s.subs(rep773)/2 <= a.subs(rep773)/2):
+if not all([c.subs(rep773) for c in cond773]):
         print('rep773 incorrect')
 
 # is average profile in range 0r-2r?
@@ -287,8 +298,10 @@ p781 = pi**-1 * (integrate(m781[0][0], m781[0][1:]) + integrate(m781[1][0], m781
 
 rep781 = {s:3*pi/4, a:15*pi/8} # Replacement values in range
 
+# Define conditions for model
+cond781 = [a > pi,  s <= pi/2, a/2 <= pi - s/2]
 # Confirm replacements
-if not (a.subs(rep781) > pi and s.subs(rep781) <= pi/2 and a.subs(rep781)/2 <= pi - s.subs(rep781)/2):
+if not all([c.subs(rep781) for c in cond781]):
         print('rep781 incorrect')
 
 # is average profile in range 0r-2r?
@@ -333,8 +346,10 @@ p782 = pi**-1 * (integrate(m782[0][0], m782[0][1:]) + integrate(m782[1][0], m782
 
 rep782 = {s:3*pi/4, a:15*pi/8} # Replacement values in range
 
+# Define conditions for model
+cond782 = [a > pi, s <= pi/2, a/2 >= pi - s/2]
 # Confirm replacements
-if not (a.subs(rep782) > pi and s.subs(rep782) <= pi/2 and a.subs(rep782)/2 >= pi - s.subs(rep782)/2):
+if not all([c.subs(rep782) for c in cond782]):
         print('rep782 incorrect')
 
 # is average profile in range 0r-2r?
@@ -400,8 +415,10 @@ p7101 = pi**-1 * (integrate(m7101[0][0], m7101[0][1:]) + integrate(m7101[1][0], 
 
 rep7101 = {s:5*pi/8, a:7*pi/8} # Replacement values in range
 
+# Define conditions for model
+cond7101 = [a < pi, pi/2 <= s, s <= pi, a/2 >= s/2]
 # Confirm replacements
-if not (a.subs(rep7101) < pi and pi/2 <= s.subs(rep7101) <= pi and a.subs(rep7101)/2 >= s.subs(rep7101)/2):
+if not all([c.subs(rep7101) for c in cond7101]):
         print('rep7101 incorrect')
 
 # is average profile in range 0r-2r?
@@ -442,8 +459,10 @@ p7102 = pi**-1 * (integrate(m7102[0][0], m7102[0][1:]) + integrate(m7102[1][0], 
 
 rep7102 = {s:6*pi/8, a:4*pi/8} # Replacement values in range
 
+# Define conditions for model
+cond7102 = [a < pi, pi/2 <= s, s <= pi, a/2 <= s/2]
 # Confirm replacements
-if not (a.subs(rep7102) < pi and pi/2 <= s.subs(rep7102) <= pi and a.subs(rep7102)/2 <= s.subs(rep7102)/2):
+if not all([c.subs(rep7102) for c in cond7102]):
         print('rep7102 incorrect')
 
 # is average profile in range 0r-2r?
@@ -487,8 +506,10 @@ p791 = pi**-1 * (integrate(m791[0][0], m791[0][1:]) + integrate(m791[1][0], m791
 
 rep791 = {s:2*pi/8, a:pi/8} # Replacement values in range
 
+# Define conditions for model
+cond791 = [a <= pi, s <= pi/2, a <= pi - 2*s, a <= s]
 # Confirm replacements
-if not (a.subs(rep791) < pi and s.subs(rep791) <= pi/2 and a.subs(rep791) <= pi - 2*s.subs(rep791) and a.subs(rep791) <= s.subs(rep791)):
+if not all([c.subs(rep791) for c in cond791]):
         print('rep791 incorrect')
 
 # is average profile in range 0r-2r?
@@ -529,8 +550,10 @@ p792 = pi**-1 * (integrate(m792[0][0], m792[0][1:]) + integrate(m792[1][0], m792
 
 rep792 = {s:2*pi/8, a:pi/2-0.1} # Replacement values in range
 
+# Define conditions for model
+cond792 = [a <= pi, s <= pi/2, a <= pi - 2*s, s <= a, a <= 2*s]
 # Confirm replacements
-if not (a.subs(rep792) < pi and s.subs(rep792) <= pi/2 and a.subs(rep792) <= pi - 2*s.subs(rep792) and s.subs(rep792) <= a.subs(rep792) <= 2*s.subs(rep792)):
+if not all([c.subs(rep792) for c in cond792]):
         print('rep792 incorrect')
 
 # is average profile in range 0r-2r?
@@ -557,6 +580,7 @@ for i in range(len(m792)):
 latexOutput.insert(10,'p792 &= ' + latex(p792))
 longLatexOutput.insert(10,'p792=\\frac{1}{\pi} \left(\int_{'+latex(m792[0][2])+'}^{'+latex(m792[0][3])+'}'+latex(m792[0][0])+'\;\mathrm{d}'+latex(m792[0][1])+'+\int_{'+latex(m792[1][2])+'}^{'+latex(m792[1][3])+'}p_2\;\mathrm{d}'+latex(m792[1][1])+'+\int_{'+latex(m792[2][2])+'}^{'+latex(m792[2][3])+'}p_3\;\mathrm{d}'+latex(m792[2][1])+'\\right)')
 
+
 ##################################################################################
 # 7.9.3 animal: a < pi.  Sensor: s < pi/2. Condition: a < pi - 2s &  2s < a      #
 ##################################################################################
@@ -571,8 +595,10 @@ p793 = pi**-1 * (integrate(m793[0][0], m793[0][1:]) + integrate(m793[1][0], m793
 
 rep793 = {s:1*pi/8, a:pi/2} # Replacement values in range
 
+# Define conditions for model
+cond793 = [a < pi,  s <= pi/2,  a <= pi - 2*s,  2*s <= a]
 # Confirm replacements
-if not (a.subs(rep793) < pi and s.subs(rep793) <= pi/2 and a.subs(rep793) <= pi - 2*s.subs(rep793) and 2*s.subs(rep793) <= a.subs(rep793)):
+if not all([c.subs(rep793) for c in cond793]):
         print('rep793 incorrect')
 
 # is average profile in range 0r-2r?
@@ -611,8 +637,10 @@ p794 = pi**-1 * (integrate(m794[0][0], m794[0][1:]) + integrate(m794[1][0], m794
 
 rep794 = {s:pi/2-0.1, a:pi/4} # Replacement values in range
 
+# Define conditions for model
+cond794 = [a <= pi,  s <= pi/2,  a >= pi - 2*s,  a <= s]
 # Confirm replacements
-if not (a.subs(rep794) < pi and s.subs(rep794) <= pi/2 and a.subs(rep794) >= pi - 2*s.subs(rep794) and a.subs(rep794) < s.subs(rep794)):
+if not all([c.subs(rep794) for c in cond794]):
         print('rep794 incorrect')
 
 # is average profile in range 0r-2r?
@@ -655,6 +683,13 @@ rep795 = {s:pi/2-0.1, a:pi/2} # Replacement values in range
 
 # Confirm replacements
 if not (a.subs(rep795) <= pi and s.subs(rep795) <= pi/2 and a.subs(rep795) >= pi - 2*s.subs(rep795) and s.subs(rep795) <= a.subs(rep795) <= 2*s.subs(rep795)):
+        print('rep795 incorrect')
+
+# Define conditions for model
+
+cond795 = [a <= pi,  s <= pi/2,  a >= pi - 2*s,  s <= a, a <= 2*s]
+# Confirm replacements
+if not all([c.subs(rep795) for c in cond795]):
         print('rep795 incorrect')
 
 # is average profile in range 0r-2r?
@@ -700,8 +735,11 @@ p796 = pi**-1 * (integrate(m796[0][0], m796[0][1:]) + integrate(m796[1][0], m796
 
 rep796 = {s:pi/4, a:3*pi/4} # Replacement values in range
 
+
+# Define conditions for model
+cond796 = [a < pi,  s <= pi/2,  a >= pi - 2*s,  a > 2*s]
 # Confirm replacements
-if not (a.subs(rep796) < pi and s.subs(rep796) <= pi/2 and a.subs(rep796) >= pi - 2*s.subs(rep796) and a.subs(rep796) > 2*s.subs(rep796)):
+if not all([c.subs(rep796) for c in cond796]):
         print('rep796 incorrect')
 
 # is average profile in range 0r-2r?
@@ -729,6 +767,19 @@ latexOutput.insert(14,'p796 &= ' + latex(p796))
 longLatexOutput.insert(14,'p796=\\frac{1}{\pi} \left(\int_{'+latex(m796[0][2])+'}^{'+latex(m796[0][3])+'}'+latex(m796[0][0])+'\;\mathrm{d}'+latex(m796[0][1])+'+\int_{'+latex(m796[1][2])+'}^{'+latex(m796[1][3])+'}'+latex(m796[1][0])+'\;\mathrm{d}'+latex(m796[1][1])+'+\int_{'+latex(m796[2][2])+'}^{'+latex(m796[2][3])+'}p_3\;\mathrm{d}'+latex(m796[2][1])+'\\right)')
 
 
+#############################################
+## 7.6 Still not sure how many models etc. ##
+#############################################
+
+# Transitions I think I've found
+
+m76Trans = [ pi - a/2 + s/2, s/2 + pi/2, s/2 - a/2 + pi, 5*pi/2 - a/2 - s/2, 5*pi/2 - s/2, 3*pi - s/2 - a/2]
+
+solve(m76Trans[1] - m76Trans[0], a)
+solve(m76Trans[3] - m76Trans[1], a)
+solve(m76Trans[3] - m76Trans[1], s)
+
+
 
 #############################################################################
 # 7.6.1 animal: a < pi.  Sensor: s > pi. Condition: a < s - pi              #
@@ -743,8 +794,11 @@ p761 = pi**-1 * (integrate(m761[0][0], m761[0][1:]) + integrate(m761[1][0], m761
 
 rep761 = {s:3*pi/2, a:pi/3} # Replacement values in range
 
+
+# Define conditions for model
+cond761 = [a <= pi, s >= pi/2, a <= s - pi]
 # Confirm replacements
-if not (a.subs(rep761) < pi and s.subs(rep761) >= pi/2 and a.subs(rep761) <= s.subs(rep761) - pi):
+if not all([c.subs(rep761) for c in cond761]):
         print('rep761 incorrect')
 
 # is average profile in range 0r-2r?
@@ -788,8 +842,10 @@ p762 = pi**-1 * (2*integrate(m762[0][0], m762[0][1:]) + integrate(m762[1][0], m7
 
 rep762 = {s:4*pi/3, a:2*pi/3} # Replacement values in range
 
+# Define conditions for model
+cond762 = [a <= pi, s >= pi, a >= s - pi]
 # Confirm replacements
-if not (a.subs(rep762) < pi and s.subs(rep762) >= pi and a.subs(rep762) >= s.subs(rep762) - pi):
+if not all([c.subs(rep762) for c in cond762]):
         print('rep762 incorrect')
 
 # is average profile in range 0r-2r?
@@ -934,6 +990,7 @@ for i in range(len(allComps)):
                 checkFile.write(allComps[i][0]+ ' and ' +allComps[i][1]+': OK\n')
         else:
                 checkFile.write(allComps[i][0]+ ' and ' +allComps[i][1]+': Incorrect\n')
+                print allComps[i][0] + ' and ' + allComps[i][1]+': Incorrect\n'
 
 checkFile.close()
 
@@ -941,7 +998,7 @@ checkFile.close()
 ### Write output   ###
 ######################
 
-# write out full latex model solutipns and model statements
+# write out full latex model solutions and model statements
 
 latexFile = open('/home/tim/Dropbox/phd/Analysis/REM-chapter/ModelSolutions.tex', 'w')
 
@@ -950,6 +1007,14 @@ for i in range(len(latexOutput)):
         latexFile.write( '\\[' + latexOutput[i] + '\\]\n')
 
 latexFile.close()
+
+
+
+
+############################
+### Viz regions         ####
+############################
+
 
 
 

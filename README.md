@@ -38,8 +38,11 @@ A list that contains 4 colunmns. Each row relates to one integral and has 4 elem
 ##### Model solution
 Saved to object `pModelNumber` the solved and simplified model
 
+##### Conditions
+A list of the conditions where the model is valid (i.e. the parameter space) is saved to `condModelNumber`.
+
 ##### Example values
-A dictionary named `repModelNumber` with an example parameter set which is then used to test aspects of the models. The values in the dictionary should be tested against the inequalities.
+A dictionary named `repModelNumber` with an example parameter set which is then used to test aspects of the models. The values in the dictionary should be tested against the conditions (or inequalities) in `condModelNumber`.)
 
 ##### Individual integrals
 Total of each integral in the model solution should be positive. If this is not true either the expression in the integral is wrong or the limits are wrong or *wrong way around*.
@@ -60,6 +63,10 @@ A LaTeX output that is currently appended to `latexOutput`
 I test each model against each other. Models that are adjacent in the modelRegions [pdf](ModelRegions.pdf) should be equal when we substitute the equation along which they are adjacent.
 
 
+
+### Plotting
+
+I want to plot the regions of each model as in the [pdf] as made in Mathematica.
 
 
 
