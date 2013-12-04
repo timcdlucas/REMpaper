@@ -9,6 +9,8 @@ from sympy import *
 import numpy as np
 import matplotlib.pyplot as pl
 from datetime import datetime
+import Image as Im
+import ImageDraw as ImD
 
 # Use LaTeX printing
 %load_ext sympyprinting 
@@ -46,7 +48,7 @@ if not all([c.subs(rep73) for c in cond73]):
         print('rep73 incorrect')
 
 # is average profile in range 0r-2r?
-if not 0 < p73.subs(dict(rep73, **r1)) < 2:
+if not 0 <= p73.subs(dict(rep73, **r1)) <= 2:
         print('Total p73 not in 0, 2r')
 
 # Are the individuals integrals >0r
@@ -56,7 +58,7 @@ for i in range(len(m73)):
 
 # Are the individual averaged integrals between 0 and  2r
 for i in range(len(m73)):
-        if not 0 < (integrate(m73[i][0], m73[i][1:])/(m73[i][3]-m73[i][2])).subs(dict(rep73, **r1)) <= 2:
+        if not 0 <= (integrate(m73[i][0], m73[i][1:])/(m73[i][3]-m73[i][2])).subs(dict(rep73, **r1)) <= 2:
                 print('Integral ' + str(i+1) + ' in p73 has averaged integral outside 0<p<2r')
                 
 # Are the bounds the correct way around
@@ -79,7 +81,7 @@ longLatexOutput.insert(0,'p73=\\frac{1}{\pi} \left(2\int_{'+latex(m73[0][2])+'}^
 
 
 ########################################################
-# 7.5. animal: a = 2*pi.   sensor:  pi/2 < s < pi      #
+# 7.5. animal: a = 2*pi.   sensor:  pi/2 <= s <= pi      #
 ########################################################
 
 m75 = [ [2*r*sin(s/2)*sin(g1), g1, s/2, pi/2],
@@ -99,7 +101,7 @@ if not all([c.subs(rep75) for c in cond75]):
         print('rep75 incorrect')
 
 # is average profile in range 0r-2r?
-if not 0 < p75.subs(dict(rep75, **r1)) < 2:
+if not 0 <= p75.subs(dict(rep75, **r1)) <= 2:
         print('Total p75 not in 0, 2r')
 
 # Are the individuals integrals >0r
@@ -109,7 +111,7 @@ for i in range(len(m75)):
 
 # Are the individual averaged integrals between 0 and  2r
 for i in range(len(m75)):
-        if not 0 < (integrate(m75[i][0], m75[i][1:])/(m75[i][3]-m75[i][2])).subs(dict(rep75, **r1)) <= 2:
+        if not 0 <= (integrate(m75[i][0], m75[i][1:])/(m75[i][3]-m75[i][2])).subs(dict(rep75, **r1)) <= 2:
                 print('Integral ' + str(i+1) + ' in p75 has averaged integral outside 0<p<2r')
                 
 # Are the bounds the correct way around
@@ -134,12 +136,12 @@ longLatexOutput.insert(1,'p75=\\frac{1}{\pi} \left(\int_{'+latex(m75[0][2])+'}^{
 
 """
 Multiple models in 7.7.
-animal: a>pi.  Sensor: s < pi/2
+animal: a>pi.  Sensor: s <= pi/2
 """
 
 
 ###################################################################
-# 7.7.1 animal: a>pi.  Sensor: s < pi/2. Condition: a/2 < pi - s  #
+# 7.7.1 animal: a>pi.  Sensor: s <= pi/2. Condition: a/2 <= pi - s  #
 ###################################################################
 
 m771 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 - s/2, pi/2],
@@ -159,7 +161,7 @@ cond771 = [s <= pi/2, a >= pi, a/2 <= pi - s]
 if not all([c.subs(rep771) for c in cond771]):
         print('rep771 incorrect')
 # is average profile in range 0r-2r?
-if not 0 < p771.subs(dict(rep771, **r1)) < 2:
+if not 0 <= p771.subs(dict(rep771, **r1)) <= 2:
         print('Total p771 not in 0, 2r')
 
 # Are the individuals integrals >0r
@@ -169,7 +171,7 @@ for i in range(len(m771)):
 
 # Are the individual averaged integrals between 0 and  2r
 for i in range(len(m771)):
-        if not 0 < (integrate(m771[i][0], m771[i][1:])/(m771[i][3]-m771[i][2])).subs(dict(rep771, **r1)) <= 2:
+        if not 0 <= (integrate(m771[i][0], m771[i][1:])/(m771[i][3]-m771[i][2])).subs(dict(rep771, **r1)) <= 2:
                 print('Integral ' + str(i+1) + ' in p771 has averaged integral outside 0<p<2r')
                 
 # Are the bounds the correct way around
@@ -185,7 +187,7 @@ longLatexOutput.insert(2,'p771 &= \\frac{1}{\pi} \left(\int_{'+latex(m771[0][2])
 
 
 ###############################################################################
-# 7.7.2 animal: a>pi.  Sensor: s < pi/2. Condition:  pi - s < a/2 < pi - s/2  #
+# 7.7.2 animal: a>pi.  Sensor: s <= pi/2. Condition:  pi - s <= a/2 <= pi - s/2  #
 ###############################################################################
 
 m772 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 - s/2, pi/2],
@@ -205,7 +207,7 @@ if not all([c.subs(rep772) for c in cond772]):
         print('rep772 incorrect')
 
 # is average profile in range 0r-2r?
-if not 0 < p772.subs(dict(rep772, **r1)) < 2:
+if not 0 <= p772.subs(dict(rep772, **r1)) <= 2:
         print('Total p772 not in 0, 2r')
 
 # Are the individual integrals >0r
@@ -215,7 +217,7 @@ for i in range(len(m772)):
 
 # Are the individual averaged integrals between 0 and  2r
 for i in range(len(m772)):
-        if not 0 < (integrate(m772[i][0], m772[i][1:])/(m772[i][3]-m772[i][2])).subs(dict(rep772, **r1)) <= 2:
+        if not 0 <= (integrate(m772[i][0], m772[i][1:])/(m772[i][3]-m772[i][2])).subs(dict(rep772, **r1)) <= 2:
                 print('Integral ' + str(i+1) + ' in p772 has averaged integral outside 0<p<2r')
                 
 # Are the bounds the correct way around
@@ -231,7 +233,7 @@ longLatexOutput.insert(3,'p772 &= \\frac{1}{\pi} \left(\int_{'+latex(m772[0][2])
 
 
 ###############################################################################
-# 7.7.3 animal: a>pi.  Sensor: s < pi/2. Condition: pi - s/2 < a/2            #
+# 7.7.3 animal: a>pi.  Sensor: s <= pi/2. Condition: pi - s/2 <= a/2            #
 ###############################################################################
 
 m773 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 - s/2, pi/2],
@@ -251,7 +253,7 @@ if not all([c.subs(rep773) for c in cond773]):
         print('rep773 incorrect')
 
 # is average profile in range 0r-2r?
-if not 0 < p773.subs(dict(rep773, **r1)) < 2:
+if not 0 <= p773.subs(dict(rep773, **r1)) <= 2:
         print('Total p773 not in 0, 2r')
 
 # Are the individual integrals >0r
@@ -261,7 +263,7 @@ for i in range(len(m773)):
 
 # Are the individual averaged integrals between 0 and  2r
 for i in range(len(m773)):
-        if not 0 < (integrate(m773[i][0], m773[i][1:])/(m773[i][3]-m773[i][2])).subs(dict(rep773, **r1)) <= 2:
+        if not 0 <= (integrate(m773[i][0], m773[i][1:])/(m773[i][3]-m773[i][2])).subs(dict(rep773, **r1)) <= 2:
                 print('Integral ' + str(i+1) + ' in p773 has averaged integral outside 0<p<2r')
                 
 # Are the bounds the correct way around
@@ -280,12 +282,12 @@ longLatexOutput.insert(4,'p773 &= \\frac{1}{\pi} \left(\int_{'+latex(m773[0][2])
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 Two models in 7.8.
-animal: pi < a .  Sensor: pi/2 < s < pi
+animal: pi <= a .  Sensor: pi/2 <= s <= pi
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
 #################################################################################
-# 7.8.1 animal:  a > pi.  Sensor: pi/2 < s < pi. Condition: a/2 < pi - s/2      #
+# 7.8.1 animal:  a > pi.  Sensor: pi/2 <= s <= pi. Condition: a/2 <= pi - s/2   #
 #################################################################################
 
 m781 = [ [2*r*sin(a/2),         g1, pi/2 - s/2, pi/2],
@@ -305,7 +307,7 @@ if not all([c.subs(rep781) for c in cond781]):
         print('rep781 incorrect')
 
 # is average profile in range 0r-2r?
-if not 0 < p781.subs(dict(rep781, **r1)) < 2:
+if not 0 <= p781.subs(dict(rep781, **r1)) <= 2:
         print('Total p781 not in 0, 2r')
 
 # Are the individual integrals >0r
@@ -315,7 +317,7 @@ for i in range(len(m781)):
 
 # Are the individual averaged integrals between 0 and  2r
 for i in range(len(m781)):
-        if not 0 < (integrate(m781[i][0], m781[i][1:])/(m781[i][3]-m781[i][2])).subs(dict(rep781, **r1)) <= 2:
+        if not 0 <= (integrate(m781[i][0], m781[i][1:])/(m781[i][3]-m781[i][2])).subs(dict(rep781, **r1)) <= 2:
                 print('Integral ' + str(i+1) + ' in p781 has averaged integral outside 0<p<2r')
                 
 # Are the bounds the correct way around
@@ -331,7 +333,7 @@ longLatexOutput.insert(5,'p781 &= \\frac{1}{\pi} \left(\int_{'+latex(m781[0][2])
 
 
 #################################################################################
-# 7.8.2 animal: a > pi.  Sensor: pi/2 < s < pi. Condition: a/2 > pi - s/2  #
+# 7.8.2 animal: a > pi.  Sensor: pi/2 <= s <= pi. Condition: a/2 > pi - s/2  #
 #################################################################################
 
 
@@ -353,7 +355,7 @@ if not all([c.subs(rep782) for c in cond782]):
         print('rep782 incorrect')
 
 # is average profile in range 0r-2r?
-if not 0 < p782.subs(dict(rep782, **r1)) < 2:
+if not 0 <= p782.subs(dict(rep782, **r1)) <= 2:
         print('Total p782 not in 0, 2r')
 
 # Are the individual integrals >0r
@@ -363,7 +365,7 @@ for i in range(len(m782)):
 
 # Are the individual averaged integrals between 0 and  2r
 for i in range(len(m782)):
-        if not 0 < (integrate(m782[i][0], m782[i][1:])/(m782[i][3]-m782[i][2])).subs(dict(rep782, **r1)) <= 2:
+        if not 0 <= (integrate(m782[i][0], m782[i][1:])/(m782[i][3]-m782[i][2])).subs(dict(rep782, **r1)) <= 2:
                 print('Integral ' + str(i+1) + ' in p782 has averaged integral outside 0<p<2r')
                 
 # Are the bounds the correct way around
@@ -384,7 +386,7 @@ longLatexOutput.insert(6,'p782 &= \\frac{1}{\pi} \left(\int_{'+latex(m782[0][2])
 
 
 """
-Complex profiles for a < pi/2 
+Complex profiles for a <= pi/2 
 """
 
 # p-l-r for g1 profil. Calculated by AE in fig 7.2 minus AE in fig 7.3
@@ -399,30 +401,29 @@ p3 = r*sin(g2) - 2*r*sin(g2/2 - a/4)*sin((pi - a + 2*g2 - s)/4).simplify()
 
 
 
-###############################################################################
-# 7.10.1 animal: a < pi.  Sensor: pi/2 < s < pi. Condition: a > s             #
-###############################################################################
+#########################################################################################
+# 7.10.1 animal: a <= pi.  Sensor: pi/2 <= s <= pi. Condition: a > s and a/2 <= s- pi/2 #
+#########################################################################################
 
 
+m7101 = [ [2*r*sin(s/2)*sin(g1),              g1, pi/2 - a/2 + s/2, pi/2            ],
+          [p2,                                g1, s/2,              pi/2 - a/2 + s/2],
+          [r*sin(a/2) + r*sin(s - pi/2 - g3), g3, 0,                s - pi/2        ],
+          [r*sin(a/2),                        g3, s - pi/2,         s - pi/2 + a/2  ] ]
+
+p7101 = pi**-1 * (integrate(m7101[0][0], m7101[0][1:]) + integrate(m7101[1][0], m7101[1][1:]) + integrate(m7101[2][0], m7101[2][1:]) + integrate(m7101[3][0], m7101[3][1:]) ).simplify()
 
 
-m7101 = [ [2*r*sin(s/2)*sin(g1),  g1, pi/2 - a/2 + s/2, pi/2           ],
-          [p2,                    g1, pi/2 - s/2,       pi/2 - a/2 +s/2],
-          [r*sin(a/2),            g2, 0,                s - pi/2 + a/2 ] ]
-
-p7101 = pi**-1 * (integrate(m7101[0][0], m7101[0][1:]) + integrate(m7101[1][0], m7101[1][1:]) + integrate(m7101[2][0], m7101[2][1:]) ).simplify()
-
-
-rep7101 = {s:5*pi/8, a:7*pi/8} # Replacement values in range
+rep7101 = {s:5*pi/8, a:6*pi/8} # Replacement values in range
 
 # Define conditions for model
-cond7101 = [a < pi, pi/2 <= s, s <= pi, a/2 >= s/2]
+cond7101 = [a <= pi, pi/2 <= s, s <= pi, a/2 >= s/2, a/2 >= s - pi/2]
 # Confirm replacements
 if not all([c.subs(rep7101) for c in cond7101]):
         print('rep7101 incorrect')
 
 # is average profile in range 0r-2r?
-if not 0 < p7101.subs(dict(rep7101, **r1)) < 2:
+if not 0 <= p7101.subs(dict(rep7101, **r1)) <= 2:
         print('Total p7101 not in 0, 2r')
 
 # Are the individual integrals >0r
@@ -432,7 +433,7 @@ for i in range(len(m7101)):
 
 # Are the individual averaged integrals between 0 and  2r
 for i in range(len(m7101)):
-        if not 0 < (integrate(m7101[i][0], m7101[i][1:])/(m7101[i][3]-m7101[i][2])).subs(dict(rep7101, **r1)) <= 2:
+        if not 0 <= (integrate(m7101[i][0], m7101[i][1:])/(m7101[i][3]-m7101[i][2])).subs(dict(rep7101, **r1)) <= 2:
                 print('Integral ' + str(i+1) + ' in p7101 has averaged integral outside 0<p<2r')
                 
 # Are the bounds the correct way around
@@ -443,30 +444,38 @@ for i in range(len(m7101)):
 # LaTeX output
 
 latexOutput.insert(7,'p7101 &= ' + latex(p7101))
-longLatexOutput.insert(7,'p7101=\\frac{1}{\pi} \left(\int_{'+latex(m7101[0][2])+'}^{'+latex(m7101[0][3])+'}'+latex(m7101[0][0])+'\;\mathrm{d}'+latex(m7101[0][1])+'+\int_{'+latex(m7101[1][2])+'}^{'+latex(m7101[1][3])+'}'+latex(m7101[1][0])+'\;\mathrm{d}'+latex(m7101[1][1])+'+\int_{'+latex(m7101[2][2])+'}^{'+latex(m7101[2][3])+'}'+latex(m7101[2][0])+'\;\mathrm{d}'+latex(m7101[2][1])+'\\right)')
+longLatexOutput.insert(7,'p7101=\\frac{1}{\pi} \left(\int_{'+latex(m7101[0][2])+'}^{'+latex(m7101[0][3])+'}'+latex(m7101[0][0])+'\;\mathrm{d}'+latex(m7101[0][1])+'+\int_{'+latex(m7101[1][2])+'}^{'+latex(m7101[1][3])+'}'+latex(m7101[1][0])+'\;\mathrm{d}'+latex(m7101[1][1])+'+\int_{'+latex(m7101[2][2])+'}^{'+latex(m7101[2][3])+'}'+latex(m7101[2][0])+'\;\mathrm{d}'+latex(m7101[2][1])+'+\int_{'+latex(m7101[3][2])+'}^{'+latex(m7101[3][3])+'}'+latex(m7101[3][0])+'\;\mathrm{d}'+latex(m7101[3][1])+'\\right)')
 
 
-###############################################################################
-# 7.10.2 animal: a < pi.  Sensor: pi/2 < s < pi. Condition: a < s             #
-###############################################################################
-
-m7102 = [ [p1,         g1, pi/2 + a/2 - s/2, pi/2            ],
-          [p2,         g1, pi/2 - s/2,       pi/2 + a/2 - s/2],
-          [r*sin(a/2), g2, 0,                s - pi/2 + a/2  ] ]
-
-p7102 = pi**-1 * (integrate(m7102[0][0], m7102[0][1:]) + integrate(m7102[1][0], m7102[1][1:]) + integrate(m7102[2][0], m7102[2][1:])).simplify()
 
 
-rep7102 = {s:6*pi/8, a:4*pi/8} # Replacement values in range
+
+
+#########################################################################################
+# 7.10.2 animal: a <= pi.  Sensor: pi/2 <= s <= pi. Condition: a > s and a/2 <= s- pi/2 #
+#########################################################################################
+
+# THIS IS A PLACEHOLDER!!!!
+
+m7102 = [ [2*r*sin(s/2)*sin(g1),              g1, pi/2 - a/2 + s/2, pi/2            ],
+          [2*r*sin(s/2)*sin(g1) - p2,         g1, s/2,              pi/2 - a/2 + s/2],
+          [2*r*sin(a/2),                      g3, 0,                s - pi/2 - a/2  ],
+          [r*sin(a/2) + r*sin(s - pi/2 - g3), g3, s - pi/2 - a/2,   s - pi/2        ],
+          [r*sin(a/2),                        g3, s - pi/2,         s - pi/2 - a/2  ] ]
+
+p7102 = pi**-1 * (integrate(m7102[0][0], m7102[0][1:]) + integrate(m7102[1][0], m7102[1][1:]) + integrate(m7102[2][0], m7102[2][1:]) + integrate(m7102[3][0], m7102[3][1:]) + integrate(m7102[4][0], m7102[4][1:]) ).simplify()
+
+
+rep7102 = {s:5*pi/8, a:6*pi/8} # Replacement values in range
 
 # Define conditions for model
-cond7102 = [a < pi, pi/2 <= s, s <= pi, a/2 <= s/2]
+cond7102 = [a <= pi, pi/2 <= s, s <= pi, a/2 >= s/2, a/2 <= s - pi/2]
 # Confirm replacements
 if not all([c.subs(rep7102) for c in cond7102]):
         print('rep7102 incorrect')
 
 # is average profile in range 0r-2r?
-if not 0 < p7102.subs(dict(rep7102, **r1)) < 2:
+if not 0 <= p7102.subs(dict(rep7102, **r1)) <= 2:
         print('Total p7102 not in 0, 2r')
 
 # Are the individual integrals >0r
@@ -476,7 +485,7 @@ for i in range(len(m7102)):
 
 # Are the individual averaged integrals between 0 and  2r
 for i in range(len(m7102)):
-        if not 0 < (integrate(m7102[i][0], m7102[i][1:])/(m7102[i][3]-m7102[i][2])).subs(dict(rep7102, **r1)) <= 2:
+        if not 0 <= (integrate(m7102[i][0], m7102[i][1:])/(m7102[i][3]-m7102[i][2])).subs(dict(rep7102, **r1)) <= 2:
                 print('Integral ' + str(i+1) + ' in p7102 has averaged integral outside 0<p<2r')
                 
 # Are the bounds the correct way around
@@ -486,16 +495,17 @@ for i in range(len(m7102)):
 
 # LaTeX output
 
-latexOutput.insert(8,'p7102 &= ' + latex(p7102))
-longLatexOutput.insert(8,'p7102=\\frac{1}{\pi} \left(\int_{'+latex(m7102[0][2])+'}^{'+latex(m7102[0][3])+'}'+latex(m7102[0][0])+'\;\mathrm{d}'+latex(m7102[0][1])+'+\int_{'+latex(m7102[1][2])+'}^{'+latex(m7102[1][3])+'}'+latex(m7102[1][0])+'\;\mathrm{d}'+latex(m7102[1][1])+'+\int_{'+latex(m7102[2][2])+'}^{'+latex(m7102[2][3])+'}'+latex(m7102[2][0])+'\;\mathrm{d}'+latex(m7102[2][1])+'\\right)')
+latexOutput.insert(7,'p7102 &= ' + latex(p7102))
+longLatexOutput.insert(7,'p7102=\\frac{1}{\pi} \left(\int_{'+latex(m7102[0][2])+'}^{'+latex(m7102[0][3])+'}'+latex(m7102[0][0])+'\;\mathrm{d}'+latex(m7102[0][1])+'+\int_{'+latex(m7102[1][2])+'}^{'+latex(m7102[1][3])+'}'+latex(m7102[1][0])+'\;\mathrm{d}'+latex(m7102[1][1])+'+\int_{'+latex(m7102[2][2])+'}^{'+latex(m7102[2][3])+'}'+latex(m7102[2][0])+'\;\mathrm{d}'+latex(m7102[2][1])+'+\int_{'+latex(m7102[3][2])+'}^{'+latex(m7102[3][3])+'}'+latex(m7102[3][0])+'\;\mathrm{d}'+latex(m7102[3][1])+'+\int_{'+latex(m7102[4][2])+'}^{'+latex(m7102[4][3])+'}'+latex(m7102[4][0])+'\;\mathrm{d}'+latex(m7102[4][1])+'\\right)')
 
 
 
 
 
-###############################################################################
-# 7.9.1 animal: a < pi.  Sensor: s < pi/2. Condition: a < pi - 2s & a < s     #
-###############################################################################
+
+###################################################################################
+# 7.9.1 animal: a <= pi.  Sensor: s <= pi/2. Condition: a <= pi - 2s & a <= s     #
+###################################################################################
 
 m791 = [ [p1, g1, pi/2 - s/2 + a/2, pi/2            ],
          [p2, g1, pi/2 - s/2,       pi/2 - s/2 + a/2],
@@ -513,7 +523,7 @@ if not all([c.subs(rep791) for c in cond791]):
         print('rep791 incorrect')
 
 # is average profile in range 0r-2r?
-if not 0 < p791.subs(dict(rep791, **r1)) < 2:
+if not 0 <= p791.subs(dict(rep791, **r1)) <= 2:
         print('Total p791 not in 0, 2r')
 
 # Are the individual integrals >0r
@@ -523,7 +533,7 @@ for i in range(len(m791)):
 
 # Are the individual averaged integrals between 0 and  2r
 for i in range(len(m791)):
-        if not 0 < (integrate(m791[i][0], m791[i][1:])/(m791[i][3]-m791[i][2])).subs(dict(rep791, **r1)) <= 2:
+        if not 0 <= (integrate(m791[i][0], m791[i][1:])/(m791[i][3]-m791[i][2])).subs(dict(rep791, **r1)) <= 2:
                 print('Integral ' + str(i+1) + ' in p791 has averaged integral outside 0<p<2r')
                 
 # Are the bounds the correct way around
@@ -537,15 +547,18 @@ latexOutput.insert(9,'p791 &= ' + latex(p791))
 longLatexOutput.insert(9,'p791=\\frac{1}{\pi} \left(\int_{'+latex(m791[0][2])+'}^{'+latex(m791[0][3])+'}p_1\;\mathrm{d}'+latex(m791[0][1])+'+\int_{'+latex(m791[1][2])+'}^{'+latex(m791[1][3])+'}p_2\;\mathrm{d}'+latex(m791[1][1])+'+\int_{'+latex(m791[2][2])+'}^{'+latex(m791[2][3])+'}p_3\;\mathrm{d}'+latex(m791[2][1])+'\\right)')
 
 
-##################################################################################
-# 7.9.2 animal: a < pi.  Sensor: s < pi/2. Condition: a < pi - 2s & s < a < 2s   #
-##################################################################################
+#######################################################################################
+# 7.9.2 animal: a <= pi.  Sensor: s <= pi/2. Condition: a <= pi - 2s & s <= a <= 2s   #
+#######################################################################################
+
+print 'Stuff here! Bounds wrong in new bit'
 
 m792 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 + s/2 - a/2, pi/2            ],
          [p2,                   g1, pi/2 - s/2,       pi/2 + s/2 - a/2],
-         [p3,                   g2, s,                s + a/2         ] ]
+         [p3,                   g2, s,                s + a/2         ],
+         [r*sin(a/2),           g3, 0,                a/2 + s - pi/2   ] ]
 
-p792 = pi**-1 * (integrate(m792[0][0], m792[0][1:]) + integrate(m792[1][0], m792[1][1:]) + integrate(m792[2][0], m792[2][1:])).simplify().trigsimp()
+p792 = pi**-1 * (integrate(m792[0][0], m792[0][1:]) + integrate(m792[1][0], m792[1][1:]) + integrate(m792[2][0], m792[2][1:]) + integrate(m792[3][0], m792[3][1:])).simplify().trigsimp()
 
 
 rep792 = {s:2*pi/8, a:pi/2-0.1} # Replacement values in range
@@ -557,7 +570,7 @@ if not all([c.subs(rep792) for c in cond792]):
         print('rep792 incorrect')
 
 # is average profile in range 0r-2r?
-if not 0 < p792.subs(dict(rep792, **r1)) < 2:
+if not 0 <= p792.subs(dict(rep792, **r1)) <= 2:
         print('Total p792 not in 0, 2r')
 
 # Are the individual integrals >0r
@@ -567,7 +580,7 @@ for i in range(len(m792)):
 
 # Are the individual averaged integrals between 0 and  2r
 for i in range(len(m792)):
-        if not 0 < (integrate(m792[i][0], m792[i][1:])/(m792[i][3]-m792[i][2])).subs(dict(rep792, **r1)) <= 2:
+        if not 0 <= (integrate(m792[i][0], m792[i][1:])/(m792[i][3]-m792[i][2])).subs(dict(rep792, **r1)) <= 2:
                 print('Integral ' + str(i+1) + ' in p792 has averaged integral outside 0<p<2r')
                 
 # Are the bounds the correct way around
@@ -582,27 +595,28 @@ longLatexOutput.insert(10,'p792=\\frac{1}{\pi} \left(\int_{'+latex(m792[0][2])+'
 
 
 ##################################################################################
-# 7.9.3 animal: a < pi.  Sensor: s < pi/2. Condition: a < pi - 2s &  2s < a      #
+# 7.9.3 animal: a <= pi.  Sensor: s <= pi/2. Condition: a <= pi - 2s &  2s <= a      #
 ##################################################################################
 
 
 m793 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 - s/2, pi/2    ],
          [r*sin(g1),            g1, s,          a/2     ],
-         [p3,                   g2, a/2,        s + a/2 ] ]
+         [p3,                   g2, a/2,        s + a/2 ],
+         [r*sin(a/2),           g3, 0,          a/2 + s -pi/2   ] ]
 
-p793 = pi**-1 * (integrate(m793[0][0], m793[0][1:]) + integrate(m793[1][0], m793[1][1:]) + integrate(m793[2][0], m793[2][1:])).simplify().trigsimp()
+p793 = pi**-1 * (integrate(m793[0][0], m793[0][1:]) + integrate(m793[1][0], m793[1][1:]) + integrate(m793[2][0], m793[2][1:]) + integrate(m793[3][0], m793[3][1:])).simplify().trigsimp()
 
 
 rep793 = {s:1*pi/8, a:pi/2} # Replacement values in range
 
 # Define conditions for model
-cond793 = [a < pi,  s <= pi/2,  a <= pi - 2*s,  2*s <= a]
+cond793 = [a <= pi,  s <= pi/2,  a <= pi - 2*s,  2*s <= a]
 # Confirm replacements
 if not all([c.subs(rep793) for c in cond793]):
         print('rep793 incorrect')
 
 # is average profile in range 0r-2r?
-if not 0 < p793.subs(dict(rep793, **r1)) < 2:
+if not 0 <= p793.subs(dict(rep793, **r1)) <= 2:
         print('Total p793 not in 0, 2r')
 
 # Are the individual integrals >0r
@@ -612,7 +626,7 @@ for i in range(len(m793)):
 
 # Are the individual averaged integrals between 0 and  2r
 for i in range(len(m793)):
-        if not 0 < (integrate(m793[i][0], m793[i][1:])/(m793[i][3]-m793[i][2])).subs(dict(rep793, **r1)) <= 2:
+        if not 0 <= (integrate(m793[i][0], m793[i][1:])/(m793[i][3]-m793[i][2])).subs(dict(rep793, **r1)) <= 2:
                 print('Integral ' + str(i+1) + ' in p793 has averaged integral outside 0<p<2r')
                 
 # Are the bounds the correct way around
@@ -626,7 +640,7 @@ latexOutput.insert(11,'p793 &= ' + latex(p793))
 longLatexOutput.insert(11,'p793=\\frac{1}{\pi} \left(\int_{'+latex(m793[0][2])+'}^{'+latex(m793[0][3])+'}p_1\;\mathrm{d}'+latex(m793[0][1])+'+\int_{'+latex(m793[1][2])+'}^{'+latex(m793[1][3])+'p_2\;\mathrm{d}'+latex(m793[1][1])+'+\int_{'+latex(m793[2][2])+'}^{'+latex(m793[2][3])+'}p_3\;\mathrm{d}'+latex(m793[2][1])+'\\right)')
 
 ##################################################################################
-# 7.9.4 animal: a < pi.  Sensor: s < pi/2. Condition: a > pi - 2s &  a < s       #
+# 7.9.4 animal: a <= pi.  Sensor: s <= pi/2. Condition: a > pi - 2s &  a <= s       #
 ##################################################################################
 
 m794 = [ [p1, g1, pi/2 - s/2 + a/2, pi/2            ],
@@ -644,7 +658,7 @@ if not all([c.subs(rep794) for c in cond794]):
         print('rep794 incorrect')
 
 # is average profile in range 0r-2r?
-if not 0 < p794.subs(dict(rep794, **r1)) < 2:
+if not 0 <= p794.subs(dict(rep794, **r1)) <= 2:
         print('Total p794 not in 0, 2r')
 
 # Are the individual integrals >0r
@@ -654,7 +668,7 @@ for i in range(len(m794)):
 
 # Are the individual averaged integrals between 0 and  2r
 for i in range(len(m794)):
-        if not 0 < (integrate(m794[i][0], m794[i][1:])/(m794[i][3]-m794[i][2])).subs(dict(rep794, **r1)) <= 2:
+        if not 0 <= (integrate(m794[i][0], m794[i][1:])/(m794[i][3]-m794[i][2])).subs(dict(rep794, **r1)) <= 2:
                 print('Integral ' + str(i+1) + ' in p794 has averaged integral outside 0<p<2r')
                 
 # Are the bounds the correct way around
@@ -668,15 +682,16 @@ latexOutput.insert(12,'p794 &= ' + latex(p794))
 longLatexOutput.insert(12,'p794=\\frac{1}{\pi} \left(\int_{'+latex(m794[0][2])+'}^{'+latex(m794[0][3])+'}p_1\;\mathrm{d}'+latex(m794[0][1])+'+\int_{'+latex(m794[1][2])+'}^{'+latex(m794[1][3])+'}p_2\;\mathrm{d}'+latex(m794[1][1])+'+\int_{'+latex(m794[2][2])+'}^{'+latex(m794[2][3])+'}p_3\;\mathrm{d}'+latex(m794[2][1])+'\\right)')
 
 ##################################################################################
-# 7.9.5 animal: a < pi.  Sensor: s < pi/2. Condition: a > pi - 2s &  s < a < 2s  #
+# 7.9.5 animal: a <= pi.  Sensor: s <= pi/2. Condition: a > pi - 2s &  s <= a <= 2s  #
 ##################################################################################
 
 
 m795 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 + s/2 - a/2, pi/2            ],
          [p2,                   g1, pi/2 - s/2,       pi/2 + s/2 - a/2],
-         [p3,                   g2, s,               pi/2            ] ]
+         [p3,                   g2, s,                pi/2        ],
+         [r*sin(a/2),           g3, 0,                a/2 + s -pi/2   ] ]
 
-p795 = pi**-1 * (integrate(m795[0][0], m795[0][1:]) + integrate(m795[1][0], m795[1][1:]) + integrate(m795[2][0], m795[2][1:])).simplify().trigsimp()
+p795 = pi**-1 * (integrate(m795[0][0], m795[0][1:]) + integrate(m795[1][0], m795[1][1:]) + integrate(m795[2][0], m795[2][1:]) + integrate(m795[3][0], m795[3][1:])).simplify().trigsimp()
 
 
 rep795 = {s:pi/2-0.1, a:pi/2} # Replacement values in range
@@ -693,7 +708,7 @@ if not all([c.subs(rep795) for c in cond795]):
         print('rep795 incorrect')
 
 # is average profile in range 0r-2r?
-if not 0 < p795.subs(dict(rep795, **r1)) < 2:
+if not 0 <= p795.subs(dict(rep795, **r1)) <= 2:
         print('Total p795 not in 0, 2r')
 
 # Are the individual integrals >0r
@@ -703,7 +718,7 @@ for i in range(len(m795)):
 
 # Are the individual averaged integrals between 0 and  2r
 for i in range(len(m795)):
-        if not 0 < (integrate(m795[i][0], m795[i][1:])/(m795[i][3]-m795[i][2])).subs(dict(rep795, **r1)) <= 2:
+        if not 0 <= (integrate(m795[i][0], m795[i][1:])/(m795[i][3]-m795[i][2])).subs(dict(rep795, **r1)) <= 2:
                 print('Integral ' + str(i+1) + ' in p795 has averaged integral outside 0<p<2r')
                 
 # Are the bounds the correct way around
@@ -721,29 +736,30 @@ longLatexOutput.insert(13,'p795=\\frac{1}{\pi} \left(\int_{'+latex(m795[0][2])+'
 
 
 ##################################################################################
-# 7.9.6 animal: a < pi.  Sensor: s < pi/2. Condition: a > pi - 2s &  a > 2s      #
+# 7.9.6 animal: a <= pi.  Sensor: s <= pi/2. Condition: a > pi - 2s &  a > 2s      #
 ##################################################################################
 
 
 
-m796 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 - s/2, pi/2],
-         [r*sin(g2),            g2, s,          a/2 ],
-         [p3,                   g2, a/2,        pi/2] ]
+m796 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 - s/2, pi/2            ],
+         [r*sin(g2),            g2, s,          a/2             ],
+         [p3,                   g2, a/2,        pi/2            ],
+         [r*sin(a/2),           g3, 0,          a/2 + s -pi/2   ] ]
 
-p796 = pi**-1 * (integrate(m796[0][0], m796[0][1:]) + integrate(m796[1][0], m796[1][1:]) + integrate(m796[2][0], m796[2][1:])).simplify()
+p796 = pi**-1 * (integrate(m796[0][0], m796[0][1:]) + integrate(m796[1][0], m796[1][1:]) + integrate(m796[2][0], m796[2][1:]) + integrate(m796[3][0], m796[3][1:])).simplify()
 
 
 rep796 = {s:pi/4, a:3*pi/4} # Replacement values in range
 
 
 # Define conditions for model
-cond796 = [a < pi,  s <= pi/2,  a >= pi - 2*s,  a > 2*s]
+cond796 = [a <= pi,  s <= pi/2,  a >= pi - 2*s,  a > 2*s]
 # Confirm replacements
 if not all([c.subs(rep796) for c in cond796]):
         print('rep796 incorrect')
 
 # is average profile in range 0r-2r?
-if not 0 < p796.subs(dict(rep796, **r1)) < 2:
+if not 0 <= p796.subs(dict(rep796, **r1)) <= 2:
         print('Total p796 not in 0, 2r')
 
 # Are the individual integrals >0r
@@ -753,7 +769,7 @@ for i in range(len(m796)):
 
 # Are the individual averaged integrals between 0 and  2r
 for i in range(len(m796)):
-        if not 0 < (integrate(m796[i][0], m796[i][1:])/(m796[i][3]-m796[i][2])).subs(dict(rep796, **r1)) <= 2:
+        if not 0 <= (integrate(m796[i][0], m796[i][1:])/(m796[i][3]-m796[i][2])).subs(dict(rep796, **r1)) <= 2:
                 print('Integral ' + str(i+1) + ' in p796 has averaged integral outside 0<p<2r')
                 
 # Are the bounds the correct way around
@@ -782,7 +798,7 @@ solve(m76Trans[3] - m76Trans[1], s)
 
 
 #############################################################################
-# 7.6.1 animal: a < pi.  Sensor: s > pi. Condition: a < s - pi              #
+# 7.6.1 animal: a <= pi.  Sensor: s > pi. Condition: a <= s - pi              #
 #############################################################################
 
 m761 = [ [2*r*sin(a/2),               g4, pi/2,             pi/2 - a/2 + s/2  ],
@@ -802,7 +818,7 @@ if not all([c.subs(rep761) for c in cond761]):
         print('rep761 incorrect')
 
 # is average profile in range 0r-2r?
-if not 0 < p761.subs(dict(rep761, **r1)) < 2:
+if not 0 <= p761.subs(dict(rep761, **r1)) <= 2:
         print('Total p761 not in 0, 2r')
 
 # Are the individual integrals >0r
@@ -812,7 +828,7 @@ for i in range(len(m761)):
 
 # Are the individual averaged integrals between 0 and  2r
 for i in range(len(m761)):
-        if not 0 < (integrate(m761[i][0], m761[i][1:])/(m761[i][3]-m761[i][2])).subs(dict(rep761, **r1)) <= 2:
+        if not 0 <= (integrate(m761[i][0], m761[i][1:])/(m761[i][3]-m761[i][2])).subs(dict(rep761, **r1)) <= 2:
                 print('Integral ' + str(i+1) + ' in p761 has averaged integral outside 0<p<2r')
                 
 # Are the bounds the correct way around
@@ -828,7 +844,7 @@ longLatexOutput.insert(15,'p761=\\frac{1}{\pi} \left(2\int_{'+latex(m761[0][2])+
 
 
 #########################################################################
-# 7.6.2 animal: a < pi.  Sensor: s > pi. Condition: a > s - pi        #
+# 7.6.2 animal: a <= pi.  Sensor: s > pi. Condition: a > s - pi        #
 #########################################################################
 
 
@@ -849,7 +865,7 @@ if not all([c.subs(rep762) for c in cond762]):
         print('rep762 incorrect')
 
 # is average profile in range 0r-2r?
-if not 0 < p762.subs(dict(rep762, **r1)) < 2:
+if not 0 <= p762.subs(dict(rep762, **r1)) <= 2:
         print('Total p762 not in 0, 2r')
 
 # Are the individual integrals >0r
@@ -859,7 +875,7 @@ for i in range(len(m762)):
 
 # Are the individual averaged integrals between 0 and  2r
 for i in range(len(m762)):
-        if not 0 < (integrate(m762[i][0], m762[i][1:])/(m762[i][3]-m762[i][2])).subs(dict(rep762, **r1)) <= 2:
+        if not 0 <= (integrate(m762[i][0], m762[i][1:])/(m762[i][3]-m762[i][2])).subs(dict(rep762, **r1)) <= 2:
                 print('Integral ' + str(i+1) + ' in p762 has averaged integral outside 0<p<2r')
                 
 # Are the bounds the correct way around
@@ -990,9 +1006,14 @@ for i in range(len(allComps)):
                 checkFile.write(allComps[i][0]+ ' and ' +allComps[i][1]+': OK\n')
         else:
                 checkFile.write(allComps[i][0]+ ' and ' +allComps[i][1]+': Incorrect\n')
-                print allComps[i][0] + ' and ' + allComps[i][1]+': Incorrect\n'
 
 checkFile.close()
+
+
+# And print to terminal
+for i in range(len(allComps)):
+        if not eval(allComps[i][0]).subs(allComps[i][2]).simplify() == eval(allComps[i][1]).subs(allComps[i][2]).simplify():
+                print allComps[i][0] + ' and ' + allComps[i][1]+': Incorrect\n'
 
 ######################
 ### Write output   ###
@@ -1014,6 +1035,73 @@ latexFile.close()
 ############################
 ### Viz regions         ####
 ############################
+
+# Find the unique set of model names
+# Crappy coding. But uses all comparison list
+allModels = list(set([x[1] for x in allComps]))
+
+# convert to name of condition objects
+allConds = [ 'cond' + x[1:] for x in allModels]
+# Remove some that don't have conditions (i.e. simple models)
+allConds.remove('cond74')
+allConds.remove('condas')
+allConds.remove('cond711')
+
+
+
+
+[eval(x) for x in allConds]
+eval(allConds[0])
+
+
+
+parInc = 0.1 # parameter increment
+aGrid = sGrid = np.arange(parInc,2*pi,parInc)
+
+modelRegions = np.zeros((len(aGrid), len(sGrid)), dtype=np.int8 )
+
+
+for m in range(len(allConds)):
+        for i in range(len(aGrid)):
+                for j in range(len(sGrid)):
+                        if all([eval(allConds[m])[c].subs({s:sGrid[j], a:aGrid[i]}) for c in range(len(eval(allConds[m])))]):
+                                modelRegions[i,j] = m
+
+
+
+
+
+
+
+
+
+
+rescaled = (255.0 / modelRegions.max() * (modelRegions - modelRegions.min())).astype(np.uint8)
+
+im = Im.fromarray(rescaled)
+
+im.save('/home/tim/Dropbox/test.png')
+
+
+
+
+
+
+
+
+
+
+
+xRange = np.arange(pi,2*pi, 0.01)
+yRange = [p73.subs({r:1, s:i}).n() for i in xRange]
+plot73 = pl.plot(xRange, yRange)
+pl.savefig('/home/tim/Dropbox/phd/Analysis/REM-chapter/imgs/p73Profile.pdf')
+pl.close()
+
+
+
+
+
 
 
 
