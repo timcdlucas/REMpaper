@@ -295,8 +295,7 @@ m781 = [ [2*r*sin(a/2),         g1, pi/2 - s/2, pi/2],
          [r*cos(g1 - s/2),      g1, pi/2 - s/2, a/2 + s/2 -pi/2],
          [r,                    g3, 0,          s   ] ]
 
-p781 = pi**-1 * (integrate(m781[0][0], m781[0][1:]) + integrate(m781[1][0], m781[1][1:]) + integrate(m781[2][0], m781[2][1:]) + integrate(m781[3][0], m781[3][1:])).simplify()
-
+p781 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m781] ).simplify().trigsimp()
 
 rep781 = {s:3*pi/4, a:15*pi/8} # Replacement values in range
 
@@ -343,7 +342,8 @@ m782 = [ [2*r*sin(a/2),         g1, pi/2 - s/2, pi/2],
          [2*r*sin(s/2)*sin(g1), g1, pi/2,       3*pi/2 + s/2 - a/2],
          [r,                    g3, 0,          s   ] ]
 
-p782 = pi**-1 * (integrate(m782[0][0], m782[0][1:]) + integrate(m782[1][0], m782[1][1:]) + integrate(m782[2][0], m782[2][1:]) + integrate(m782[3][0], m782[3][1:]) + integrate(m782[4][0], m782[4][1:])).simplify()
+p782 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m782] ).simplify().trigsimp()
+
 
 
 rep782 = {s:3*pi/4, a:15*pi/8} # Replacement values in range
@@ -411,7 +411,8 @@ m7101 = [ [2*r*sin(s/2)*sin(g1),              g1, pi/2 - a/2 + s/2, pi/2        
           [r*sin(a/2) + r*sin(s - pi/2 - g3), g3, 0,                s - pi/2        ],
           [r*sin(a/2),                        g3, s-pi/2,           s - pi/2 + a/2  ] ]
 
-p7101 = pi**-1 * (integrate(m7101[0][0], m7101[0][1:]) + integrate(m7101[1][0], m7101[1][1:]) + integrate(m7101[2][0], m7101[2][1:]) + integrate(m7101[3][0], m7101[3][1:])).simplify()
+p7101 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m7101] ).simplify().trigsimp()
+
 
 
 rep7101 = {s:5*pi/8, a:6*pi/8} # Replacement values in range
@@ -456,11 +457,11 @@ latexOutput.insert(7,'p7101 &= ' + latex(p7101))
 ##########################################################################################
 
 
-m7102 = [ [p1,                              g1, s/2,      pi/2           ],
-          [r*sin(a/2) + sin(s - pi/2 - g3), g3, 0,        s - pi/2       ],
+m7102 = [ [p2,                              g1, s/2,      pi/2           ],
+          [r*sin(a/2) + r*sin(s - pi/2 - g3), g3, 0,        s - pi/2       ],
           [r*sin(a/2),                      g3, s - pi/2, s - pi/2 + a/2 ] ]
 
-p7102 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m7102] ).simplify()
+p7102 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m7102] ).simplify().trigsimp()
 
 
 rep7102 = {s:7*pi/8, a:7*pi/8} # Replacement values in range
@@ -507,10 +508,10 @@ latexOutput.insert(7,'p7102 &= ' + latex(p7102))
 ##########################################################################################
 
 
-m7103 = [ [p1,                              g1, s/2,            pi/2           ],
-          [2*r*sin(a/2),                    g3, 0,              s - pi/2 - a/2 ],
-          [r*sin(a/2) + sin(s - pi/2 - g3), g3, s - pi/2 - a/2, s - pi/2       ],
-          [r*sin(a/2),                      g3, s - pi/2,       s - pi/2 + a/2 ] ]
+m7103 = [ [p2,                                g1, s/2,            pi/2           ],
+          [2*r*sin(a/2),                      g3, 0,              s - pi/2 - a/2 ],
+          [r*sin(a/2) + r*sin(s - pi/2 - g3), g3, s - pi/2 - a/2, s - pi/2       ],
+          [r*sin(a/2),                        g3, s - pi/2,       s - pi/2 + a/2 ] ]
 
 p7103 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m7103] ).simplify()
 
@@ -556,7 +557,7 @@ m791 = [ [p1, g1, pi/2 - s/2 + a/2, pi/2            ],
          [p2, g1, pi/2 - s/2,       pi/2 - s/2 + a/2],
          [p3, g2, s,                s + a/2         ] ]
 
-p791 = pi**-1 * (integrate(m791[0][0], m791[0][1:]) + integrate(m791[1][0], m791[1][1:]) + integrate(m791[2][0], m791[2][1:])).simplify().trigsimp()
+p791 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m791] ).simplify().trigsimp()
 
 
 rep791 = {s:2*pi/8, a:pi/8} # Replacement values in range
@@ -601,7 +602,8 @@ m792 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 + s/2 - a/2, pi/2            ],
          [p2,                   g1, pi/2 - s/2,       pi/2 + s/2 - a/2],
          [p3,                   g2, s,                s + a/2         ] ]
 
-p792 = pi**-1 * (integrate(m792[0][0], m792[0][1:]) + integrate(m792[1][0], m792[1][1:]) + integrate(m792[2][0], m792[2][1:])).simplify().trigsimp()
+p792 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m792] ).simplify().trigsimp()
+
 
 
 rep792 = {s:2*pi/8, a:pi/2-0.1} # Replacement values in range
@@ -641,12 +643,13 @@ longLatexOutput.insert(10,'p792=\\frac{1}{\pi} \left(\int_{'+latex(m792[0][2])+'
 # 7.9.3 animal: a <= pi.  Sensor: s <= pi/2. Condition: a <= pi - 2s &  2s <= a      #
 ##################################################################################
 
+# This DOES = 796, just can't show it.
 
 m793 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 - s/2, pi/2    ],
-         [r*sin(g1),            g1, s,          a/2     ],
+         [r*sin(g2),            g2, s,          a/2     ],
          [p3,                   g2, a/2,        s + a/2 ] ]
 
-p793 = pi**-1 * (integrate(m793[0][0], m793[0][1:]) + integrate(m793[1][0], m793[1][1:]) + integrate(m793[2][0], m793[2][1:])).simplify().trigsimp()
+p793 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m793] ).simplify().trigsimp()
 
 
 rep793 = {s:1*pi/8, a:pi/2} # Replacement values in range
@@ -676,6 +679,10 @@ for i in range(len(m793)):
         if not (m793[i][3]-m793[i][2]).subs(rep793) > 0:
                 print('Bounds ' + str(i+1) + ' in p793 has lower bounds bigger than upper bounds')        
 
+
+pl.savefig('/home/tim/Dropbox/phd/Analysis/REM-chapter/imgs/p73Profile.pdf')
+pl.close()
+
 # LaTeX output
 
 latexOutput.insert(11,'p793 &= ' + latex(p793))
@@ -685,11 +692,13 @@ longLatexOutput.insert(11,'p793=\\frac{1}{\pi} \left(\int_{'+latex(m793[0][2])+'
 # 7.9.4 animal: a <= pi.  Sensor: s <= pi/2. Condition: a > pi - 2s &  a <= s       #
 ##################################################################################
 
-m794 = [ [p1, g1, pi/2 - s/2 + a/2, pi/2            ],
-         [p2, g1, pi/2 - s/2,       pi/2 - s/2 + a/2],
-         [p3, g2, s,                pi/2            ] ]
 
-p794 = pi**-1 * (integrate(m794[0][0], m794[0][1:]) + integrate(m794[1][0], m794[1][1:]) + integrate(m794[2][0], m794[2][1:])).simplify().trigsimp()
+m794 = [ [p1,         g1, pi/2 - s/2 + a/2, pi/2            ],
+         [p2,         g1, pi/2 - s/2,       pi/2 - s/2 + a/2],
+         [p3,         g2, s,                pi/2            ],
+         [r*sin(a/2), g3, 0,                a/2 + s - pi/2  ] ]
+
+p794 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m794] ).simplify().trigsimp()
 
 rep794 = {s:pi/2-0.1, a:pi/4} # Replacement values in range
 
@@ -723,9 +732,9 @@ for i in range(len(m794)):
 latexOutput.insert(12,'p794 &= ' + latex(p794))
 longLatexOutput.insert(12,'p794=\\frac{1}{\pi} \left(\int_{'+latex(m794[0][2])+'}^{'+latex(m794[0][3])+'}p_1\;\mathrm{d}'+latex(m794[0][1])+'+\int_{'+latex(m794[1][2])+'}^{'+latex(m794[1][3])+'}p_2\;\mathrm{d}'+latex(m794[1][1])+'+\int_{'+latex(m794[2][2])+'}^{'+latex(m794[2][3])+'}p_3\;\mathrm{d}'+latex(m794[2][1])+'\\right)')
 
-##################################################################################
+######################################################################################
 # 7.9.5 animal: a <= pi.  Sensor: s <= pi/2. Condition: a > pi - 2s &  s <= a <= 2s  #
-##################################################################################
+######################################################################################
 
 
 m795 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 + s/2 - a/2, pi/2            ],
@@ -733,7 +742,8 @@ m795 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 + s/2 - a/2, pi/2            ],
          [p3,                   g2, s,                pi/2        ],
          [r*sin(a/2),           g3, 0,                a/2 + s -pi/2   ] ]
 
-p795 = pi**-1 * (integrate(m795[0][0], m795[0][1:]) + integrate(m795[1][0], m795[1][1:]) + integrate(m795[2][0], m795[2][1:]) + integrate(m795[3][0], m795[3][1:])).simplify().trigsimp()
+p795 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m795] ).simplify().trigsimp()
+
 
 
 rep795 = {s:pi/2-0.1, a:pi/2} # Replacement values in range
@@ -788,7 +798,8 @@ m796 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 - s/2, pi/2            ],
          [p3,                   g2, a/2,        pi/2            ],
          [r*sin(a/2),           g3, 0,          a/2 + s -pi/2   ] ]
 
-p796 = pi**-1 * (integrate(m796[0][0], m796[0][1:]) + integrate(m796[1][0], m796[1][1:]) + integrate(m796[2][0], m796[2][1:]) + integrate(m796[3][0], m796[3][1:])).simplify()
+p796 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m796] ).simplify().trigsimp()
+
 
 
 rep796 = {s:pi/4, a:3*pi/4} # Replacement values in range
@@ -825,36 +836,22 @@ latexOutput.insert(14,'p796 &= ' + latex(p796))
 longLatexOutput.insert(14,'p796=\\frac{1}{\pi} \left(\int_{'+latex(m796[0][2])+'}^{'+latex(m796[0][3])+'}'+latex(m796[0][0])+'\;\mathrm{d}'+latex(m796[0][1])+'+\int_{'+latex(m796[1][2])+'}^{'+latex(m796[1][3])+'}'+latex(m796[1][0])+'\;\mathrm{d}'+latex(m796[1][1])+'+\int_{'+latex(m796[2][2])+'}^{'+latex(m796[2][3])+'}p_3\;\mathrm{d}'+latex(m796[2][1])+'\\right)')
 
 
-#############################################
-## 7.6 Still not sure how many models etc. ##
-#############################################
+###################################################################################
+# 7.6.1 animal: a <= pi.  Sensor: s > pi. Condition: a <= s - pi and a < 2*pi - s #
+###################################################################################
 
-# Transitions I think I've found
+m761 = [ [2*r*sin(a/2),               g4, pi/2,             pi/2 + s/2  ],
+         [r*sin(a/2), g4, pi/2 + s/2, a/2 + pi/2 + s/2       ] ]
 
-m76Trans = [ pi - a/2 + s/2, s/2 + pi/2, s/2 - a/2 + pi, 5*pi/2 - a/2 - s/2, 5*pi/2 - s/2, 3*pi - s/2 - a/2]
+p761 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m761] ).simplify().trigsimp()
 
-solve(m76Trans[1] - m76Trans[0], a)
-solve(m76Trans[3] - m76Trans[1], a)
-solve(m76Trans[3] - m76Trans[1], s)
-
-
-
-#############################################################################
-# 7.6.1 animal: a <= pi.  Sensor: s > pi. Condition: a <= s - pi              #
-#############################################################################
-
-m761 = [ [2*r*sin(a/2),               g4, pi/2,             pi/2 - a/2 + s/2  ],
-         [r*(sin(a/2) + sin(g4-s/2)), g4, pi/2 - a/2 + s/2, s/2 + pi/2        ],
-         [r*sin(a/2),                 g4, s/2+pi/2,         s/2 + pi - a/2    ]  ]
-
-p761 = pi**-1 * (integrate(m761[0][0], m761[0][1:]) + integrate(m761[1][0], m761[1][1:]) + integrate(m761[2][0], m761[2][1:])).simplify()
 
 
 rep761 = {s:3*pi/2, a:pi/3} # Replacement values in range
 
 
 # Define conditions for model
-cond761 = [a <= pi, s >= pi/2, a <= s - pi]
+cond761 = [a <= pi, s >= pi/2, a <= s - pi, a <= 2*pi - s]
 # Confirm replacements
 if not all([c.subs(rep761) for c in cond761]):
         print('rep761 incorrect')
@@ -881,27 +878,27 @@ for i in range(len(m761)):
 # LaTeX output
 
 latexOutput.insert(15,'p761 &= ' + latex(p761))
-longLatexOutput.insert(15,'p761=\\frac{1}{\pi} \left(2\int_{'+latex(m761[0][2])+'}^{'+latex(m761[0][3])+'}'+latex(m761[0][0])+'\;\mathrm{d}'+latex(m761[0][1])+'+2\int_{'+latex(m761[1][2])+'}^{'+latex(m761[1][3])+'}'+latex(m761[1][0])+'\;\mathrm{d}'+latex(m761[1][1])+'\\right)')
+#longLatexOutput.insert(15,'p761=\\frac{1}{\pi} \left(2\int_{'+latex(m761[0][2])+'}^{'+latex(m761[0][3])+'}'+latex(m761[0][0])+'\;\mathrm{d}'+latex(m761[0][1])+'+2\int_{'+latex(m761[1][2])+'}^{'+latex(m761[1][3])+'}'+latex(m761[1][0])+'\;\mathrm{d}'+latex(m761[1][1])+'\\right)')
 
 
 
-#########################################################################
-# 7.6.2 animal: a <= pi.  Sensor: s > pi. Condition: a > s - pi        #
-#########################################################################
+##################################################################################
+# 7.6.2 animal: a <= pi.  Sensor: s > pi. Condition: a > s - pi and a < 2*pi - s #
+##################################################################################
 
 
-m762 = [ [ 2*r*sin(a/2),                      g4, pi/2,         s/2       ],
-         [ r*sin(a/2) - r*cos(g4),            g4, s/2,          pi        ], 
-         [ r*sin(a/2),                        g4, pi,           2*pi - s/2],
-         [ 2*r*(sin(a/2) + sin(s/2)*sin(g4)), g4, 2*pi - s/2,   3*pi/2    ]  ]
+m762 = [ [ 2*r*sin(a/2),                       g4, pi/2,         s/2 + pi/2 - a/2       ],
+         [ r*sin(a/2) + r*sin(s/2 - pi/2 - g4), g4, s/2 + pi/2 - a/2, s/2 + pi/2      ], 
+         [ r*sin(a/2),                         g4, s/2 + pi/2,         s/2 + pi/2 + a/2] ]
 
-p762 = pi**-1 * (2*integrate(m762[0][0], m762[0][1:]) + integrate(m762[1][0], m762[1][1:]) + integrate(m762[2][0], m762[2][1:]) + 2*integrate(m762[3][0], m762[3][1:])).simplify()
+p762 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m762] ).simplify().trigsimp()
 
 
-rep762 = {s:4*pi/3, a:2*pi/3} # Replacement values in range
+
+rep762 = {s:5*pi/4, a:pi/2} # Replacement values in range
 
 # Define conditions for model
-cond762 = [a <= pi, s >= pi, a >= s - pi]
+cond762 = [a <= pi, s >= pi, a >= s - pi, a <= 2*pi - s]
 # Confirm replacements
 if not all([c.subs(rep762) for c in cond762]):
         print('rep762 incorrect')
@@ -928,7 +925,191 @@ for i in range(len(m762)):
 # LaTeX output
 
 latexOutput.insert(16,'p762 &= ' + latex(p762))
-longLatexOutput.insert(16,'p762 &= \\frac{1}{\pi} \left(\int_{'+latex(m762[0][2])+'}^{'+latex(m762[0][3])+'}'+latex(m762[0][0])+'\;\mathrm{d}'+latex(m762[0][1])+'+\int_{'+latex(m762[1][2])+'}^{'+latex(m762[1][3])+'}'+latex(m762[1][0])+'\;\mathrm{d}'+latex(m762[1][1])+'+\int_{'+latex(m762[2][2])+'}^{'+latex(m762[2][3])+'}'+latex(m762[2][0])+'\;\mathrm{d}'+latex(m762[2][1])+'+\int_{'+latex(m762[3][2])+'}^{'+latex(m762[3][3])+'}'+latex(m762[3][0])+'\;\mathrm{d}'+latex(m762[3][1])+'\\right)')
+#longLatexOutput.insert(16,'p762 &= \\frac{1}{\pi} \left(\int_{'+latex(m762[0][2])+'}^{'+latex(m762[0][3])+'}'+latex(m762[0][0])+'\;\mathrm{d}'+latex(m762[0][1])+'+\int_{'+latex(m762[1][2])+'}^{'+latex(m762[1][3])+'}'+latex(m762[1][0])+'\;\mathrm{d}'+latex(m762[1][1])+'+\int_{'+latex(m762[2][2])+'}^{'+latex(m762[2][3])+'}'+latex(m762[2][0])+'\;\mathrm{d}'+latex(m762[2][1])+'+\int_{'+latex(m762[3][2])+'}^{'+latex(m762[3][3])+'}'+latex(m762[3][0])+'\;\mathrm{d}'+latex(m762[3][1])+'\\right)')
+
+
+
+#########################################################################################
+# 7.6.3 animal: a <= pi.  Sensor: s > pi. Condition: a < s - pi, 2pi - s < a < 4pi - 2s #
+#########################################################################################
+
+
+m763 = [ [ 2*r*sin(a/2), g4, pi/2,               s/2 + pi/2             ],
+         [ r*sin(a/2),   g4, s/2 + pi/2,         5*pi/2 - a/2 - s/2     ], 
+         [ 2*r*sin(a/2), g4, 5*pi/2 - a/2 - s/2, 3*pi/2]                ]
+
+p763 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m763] ).simplify().trigsimp()
+
+
+
+rep763 = {s:3*pi/2 + 0.1, a:pi/2} # Replacement values in range
+
+# Define conditions for model
+cond763 = [a <= pi, s >= pi, a <= s - pi, a >= 2*pi - s, a <= 4*pi - 2*s]
+# Confirm replacements
+if not all([c.subs(rep763) for c in cond763]):
+        print('rep763 incorrect')
+
+# is average profile in range 0r-2r?
+if not 0 <= p763.subs(dict(rep763, **r1)) <= 2:
+        print('Total p763 not in 0, 2r')
+
+# Are the individual integrals >0r
+for i in range(len(m763)):
+        if not integrate(m763[i][0], m763[i][1:]).subs(dict(rep763, **r1)) > 0:
+                print('Integral ' + str(i+1) + ' in p763 is negative')
+
+# Are the individual averaged integrals between 0 and  2r
+for i in range(len(m763)):
+        if not 0 <= (integrate(m763[i][0], m763[i][1:])/(m763[i][3]-m763[i][2])).subs(dict(rep763, **r1)) <= 2:
+                print('Integral ' + str(i+1) + ' in p763 has averaged integral outside 0<p<2r')
+                
+# Are the bounds the correct way around
+for i in range(len(m763)):
+        if not (m763[i][3]-m763[i][2]).subs(rep763) > 0:
+                print('Bounds ' + str(i+1) + ' in p763 has lower bounds bigger than upper bounds')        
+
+# LaTeX output
+
+latexOutput.insert(16,'p763 &= ' + latex(p763))
+#longLatexOutput.insert(16,'p763 &= \\frac{1}{\pi} \left(\int_{'+latex(m763[0][2])+'}^{'+latex(m763[0][3])+'}'+latex(m763[0][0])+'\;\mathrm{d}'+latex(m763[0][1])+'+\int_{'+latex(m763[1][2])+'}^{'+latex(m763[1][3])+'}'+latex(m763[1][0])+'\;\mathrm{d}'+latex(m763[1][1])+'+\int_{'+latex(m763[2][2])+'}^{'+latex(m763[2][3])+'}'+latex(m763[2][0])+'\;\mathrm{d}'+latex(m763[2][1])+'+\int_{'+latex(m763[3][2])+'}^{'+latex(m763[3][3])+'}'+latex(m763[3][0])+'\;\mathrm{d}'+latex(m763[3][1])+'\\right)')
+
+
+#########################################################################################
+# 7.6.4 animal: a <= pi.  Sensor: s > pi. Condition: a > s - pi, 2pi - s < a < 4pi - 2s #
+#########################################################################################
+
+
+m764 = [ [ 2*r*sin(a/2),                        g4, pi/2,               s/2 + pi/2 - a/2  ],
+         [ r*sin(a/2) + r*sin(s/2 - pi/2 - g4), g4, s/2 + pi/2 - a/2,   s/2 + pi/2        ], 
+         [ r*sin(a/2),                          g4, s/2 + pi/2,         5*pi/2 - a/2 - s/2],
+         [ 2*r*sin(a/2),                        g4, 5*pi/2 - a/2 - s/2, 3*pi/2            ] ]
+
+p764 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m764] ).simplify().trigsimp()
+
+
+
+rep764 = {s:5*pi/4, a:7*pi/8} # Replacement values in range
+
+# Define conditions for model
+cond764 = [a <= pi, s >= pi, a >= s - pi,  a >= 2*pi - s, a <= 4*pi - 2*s]
+# Confirm replacements
+if not all([c.subs(rep764) for c in cond764]):
+        print('rep764 incorrect')
+
+# is average profile in range 0r-2r?
+if not 0 <= p764.subs(dict(rep764, **r1)) <= 2:
+        print('Total p764 not in 0, 2r')
+
+# Are the individual integrals >0r
+for i in range(len(m764)):
+        if not integrate(m764[i][0], m764[i][1:]).subs(dict(rep764, **r1)) > 0:
+                print('Integral ' + str(i+1) + ' in p764 is negative')
+
+# Are the individual averaged integrals between 0 and  2r
+for i in range(len(m764)):
+        if not 0 <= (integrate(m764[i][0], m764[i][1:])/(m764[i][3]-m764[i][2])).subs(dict(rep764, **r1)) <= 2:
+                print('Integral ' + str(i+1) + ' in p764 has averaged integral outside 0<p<2r')
+                
+# Are the bounds the correct way around
+for i in range(len(m764)):
+        if not (m764[i][3]-m764[i][2]).subs(rep764) > 0:
+                print('Bounds ' + str(i+1) + ' in p764 has lower bounds bigger than upper bounds')        
+
+# LaTeX output
+
+latexOutput.insert(16,'p764 &= ' + latex(p764))
+#longLatexOutput.insert(16,'p764 &= \\frac{1}{\pi} \left(\int_{'+latex(m764[0][2])+'}^{'+latex(m764[0][3])+'}'+latex(m764[0][0])+'\;\mathrm{d}'+latex(m764[0][1])+'+\int_{'+latex(m764[1][2])+'}^{'+latex(m764[1][3])+'}'+latex(m764[1][0])+'\;\mathrm{d}'+latex(m764[1][1])+'+\int_{'+latex(m764[2][2])+'}^{'+latex(m764[2][3])+'}'+latex(m764[2][0])+'\;\mathrm{d}'+latex(m764[2][1])+'+\int_{'+latex(m764[3][2])+'}^{'+latex(m764[3][3])+'}'+latex(m764[3][0])+'\;\mathrm{d}'+latex(m764[3][1])+'\\right)')
+
+
+###############################################################################
+# 7.6.5 animal: a <= pi.  Sensor: s > pi. Condition: a < s - pi, 4pi - 2s < a #
+###############################################################################
+
+
+m765 = [ [ 2*r*sin(a/2), g4, pi/2, 3*pi/2  ]]
+
+p765 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m765] ).simplify().trigsimp()
+
+
+
+rep765 = {s:19*pi/10, a:pi/2} # Replacement values in range
+
+# Define conditions for model
+cond765 = [a <= pi, s >= pi, a <= s - pi, a >= 4*pi - 2*s]
+# Confirm replacements
+if not all([c.subs(rep765) for c in cond765]):
+        print('rep765 incorrect')
+
+# is average profile in range 0r-2r?
+if not 0 <= p765.subs(dict(rep765, **r1)) <= 2:
+        print('Total p765 not in 0, 2r')
+
+# Are the individual integrals >0r
+for i in range(len(m765)):
+        if not integrate(m765[i][0], m765[i][1:]).subs(dict(rep765, **r1)) > 0:
+                print('Integral ' + str(i+1) + ' in p765 is negative')
+
+# Are the individual averaged integrals between 0 and  2r
+for i in range(len(m765)):
+        if not 0 <= (integrate(m765[i][0], m765[i][1:])/(m765[i][3]-m765[i][2])).subs(dict(rep765, **r1)) <= 2:
+                print('Integral ' + str(i+1) + ' in p765 has averaged integral outside 0<p<2r')
+                
+# Are the bounds the correct way around
+for i in range(len(m765)):
+        if not (m765[i][3]-m765[i][2]).subs(rep765) > 0:
+                print('Bounds ' + str(i+1) + ' in p765 has lower bounds bigger than upper bounds')        
+
+# LaTeX output
+
+latexOutput.insert(16,'p765 &= ' + latex(p765))
+#longLatexOutput.insert(16,'p765 &= \\frac{1}{\pi} \left(\int_{'+latex(m765[0][2])+'}^{'+latex(m765[0][3])+'}'+latex(m765[0][0])+'\;\mathrm{d}'+latex(m765[0][1])+'+\int_{'+latex(m765[1][2])+'}^{'+latex(m765[1][3])+'}'+latex(m765[1][0])+'\;\mathrm{d}'+latex(m765[1][1])+'+\int_{'+latex(m765[2][2])+'}^{'+latex(m765[2][3])+'}'+latex(m765[2][0])+'\;\mathrm{d}'+latex(m765[2][1])+'+\int_{'+latex(m765[3][2])+'}^{'+latex(m765[3][3])+'}'+latex(m765[3][0])+'\;\mathrm{d}'+latex(m765[3][1])+'\\right)')
+
+
+###################################################################################
+# 7.6.6 animal: a <= pi.  Sensor: s > pi. Condition: a > s - pi and 4*pi - 2s < a #
+###################################################################################
+
+
+m766 = [ [ 2*r*sin(a/2),                        g4, pi/2,         s/2 + pi/2 - a/2       ],
+         [ r*sin(a/2) + r*sin(s/2 - pi/2 - g4), g4, s/2 + pi/2 - a/2, 5*pi/2 - a/2 - s/2      ], 
+         [ 2*r*sin(a/2),                        g4, 5*pi/2 - a/2 - s/2,         3*pi/2] ]
+
+p766 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m766] ).simplify().trigsimp()
+
+
+
+rep766 = {s:15*pi/8, a:7*pi/8} # Replacement values in range
+
+# Define conditions for model
+cond766 = [a <= pi, s >= pi, a >= s - pi, a >= 4*pi - 2*s]
+# Confirm replacements
+if not all([c.subs(rep766) for c in cond766]):
+        print('rep766 incorrect')
+
+# is average profile in range 0r-2r?
+if not 0 <= p766.subs(dict(rep766, **r1)) <= 2:
+        print('Total p766 not in 0, 2r')
+
+# Are the individual integrals >0r
+for i in range(len(m766)):
+        if not integrate(m766[i][0], m766[i][1:]).subs(dict(rep766, **r1)) > 0:
+                print('Integral ' + str(i+1) + ' in p766 is negative')
+
+# Are the individual averaged integrals between 0 and  2r
+for i in range(len(m766)):
+        if not 0 <= (integrate(m766[i][0], m766[i][1:])/(m766[i][3]-m766[i][2])).subs(dict(rep766, **r1)) <= 2:
+                print('Integral ' + str(i+1) + ' in p766 has averaged integral outside 0<p<2r')
+                
+# Are the bounds the correct way around
+for i in range(len(m766)):
+        if not (m766[i][3]-m766[i][2]).subs(rep766) > 0:
+                print('Bounds ' + str(i+1) + ' in p766 has lower bounds bigger than upper bounds')        
+
+# LaTeX output
+
+latexOutput.insert(16,'p766 &= ' + latex(p766))
+#longLatexOutput.insert(16,'p766 &= \\frac{1}{\pi} \left(\int_{'+latex(m766[0][2])+'}^{'+latex(m766[0][3])+'}'+latex(m766[0][0])+'\;\mathrm{d}'+latex(m766[0][1])+'+\int_{'+latex(m766[1][2])+'}^{'+latex(m766[1][3])+'}'+latex(m766[1][0])+'\;\mathrm{d}'+latex(m766[1][1])+'+\int_{'+latex(m766[2][2])+'}^{'+latex(m766[2][3])+'}'+latex(m766[2][0])+'\;\mathrm{d}'+latex(m766[2][1])+'+\int_{'+latex(m766[3][2])+'}^{'+latex(m766[3][3])+'}'+latex(m766[3][0])+'\;\mathrm{d}'+latex(m766[3][1])+'\\right)')
 
 
 
@@ -949,13 +1130,17 @@ p711 = r*(2+s)/pi
 # Contains duplicatea but better for avoiding missed comparisons.
 # Also contains replacement s->a and a->s just in case. 
 
+
+# I'm pretty sure 793 and 796 are currently equal, even though this can't find that. 
+
 allComps = [
 ['gas', 'p73', {s:2*pi}],
 ['gas', 'p74', {a:pi}],
 ['p73', 'gas', {s:2*pi}],
 ['p73', 'p75', {s:pi, a:2*pi}],
 ['p73', 'p782',{s:pi}],
-['p73', 'p762',{a:pi}],
+['p73', 'p764',{a:pi}],
+['p73', 'p766',{a:pi}],
 ['p75', 'p73', {s:pi, a:2*pi}],
 ['p75','p711',{s:pi/2,a:2*pi}],
 ['p75','p782',{a:2*pi}],
@@ -1018,25 +1203,46 @@ allComps = [
 ['p7102','p7101',{a:s}],
 ['p7102','p7101',{s:a}],
 ['p7102','p794',{s:pi/2}],
-['p7102','p762',{s:pi}],
-['p762','p761',{a:s-pi}],
-['p762','p761',{s:a+pi}],
-['p762','p7102',{a:pi}],
-['p762','p73',{a:pi}],
+['p7102','p7103',{a:2*s-pi}],
+['p7102','p7103',{s:a/2+pi/2}],
+['p7103','p7102',{s:a/2+pi/2}],
+['p7103','p7102',{a:2*s-pi}],
+['p7103','p762',{s:pi}],
 ['p761','p762',{a:s-pi}],
 ['p761','p762',{s:a+pi}],
-['p761','p74',{s:2*pi}],
-['p74','p761',{s:2*pi}],
+['p761','p763',{s:2*pi-a}],
+['p761','p763',{a:2*pi-s}],
+['p762','p761',{a:s-pi}],
+['p762','p761',{s:a+pi}],
+['p762','p764',{s:2*pi-a}],
+['p762','p764',{a:2*pi-s}],
+['p762','p7103',{s:pi}],
+['p763','p761',{s:2*pi-a}],
+['p763','p761',{a:2*pi-s}],
+['p763','p764',{a:s-pi}],
+['p763','p764',{s:a+pi}],
+['p763','p765',{a:4*pi-2*s}],
+['p763','p765',{s:2*pi-a/2}],
+['p764','p762',{s:2*pi-a}],
+['p764','p762',{a:2*pi-s}],
+['p764','p763',{a:s-pi}],
+['p764','p763',{s:a+pi}],
+['p764','p766',{a:4*pi-2*s}],
+['p764','p766',{s:2*pi-a/2}],
+['p764','p73',{a:pi}],
+['p765','p763',{a:4*pi-2*s}],
+['p765','p763',{s:2*pi-a/2}],
+['p765','p766',{s:2*pi-a}],
+['p765','p766',{a:2*pi-s}],
+['p765','p74',{s:2*pi}],
+['p766','p764',{a:4*pi-2*s}],
+['p766','p764',{s:2*pi-a/2}],
+['p766','p765',{s:a+pi}],
+['p766','p765',{a:s-pi}],
+['p766','p73',{a:pi}],
+['p74','p765',{s:2*pi}],
 ['p74','gas',{a:pi, s:2*pi}]
 ]
-
-'''
-for i in range(len(allComps)):
-        if eval(allComps[i][0]).subs(allComps[i][2]).together() == eval(allComps[i][1]).subs(allComps[i][2]).together():
-                print(allComps[i][0]+ ' and ' +allComps[i][1]+': OK')
-        else:
-                print(allComps[i][0]+ ' and ' +allComps[i][1]+': Incorrect')
-'''
 
 # Run through all the comparisons. Need simplify(). Even together() gives some false negatives.
 
@@ -1044,17 +1250,17 @@ checkFile = open('/home/tim/Dropbox/phd/Analysis/REM-chapter/checksFile.tex','w'
 
 checkFile.write('All checks evaluated.\nTim Lucas - ' + str(datetime.now()) + '\n')
 for i in range(len(allComps)):
-        if eval(allComps[i][0]).subs(allComps[i][2]).simplify() == eval(allComps[i][1]).subs(allComps[i][2]).simplify():
-                checkFile.write(allComps[i][0]+ ' and ' +allComps[i][1]+': OK\n')
+        if (eval(allComps[i][0]).subs(allComps[i][2]) - eval(allComps[i][1]).subs(allComps[i][2])).simplify() == 0:
+                checkFile.write(str(i) + ': ' + allComps[i][0]+ ' and ' +allComps[i][1]+': OK\n')
         else:
-                checkFile.write(allComps[i][0]+ ' and ' +allComps[i][1]+': Incorrect\n')
+                checkFile.write(str(i) + ': ' + allComps[i][0]+ ' and ' +allComps[i][1]+': Incorrect\n')
 
 checkFile.close()
 
 
 # And print to terminal
 for i in range(len(allComps)):
-        if not (eval(allComps[i][0]).subs(allComps[i][2]).simplify()).simplify() == (eval(allComps[i][1]).subs(allComps[i][2]).simplify()).simplify():
+        if not (eval(allComps[i][0]).subs(allComps[i][2]) - eval(allComps[i][1]).subs(allComps[i][2])).simplify() == 0:
                 print allComps[i][0] + ' and ' + allComps[i][1]+': Incorrect\n'
 
 ######################
