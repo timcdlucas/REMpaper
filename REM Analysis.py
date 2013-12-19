@@ -29,55 +29,162 @@ latexOutput = []
 longLatexOutput = []
 
 ###################################################
-# 7.3. animal: a > pi.  sensor: s > pi            #
+# 7.3.1 animal: a = 2*pi.  sensor: s > pi          #
 ###################################################
 
-m73 = [ [2*r,                 g4, pi/2, s/2],
-        [r + r*cos(g4 - s/2), g4, s/2,  pi ] ]
+m731 = [ [2*r,                 g4, pi/2, s/2],
+         [r + r*cos(g4 - s/2), g4, s/2,  pi ] ]
 
-p73 = ((2*integrate(m73[0][0], m73[0][1:]) + 2*integrate(m73[1][0], m73[1][1:]))/pi).simplify()
+p731 = ((2*integrate(m731[0][0], m731[0][1:]) + 2*integrate(m731[1][0], m731[1][1:]))/pi).simplify()
 
 
 # Replacement values in range
-rep73 = {s:3*pi/2} 
+rep731 = {s:3*pi/2, a:2*pi} 
 
 # Define conditions for model
-cond73 = [pi <= s]
+cond731 = [pi <= s]
 # Confirm replacements
-if not all([c.subs(rep73) for c in cond73]):
-        print('rep73 incorrect')
+if not all([c.subs(rep731) for c in cond731]):
+        print('rep731 incorrect')
 
 # is average profile in range 0r-2r?
-if not 0 <= p73.subs(dict(rep73, **r1)) <= 2:
-        print('Total p73 not in 0, 2r')
+if not 0 <= p731.subs(dict(rep731, **r1)) <= 2:
+        print('Total p731 not in 0, 2r')
 
 # Are the individuals integrals >0r
-for i in range(len(m73)):
-        if not integrate(m73[i][0], m73[i][1:]).subs(dict(rep73, **r1)) > 0:
-                print('Integral ' + str(i+1) + ' in p73 is negative')
+for i in range(len(m731)):
+        if not integrate(m731[i][0], m731[i][1:]).subs(dict(rep731, **r1)) > 0:
+                print('Integral ' + str(i+1) + ' in p731 is negative')
 
 # Are the individual averaged integrals between 0 and  2r
-for i in range(len(m73)):
-        if not 0 <= (integrate(m73[i][0], m73[i][1:])/(m73[i][3]-m73[i][2])).subs(dict(rep73, **r1)) <= 2:
-                print('Integral ' + str(i+1) + ' in p73 has averaged integral outside 0<p<2r')
+for i in range(len(m731)):
+        if not 0 <= (integrate(m731[i][0], m731[i][1:])/(m731[i][3]-m731[i][2])).subs(dict(rep731, **r1)) <= 2:
+                print('Integral ' + str(i+1) + ' in p731 has averaged integral outside 0<p<2r')
                 
 # Are the bounds the correct way around
-for i in range(len(m73)):
-        if not (m73[i][3]-m73[i][2]).subs(rep73) > 0:
-                print('Bounds ' + str(i+1) + ' in p73 has lower bounds bigger than upper bounds')
+for i in range(len(m731)):
+        if not (m731[i][3]-m731[i][2]).subs(rep731) > 0:
+                print('Bounds ' + str(i+1) + ' in p731 has lower bounds bigger than upper bounds')
         
 # Plot function
 
 xRange = np.arange(pi,2*pi, 0.01)
-yRange = [p73.subs({r:1, s:i}).n() for i in xRange]
-plot73 = pl.plot(xRange, yRange)
-pl.savefig('/home/tim/Dropbox/phd/Analysis/REM-chapter/imgs/p73Profile.pdf')
-pl.close()
+yRange = [p731.subs({r:1, s:i}).n() for i in xRange]
+#plot731 = pl.plot(xRange, yRange)
+#pl.savefig('/home/tim/Dropbox/phd/Analysis/REM-chapter/imgs/p731Profile.pdf')
+#pl.close()
 
 # LaTeX output
 
-latexOutput.insert(0,'p73 &= ' + latex(p73))
-longLatexOutput.insert(0,'p73=\\frac{1}{\pi} \left(2\int_{'+latex(m73[0][2])+'}^{'+latex(m73[0][3])+'}'+latex(m73[0][0])+'\;\mathrm{d}'+latex(m73[0][1])+'+2\int_{'+latex(m73[1][2])+'}^{'+latex(m73[1][3])+'}'+latex(m73[1][0])+'\;\mathrm{d}'+latex(m73[1][1])+'\\right)')
+latexOutput.append('p731 &= ' + latex(p731))
+
+longLatexOutput.insert(0,'p731=&\\frac{1}{\pi} \left(2\int_{'+latex(m731[0][2])+'}^{'+latex(m731[0][3])+'}'+latex(m731[0][0])+'\;\mathrm{d}'+latex(m731[0][1])+'+2\int_{'+latex(m731[1][2])+'}^{'+latex(m731[1][3])+'}'+latex(m731[1][0])+'\;\mathrm{d}'+latex(m731[1][1])+'\\right)')
+
+
+
+##################################################################
+# 7.3.2 animal: a > pi.  sensor: s > pi Condition: a < 5pi - 2s  #
+##################################################################
+
+m732 = [ [2*r,                      g4, pi/2,               s/2               ],
+         [r + r*cos(g4 - s/2),      g4, s/2,                5*pi/2 - s/2 - a/2],
+         [r + r*sin(g4-3*pi/2+s/2), g4, 5*pi/2 - s/2 - a/2, 2*pi - s/2        ],
+         [2*r,                      g4, 2*pi - s/2,         3*pi/2            ] ]
+
+p732 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m732] ).simplify().trigsimp()
+
+# Replacement values in range
+rep732 = {s:5*pi/4, a:3*pi/2} 
+
+# Define conditions for model
+cond732 = [pi <= s, a >= pi, a <= 5*pi - 2*s]
+# Confirm replacements
+if not all([c.subs(rep732) for c in cond732]):
+        print('rep732 incorrect')
+
+# is average profile in range 0r-2r?
+if not 0 <= p732.subs(dict(rep732, **r1)) <= 2:
+        print('Total p732 not in 0, 2r')
+
+# Are the individuals integrals >0r
+for i in range(len(m732)):
+        if not integrate(m732[i][0], m732[i][1:]).subs(dict(rep732, **r1)) > 0:
+                print('Integral ' + str(i+1) + ' in p732 is negative')
+
+# Are the individual averaged integrals between 0 and  2r
+for i in range(len(m732)):
+        if not 0 <= (integrate(m732[i][0], m732[i][1:])/(m732[i][3]-m732[i][2])).subs(dict(rep732, **r1)) <= 2:
+                print('Integral ' + str(i+1) + ' in p732 has averaged integral outside 0<p<2r')
+                
+# Are the bounds the correct way around
+for i in range(len(m732)):
+        if not (m732[i][3]-m732[i][2]).subs(rep732) > 0:
+                print('Bounds ' + str(i+1) + ' in p732 has lower bounds bigger than upper bounds')
+        
+# Plot function
+
+xRange = np.arange(pi,2*pi, 0.01)
+yRange = [p732.subs({r:1, s:i}).n() for i in xRange]
+#plot732 = pl.plot(xRange, yRange)
+#pl.savefig('/home/tim/Dropbox/phd/Analysis/REM-chapter/imgs/p732Profile.pdf')
+#pl.close()
+
+# LaTeX output
+
+latexOutput.append('p732 &= ' + latex(p732))
+longLatexOutput.append('p732=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m732]).lstrip('+') + '\\right)')
+
+
+##################################################################
+# 7.3.3 animal: a > pi.  sensor: s > pi Condition: a > 5pi - 2s  #
+##################################################################
+
+m733 = [ [2*r,                      g4, pi/2,               5*pi/2 - s/2 - a/2 ],
+         [r + r*sin(g4-3*pi/2+s/2), g4, 5*pi/2 - s/2 - a/2, 2*pi - s/2         ],
+         [2*r,                      g4, 2*pi - s/2,         3*pi/2             ] ]
+
+p733 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m733] ).simplify().trigsimp()
+
+# Replacement values in range
+rep733 = {s:7*pi/4, a:7*pi/4} 
+
+# Define conditions for model
+cond733 = [pi <= s, a>= pi, a>= 5*pi - 2*s]
+# Confirm replacements
+if not all([c.subs(rep733) for c in cond733]):
+        print('rep733 incorrect')
+
+# is average profile in range 0r-2r?
+if not 0 <= p733.subs(dict(rep733, **r1)) <= 2:
+        print('Total p733 not in 0, 2r')
+
+# Are the individuals integrals >0r
+for i in range(len(m733)):
+        if not integrate(m733[i][0], m733[i][1:]).subs(dict(rep733, **r1)) > 0:
+                print('Integral ' + str(i+1) + ' in p733 is negative')
+
+# Are the individual averaged integrals between 0 and  2r
+for i in range(len(m733)):
+        if not 0 <= (integrate(m733[i][0], m733[i][1:])/(m733[i][3]-m733[i][2])).subs(dict(rep733, **r1)) <= 2:
+                print('Integral ' + str(i+1) + ' in p733 has averaged integral outside 0<p<2r')
+                
+# Are the bounds the correct way around
+for i in range(len(m733)):
+        if not (m733[i][3]-m733[i][2]).subs(rep733) > 0:
+                print('Bounds ' + str(i+1) + ' in p733 has lower bounds bigger than upper bounds')
+        
+# Plot function
+
+xRange = np.arange(pi,2*pi, 0.01)
+yRange = [p733.subs({r:1, s:i}).n() for i in xRange]
+#plot733 = pl.plot(xRange, yRange)
+#pl.savefig('/home/tim/Dropbox/phd/Analysis/REM-chapter/imgs/p733Profile.pdf')
+#pl.close()
+
+# LaTeX output
+
+latexOutput.append('p733 &= ' + latex(p733))
+longLatexOutput.append('p733=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m733]).lstrip('+') + '\\right)')
 
 
 ########################################################
@@ -124,14 +231,14 @@ for i in range(len(m75)):
 
 xRange = np.arange(pi/2,pi, 0.01)
 yRange = [p75.subs({r:1, s:i}).n() for i in xRange]
-plot75 = pl.plot(xRange, yRange)
-pl.savefig('/home/tim/Dropbox/phd/Analysis/REM-chapter/imgs/p75Profile.pdf')
-pl.close()
+#plot75 = pl.plot(xRange, yRange)
+#pl.savefig('/home/tim/Dropbox/phd/Analysis/REM-chapter/imgs/p75Profile.pdf')
+#pl.close()
 
 # LaTeX output
 
-latexOutput.insert(1,'p75 &= ' + latex(p75))
-longLatexOutput.insert(1,'p75=\\frac{1}{\pi} \left(\int_{'+latex(m75[0][2])+'}^{'+latex(m75[0][3])+'}'+latex(m75[0][0])+'\;\mathrm{d}'+latex(m75[0][1])+'+\int_{'+latex(m75[1][2])+'}^{'+latex(m75[1][3])+'}'+latex(m75[1][0])+'\;\mathrm{d}'+latex(m75[1][1])+'+\int_{'+latex(m75[2][2])+'}^{'+latex(m75[2][3])+'}'+latex(m75[2][0])+'\;\mathrm{d}'+latex(m75[2][1])+'\\right)')
+latexOutput.append('p75 &= ' + latex(p75))
+longLatexOutput.append('p75=&\\frac{1}{\pi} \left(\int_{'+latex(m75[0][2])+'}^{'+latex(m75[0][3])+'}'+latex(m75[0][0])+'\;\mathrm{d}'+latex(m75[0][1])+'+\int_{'+latex(m75[1][2])+'}^{'+latex(m75[1][3])+'}'+latex(m75[1][0])+'\;\mathrm{d}'+latex(m75[1][1])+'+\int_{'+latex(m75[2][2])+'}^{'+latex(m75[2][3])+'}'+latex(m75[2][0])+'\;\mathrm{d}'+latex(m75[2][1])+'\\right)')
 
 
 """
@@ -182,8 +289,8 @@ for i in range(len(m771)):
 
 # LaTeX output
 
-latexOutput.insert(2,'p771 &= ' + latex(p771))
-longLatexOutput.insert(2,'p771 &= \\frac{1}{\pi} \left(\int_{'+latex(m771[0][2])+'}^{'+latex(m771[0][3])+'}'+latex(m771[0][0])+'\;\mathrm{d}'+latex(m771[0][1])+'+\int_{'+latex(m771[1][2])+'}^{'+latex(m771[1][3])+'}'+latex(m771[1][0])+'\;\mathrm{d}'+latex(m771[1][1])+'+\int_{'+latex(m771[2][2])+'}^{'+latex(m771[2][3])+'}'+latex(m771[2][0])+'\;\mathrm{d}'+latex(m771[2][1])+'+\int_{'+latex(m771[3][2])+'}^{'+latex(m771[3][3])+'}'+latex(m771[3][0])+'\;\mathrm{d}'+latex(m771[3][1])+'\\right)')
+latexOutput.append('p771 &= ' + latex(p771))
+longLatexOutput.append('p771=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m771]).lstrip('+') + '\\right)')
 
 
 ###############################################################################
@@ -227,9 +334,8 @@ for i in range(len(m772)):
 
 # LaTeX output
 
-latexOutput.insert(3,'p772 &= ' + latex(p772))
-longLatexOutput.insert(3,'p772 &= \\frac{1}{\pi} \left(\int_{'+latex(m772[0][2])+'}^{'+latex(m772[0][3])+'}'+latex(m772[0][0])+'\;\mathrm{d}'+latex(m772[0][1])+'+\int_{'+latex(m772[1][2])+'}^{'+latex(m772[1][3])+'}'+latex(m772[1][0])+'\;\mathrm{d}'+latex(m772[1][1])+'+\int_{'+latex(m772[2][2])+'}^{'+latex(m772[2][3])+'}'+latex(m772[2][0])+'\;\mathrm{d}'+latex(m772[2][1])+'+\int_{'+latex(m772[3][2])+'}^{'+latex(m772[3][3])+'}'+latex(m772[3][0])+'\;\mathrm{d}'+latex(m772[3][1])+'\\right)')
-
+latexOutput.append('p772 &= ' + latex(p772))
+longLatexOutput.append('p772 &= \\frac{1}{\pi} \left(\int_{'+latex(m772[0][2])+'}^{'+latex(m772[0][3])+'}'+latex(m772[0][0])+'\;\mathrm{d}'+latex(m772[0][1])+'+\int_{'+latex(m772[1][2])+'}^{'+latex(m772[1][3])+'}'+latex(m772[1][0])+'\;\mathrm{d}'+latex(m772[1][1])+'+\int_{'+latex(m772[2][2])+'}^{'+latex(m772[2][3])+'}'+latex(m772[2][0])+'\;\mathrm{d}'+latex(m772[2][1])+'+\int_{'+latex(m772[3][2])+'}^{'+latex(m772[3][3])+'}'+latex(m772[3][0])+'\;\mathrm{d}'+latex(m772[3][1])+'\\right)')
 
 
 ###############################################################################
@@ -273,8 +379,8 @@ for i in range(len(m773)):
 
 # LaTeX output
 
-latexOutput.insert(4,'p773 &= ' + latex(p773))
-longLatexOutput.insert(4,'p773 &= \\frac{1}{\pi} \left(\int_{'+latex(m773[0][2])+'}^{'+latex(m773[0][3])+'}'+latex(m773[0][0])+'\;\mathrm{d}'+latex(m773[0][1])+'+\int_{'+latex(m773[1][2])+'}^{'+latex(m773[1][3])+'}'+latex(m773[1][0])+'\;\mathrm{d}'+latex(m773[1][1])+'+\int_{'+latex(m773[2][2])+'}^{'+latex(m773[2][3])+'}'+latex(m773[2][0])+'\;\mathrm{d}'+latex(m773[2][1])+'+\int_{'+latex(m773[3][2])+'}^{'+latex(m773[3][3])+'}'+latex(m773[3][0])+'\;\mathrm{d}'+latex(m773[3][1])+'\\right)')
+latexOutput.append('p773 &= ' + latex(p773))
+longLatexOutput.append('p773 &= \\frac{1}{\pi} \left(\int_{'+latex(m773[0][2])+'}^{'+latex(m773[0][3])+'}'+latex(m773[0][0])+'\;\mathrm{d}'+latex(m773[0][1])+'+\int_{'+latex(m773[1][2])+'}^{'+latex(m773[1][3])+'}'+latex(m773[1][0])+'\;\mathrm{d}'+latex(m773[1][1])+'+\int_{'+latex(m773[2][2])+'}^{'+latex(m773[2][3])+'}'+latex(m773[2][0])+'\;\mathrm{d}'+latex(m773[2][1])+'+\int_{'+latex(m773[3][2])+'}^{'+latex(m773[3][3])+'}'+latex(m773[3][0])+'\;\mathrm{d}'+latex(m773[3][1])+'\\right)')
 
 
 
@@ -326,8 +432,8 @@ for i in range(len(m781)):
 
 # LaTeX output
 
-latexOutput.insert(5,'p781 &= ' + latex(p781))
-longLatexOutput.insert(5,'p781 &= \\frac{1}{\pi} \left(\int_{'+latex(m781[0][2])+'}^{'+latex(m781[0][3])+'}'+latex(m781[0][0])+'\;\mathrm{d}'+latex(m781[0][1])+'+\int_{'+latex(m781[1][2])+'}^{'+latex(m781[1][3])+'}'+latex(m781[1][0])+'\;\mathrm{d}'+latex(m781[1][1])+'+\int_{'+latex(m781[2][2])+'}^{'+latex(m781[2][3])+'}'+latex(m781[2][0])+'\;\mathrm{d}'+latex(m781[2][1])+'+\int_{'+latex(m781[3][2])+'}^{'+latex(m781[3][3])+'}'+latex(m781[3][0])+'\;\mathrm{d}'+latex(m781[3][1])+'\\right)')
+latexOutput.append('p781 &= ' + latex(p781))
+longLatexOutput.append('p781=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m781]).lstrip('+') + '\\right)')
 
 
 
@@ -375,8 +481,8 @@ for i in range(len(m782)):
 
 # LaTeX output
 
-latexOutput.insert(6,'p782 &= ' + latex(p782))
-longLatexOutput.insert(6,'p782 &= \\frac{1}{\pi} \left(\int_{'+latex(m782[0][2])+'}^{'+latex(m782[0][3])+'}'+latex(m782[0][0])+'\;\mathrm{d}'+latex(m782[0][1])+'+\int_{'+latex(m782[1][2])+'}^{'+latex(m782[1][3])+'}'+latex(m782[1][0])+'\;\mathrm{d}'+latex(m782[1][1])+'+\int_{'+latex(m782[2][2])+'}^{'+latex(m782[2][3])+'}'+latex(m782[2][0])+'\;\mathrm{d}'+latex(m782[2][1])+'+\int_{'+latex(m782[3][2])+'}^{'+latex(m782[3][3])+'}'+latex(m782[3][0])+'\;\mathrm{d}'+latex(m782[3][1])+'+\int_{'+latex(m782[4][2])+'}^{'+latex(m782[4][3])+'}'+latex(m782[4][0])+'\;\mathrm{d}'+latex(m782[4][1])+'\\right)')
+latexOutput.append('p782 &= ' + latex(p782))
+longLatexOutput.append('p782=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m782]).lstrip('+') + '\\right)')
 
 
 
@@ -444,9 +550,8 @@ for i in range(len(m7101)):
 
 # LaTeX output
 
-latexOutput.insert(7,'p7101 &= ' + latex(p7101))
-#longLatexOutput.insert(7,'p7101=\\frac{1}{\pi} \left(\int_{'+latex(m7101[0][2])+'}^{'+latex(m7101[0][3])+'}'+latex(m7101[0][0])+'\;\mathrm{d}'+latex(m7101[0][1])+'+\int_{'+latex(m7101[1][2])+'}^{'+latex(m7101[1][3])+'}'+latex(m7101[1][0])+'\;\mathrm{d}'+latex(m7101[1][1])+'+\int_{'+latex(m7101[2][2])+'}^{'+latex(m7101[2][3])+'}'+latex(m7101[2][0])+'\;\mathrm{d}'+latex(m7101[2][1])+'+\int_{'+latex(m7101[3][2])+'}^{'+latex(m7101[3][3])+'}'+latex(m7101[3][0])+'\;\mathrm{d}'+latex(m7101[3][1])+'\\right)')
-
+latexOutput.append('p7101 &= ' + latex(p7101))
+longLatexOutput.append('p7101=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m7101]).lstrip('+') + '\\right)')
 
 
 
@@ -493,8 +598,8 @@ for i in range(len(m7102)):
 
 # LaTeX output
 
-latexOutput.insert(7,'p7102 &= ' + latex(p7102))
-#longLatexOutput.insert(7,'p7102=\\frac{1}{\pi} \left(\int_{'+latex(m7102[0][2])+'}^{'+latex(m7102[0][3])+'}'+latex(m7102[0][0])+'\;\mathrm{d}'+latex(m7102[0][1])+'+\int_{'+latex(m7102[1][2])+'}^{'+latex(m7102[1][3])+'}'+latex(m7102[1][0])+'\;\mathrm{d}'+latex(m7102[1][1])+'+\int_{'+latex(m7102[2][2])+'}^{'+latex(m7102[2][3])+'}'+latex(m7102[2][0])+'\;\mathrm{d}'+latex(m7102[2][1])+'+\int_{'+latex(m7102[3][2])+'}^{'+latex(m7102[3][3])+'}'+latex(m7102[3][0])+'\;\mathrm{d}'+latex(m7102[3][1])+'+\int_{'+latex(m7102[4][2])+'}^{'+latex(m7102[4][3])+'}'+latex(m7102[4][0])+'\;\mathrm{d}'+latex(m7102[4][1])+'\\right)')
+latexOutput.append('p7102 &= ' + latex(p7102))
+longLatexOutput.append('p7102=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m7102]).lstrip('+') + '\\right)')
 
 
 
@@ -545,9 +650,8 @@ for i in range(len(m7103)):
 
 # LaTeX output
 
-latexOutput.insert(7,'p7103 &= ' + latex(p7103))
-#longLatexOutput.insert(7,'p7103=\\frac{1}{\pi} \left(\int_{'+latex(m7103[0][2])+'}^{'+latex(m7103[0][3])+'}'+latex(m7103[0][0])+'\;\mathrm{d}'+latex(m7103[0][1])+'+\int_{'+latex(m7103[1][2])+'}^{'+latex(m7103[1][3])+'}'+latex(m7103[1][0])+'\;\mathrm{d}'+latex(m7103[1][1])+'+\int_{'+latex(m7103[2][2])+'}^{'+latex(m7103[2][3])+'}'+latex(m7103[2][0])+'\;\mathrm{d}'+latex(m7103[2][1])+'+\int_{'+latex(m7103[3][2])+'}^{'+latex(m7103[3][3])+'}'+latex(m7103[3][0])+'\;\mathrm{d}'+latex(m7103[3][1])+'+\int_{'+latex(m7103[4][2])+'}^{'+latex(m7103[4][3])+'}'+latex(m7103[4][0])+'\;\mathrm{d}'+latex(m7103[4][1])+'\\right)')
-
+latexOutput.append('p7103 &= ' + latex(p7103))
+longLatexOutput.append('p7103=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m7103]).lstrip('+') + '\\right)')
 
 ###################################################################################
 # 7.9.1 animal: a <= pi.  Sensor: s <= pi/2. Condition: a <= pi - 2s & a <= s     #
@@ -589,8 +693,8 @@ for i in range(len(m791)):
 
 # LaTeX output
 
-latexOutput.insert(9,'p791 &= ' + latex(p791))
-longLatexOutput.insert(9,'p791=\\frac{1}{\pi} \left(\int_{'+latex(m791[0][2])+'}^{'+latex(m791[0][3])+'}p_1\;\mathrm{d}'+latex(m791[0][1])+'+\int_{'+latex(m791[1][2])+'}^{'+latex(m791[1][3])+'}p_2\;\mathrm{d}'+latex(m791[1][1])+'+\int_{'+latex(m791[2][2])+'}^{'+latex(m791[2][3])+'}p_3\;\mathrm{d}'+latex(m791[2][1])+'\\right)')
+latexOutput.append('p791 &= ' + latex(p791))
+longLatexOutput.append('p791=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m791]).lstrip('+') + '\\right)')
 
 
 #######################################################################################
@@ -635,8 +739,8 @@ for i in range(len(m792)):
 
 # LaTeX output
 
-latexOutput.insert(10,'p792 &= ' + latex(p792))
-longLatexOutput.insert(10,'p792=\\frac{1}{\pi} \left(\int_{'+latex(m792[0][2])+'}^{'+latex(m792[0][3])+'}'+latex(m792[0][0])+'\;\mathrm{d}'+latex(m792[0][1])+'+\int_{'+latex(m792[1][2])+'}^{'+latex(m792[1][3])+'}p_2\;\mathrm{d}'+latex(m792[1][1])+'+\int_{'+latex(m792[2][2])+'}^{'+latex(m792[2][3])+'}p_3\;\mathrm{d}'+latex(m792[2][1])+'\\right)')
+latexOutput.append('p792 &= ' + latex(p792))
+longLatexOutput.append('p792=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m792]).lstrip('+') + '\\right)')
 
 
 ##################################################################################
@@ -680,13 +784,13 @@ for i in range(len(m793)):
                 print('Bounds ' + str(i+1) + ' in p793 has lower bounds bigger than upper bounds')        
 
 
-pl.savefig('/home/tim/Dropbox/phd/Analysis/REM-chapter/imgs/p73Profile.pdf')
+pl.savefig('/home/tim/Dropbox/phd/Analysis/REM-chapter/imgs/p731Profile.pdf')
 pl.close()
 
 # LaTeX output
 
-latexOutput.insert(11,'p793 &= ' + latex(p793))
-longLatexOutput.insert(11,'p793=\\frac{1}{\pi} \left(\int_{'+latex(m793[0][2])+'}^{'+latex(m793[0][3])+'}p_1\;\mathrm{d}'+latex(m793[0][1])+'+\int_{'+latex(m793[1][2])+'}^{'+latex(m793[1][3])+'p_2\;\mathrm{d}'+latex(m793[1][1])+'+\int_{'+latex(m793[2][2])+'}^{'+latex(m793[2][3])+'}p_3\;\mathrm{d}'+latex(m793[2][1])+'\\right)')
+latexOutput.append('p793 &= ' + latex(p793))
+longLatexOutput.append('p793=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m793]).lstrip('+') + '\\right)')
 
 ##################################################################################
 # 7.9.4 animal: a <= pi.  Sensor: s <= pi/2. Condition: a > pi - 2s &  a <= s       #
@@ -729,8 +833,8 @@ for i in range(len(m794)):
 
 # LaTeX output
 
-latexOutput.insert(12,'p794 &= ' + latex(p794))
-longLatexOutput.insert(12,'p794=\\frac{1}{\pi} \left(\int_{'+latex(m794[0][2])+'}^{'+latex(m794[0][3])+'}p_1\;\mathrm{d}'+latex(m794[0][1])+'+\int_{'+latex(m794[1][2])+'}^{'+latex(m794[1][3])+'}p_2\;\mathrm{d}'+latex(m794[1][1])+'+\int_{'+latex(m794[2][2])+'}^{'+latex(m794[2][3])+'}p_3\;\mathrm{d}'+latex(m794[2][1])+'\\right)')
+latexOutput.append('p794 &= ' + latex(p794))
+longLatexOutput.append('p794=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m794]).lstrip('+') + '\\right)')
 
 ######################################################################################
 # 7.9.5 animal: a <= pi.  Sensor: s <= pi/2. Condition: a > pi - 2s &  s <= a <= 2s  #
@@ -780,8 +884,8 @@ for i in range(len(m795)):
 
 # LaTeX output
 
-latexOutput.insert(13,'p795 &= ' + latex(p795))
-longLatexOutput.insert(13,'p795=\\frac{1}{\pi} \left(\int_{'+latex(m795[0][2])+'}^{'+latex(m795[0][3])+'}'+latex(m795[0][0])+'\;\mathrm{d}'+latex(m795[0][1])+'+\int_{'+latex(m795[1][2])+'}^{'+latex(m795[1][3])+'}p_2\;\mathrm{d}'+latex(m795[1][1])+'+\int_{'+latex(m795[2][2])+'}^{'+latex(m795[2][3])+'}p_3\;\mathrm{d}'+latex(m795[2][1])+'\\right)')
+latexOutput.append('p795 &= ' + latex(p795))
+longLatexOutput.append('p795=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m795]).lstrip('+') + '\\right)')
 
 
 
@@ -832,8 +936,8 @@ for i in range(len(m796)):
 
 # LaTeX output
 
-latexOutput.insert(14,'p796 &= ' + latex(p796))
-longLatexOutput.insert(14,'p796=\\frac{1}{\pi} \left(\int_{'+latex(m796[0][2])+'}^{'+latex(m796[0][3])+'}'+latex(m796[0][0])+'\;\mathrm{d}'+latex(m796[0][1])+'+\int_{'+latex(m796[1][2])+'}^{'+latex(m796[1][3])+'}'+latex(m796[1][0])+'\;\mathrm{d}'+latex(m796[1][1])+'+\int_{'+latex(m796[2][2])+'}^{'+latex(m796[2][3])+'}p_3\;\mathrm{d}'+latex(m796[2][1])+'\\right)')
+latexOutput.append('p796 &= ' + latex(p796))
+longLatexOutput.append('p796=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m796]).lstrip('+') + '\\right)')
 
 
 ###################################################################################
@@ -877,8 +981,8 @@ for i in range(len(m761)):
 
 # LaTeX output
 
-latexOutput.insert(15,'p761 &= ' + latex(p761))
-#longLatexOutput.insert(15,'p761=\\frac{1}{\pi} \left(2\int_{'+latex(m761[0][2])+'}^{'+latex(m761[0][3])+'}'+latex(m761[0][0])+'\;\mathrm{d}'+latex(m761[0][1])+'+2\int_{'+latex(m761[1][2])+'}^{'+latex(m761[1][3])+'}'+latex(m761[1][0])+'\;\mathrm{d}'+latex(m761[1][1])+'\\right)')
+latexOutput.append('p761 &= ' + latex(p761))
+longLatexOutput.append('p761=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m761]).lstrip('+') + '\\right)')
 
 
 
@@ -888,7 +992,7 @@ latexOutput.insert(15,'p761 &= ' + latex(p761))
 
 
 m762 = [ [ 2*r*sin(a/2),                       g4, pi/2,         s/2 + pi/2 - a/2       ],
-         [ r*sin(a/2) + r*sin(s/2 - pi/2 - g4), g4, s/2 + pi/2 - a/2, s/2 + pi/2      ], 
+         [ r*sin(a/2) + r*sin(s/2 + pi/2 - g4), g4, s/2 + pi/2 - a/2, s/2 + pi/2      ], 
          [ r*sin(a/2),                         g4, s/2 + pi/2,         s/2 + pi/2 + a/2] ]
 
 p762 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m762] ).simplify().trigsimp()
@@ -924,9 +1028,8 @@ for i in range(len(m762)):
 
 # LaTeX output
 
-latexOutput.insert(16,'p762 &= ' + latex(p762))
-#longLatexOutput.insert(16,'p762 &= \\frac{1}{\pi} \left(\int_{'+latex(m762[0][2])+'}^{'+latex(m762[0][3])+'}'+latex(m762[0][0])+'\;\mathrm{d}'+latex(m762[0][1])+'+\int_{'+latex(m762[1][2])+'}^{'+latex(m762[1][3])+'}'+latex(m762[1][0])+'\;\mathrm{d}'+latex(m762[1][1])+'+\int_{'+latex(m762[2][2])+'}^{'+latex(m762[2][3])+'}'+latex(m762[2][0])+'\;\mathrm{d}'+latex(m762[2][1])+'+\int_{'+latex(m762[3][2])+'}^{'+latex(m762[3][3])+'}'+latex(m762[3][0])+'\;\mathrm{d}'+latex(m762[3][1])+'\\right)')
-
+latexOutput.append('p762 &= ' + latex(p762))
+longLatexOutput.append('p762=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m762]).lstrip('+') + '\\right)')
 
 
 #########################################################################################
@@ -971,9 +1074,8 @@ for i in range(len(m763)):
 
 # LaTeX output
 
-latexOutput.insert(16,'p763 &= ' + latex(p763))
-#longLatexOutput.insert(16,'p763 &= \\frac{1}{\pi} \left(\int_{'+latex(m763[0][2])+'}^{'+latex(m763[0][3])+'}'+latex(m763[0][0])+'\;\mathrm{d}'+latex(m763[0][1])+'+\int_{'+latex(m763[1][2])+'}^{'+latex(m763[1][3])+'}'+latex(m763[1][0])+'\;\mathrm{d}'+latex(m763[1][1])+'+\int_{'+latex(m763[2][2])+'}^{'+latex(m763[2][3])+'}'+latex(m763[2][0])+'\;\mathrm{d}'+latex(m763[2][1])+'+\int_{'+latex(m763[3][2])+'}^{'+latex(m763[3][3])+'}'+latex(m763[3][0])+'\;\mathrm{d}'+latex(m763[3][1])+'\\right)')
-
+latexOutput.append('p763 &= ' + latex(p763))
+longLatexOutput.append('p763=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m763]).lstrip('+') + '\\right)')
 
 #########################################################################################
 # 7.6.4 animal: a <= pi.  Sensor: s > pi. Condition: a > s - pi, 2pi - s < a < 4pi - 2s #
@@ -981,7 +1083,7 @@ latexOutput.insert(16,'p763 &= ' + latex(p763))
 
 
 m764 = [ [ 2*r*sin(a/2),                        g4, pi/2,               s/2 + pi/2 - a/2  ],
-         [ r*sin(a/2) + r*sin(s/2 - pi/2 - g4), g4, s/2 + pi/2 - a/2,   s/2 + pi/2        ], 
+         [ r*sin(a/2) + r*sin(s/2 + pi/2 - g4), g4, s/2 + pi/2 - a/2,   s/2 + pi/2        ], 
          [ r*sin(a/2),                          g4, s/2 + pi/2,         5*pi/2 - a/2 - s/2],
          [ 2*r*sin(a/2),                        g4, 5*pi/2 - a/2 - s/2, 3*pi/2            ] ]
 
@@ -1018,9 +1120,8 @@ for i in range(len(m764)):
 
 # LaTeX output
 
-latexOutput.insert(16,'p764 &= ' + latex(p764))
-#longLatexOutput.insert(16,'p764 &= \\frac{1}{\pi} \left(\int_{'+latex(m764[0][2])+'}^{'+latex(m764[0][3])+'}'+latex(m764[0][0])+'\;\mathrm{d}'+latex(m764[0][1])+'+\int_{'+latex(m764[1][2])+'}^{'+latex(m764[1][3])+'}'+latex(m764[1][0])+'\;\mathrm{d}'+latex(m764[1][1])+'+\int_{'+latex(m764[2][2])+'}^{'+latex(m764[2][3])+'}'+latex(m764[2][0])+'\;\mathrm{d}'+latex(m764[2][1])+'+\int_{'+latex(m764[3][2])+'}^{'+latex(m764[3][3])+'}'+latex(m764[3][0])+'\;\mathrm{d}'+latex(m764[3][1])+'\\right)')
-
+latexOutput.append('p764 &= ' + latex(p764))
+longLatexOutput.append('p764=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m764]).lstrip('+') + '\\right)')
 
 ###############################################################################
 # 7.6.5 animal: a <= pi.  Sensor: s > pi. Condition: a < s - pi, 4pi - 2s < a #
@@ -1062,8 +1163,8 @@ for i in range(len(m765)):
 
 # LaTeX output
 
-latexOutput.insert(16,'p765 &= ' + latex(p765))
-#longLatexOutput.insert(16,'p765 &= \\frac{1}{\pi} \left(\int_{'+latex(m765[0][2])+'}^{'+latex(m765[0][3])+'}'+latex(m765[0][0])+'\;\mathrm{d}'+latex(m765[0][1])+'+\int_{'+latex(m765[1][2])+'}^{'+latex(m765[1][3])+'}'+latex(m765[1][0])+'\;\mathrm{d}'+latex(m765[1][1])+'+\int_{'+latex(m765[2][2])+'}^{'+latex(m765[2][3])+'}'+latex(m765[2][0])+'\;\mathrm{d}'+latex(m765[2][1])+'+\int_{'+latex(m765[3][2])+'}^{'+latex(m765[3][3])+'}'+latex(m765[3][0])+'\;\mathrm{d}'+latex(m765[3][1])+'\\right)')
+latexOutput.append('p765 &= ' + latex(p765))
+longLatexOutput.append('p765=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m765]).lstrip('+') + '\\right)')
 
 
 ###################################################################################
@@ -1072,20 +1173,21 @@ latexOutput.insert(16,'p765 &= ' + latex(p765))
 
 
 m766 = [ [ 2*r*sin(a/2),                        g4, pi/2,         s/2 + pi/2 - a/2       ],
-         [ r*sin(a/2) + r*sin(s/2 - pi/2 - g4), g4, s/2 + pi/2 - a/2, 5*pi/2 - a/2 - s/2      ], 
+         [ r*sin(a/2) + r*sin(s/2 + pi/2 - g4), g4, s/2 + pi/2 - a/2, 5*pi/2 - a/2 - s/2      ], 
          [ 2*r*sin(a/2),                        g4, 5*pi/2 - a/2 - s/2,         3*pi/2] ]
 
 p766 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m766] ).simplify().trigsimp()
 
 
 
-rep766 = {s:15*pi/8, a:7*pi/8} # Replacement values in range
+rep766 = {s:15*pi/8, a:15*pi/8-pi} # Replacement values in range
 
 # Define conditions for model
 cond766 = [a <= pi, s >= pi, a >= s - pi, a >= 4*pi - 2*s]
 # Confirm replacements
 if not all([c.subs(rep766) for c in cond766]):
         print('rep766 incorrect')
+
 
 # is average profile in range 0r-2r?
 if not 0 <= p766.subs(dict(rep766, **r1)) <= 2:
@@ -1108,8 +1210,8 @@ for i in range(len(m766)):
 
 # LaTeX output
 
-latexOutput.insert(16,'p766 &= ' + latex(p766))
-#longLatexOutput.insert(16,'p766 &= \\frac{1}{\pi} \left(\int_{'+latex(m766[0][2])+'}^{'+latex(m766[0][3])+'}'+latex(m766[0][0])+'\;\mathrm{d}'+latex(m766[0][1])+'+\int_{'+latex(m766[1][2])+'}^{'+latex(m766[1][3])+'}'+latex(m766[1][0])+'\;\mathrm{d}'+latex(m766[1][1])+'+\int_{'+latex(m766[2][2])+'}^{'+latex(m766[2][3])+'}'+latex(m766[2][0])+'\;\mathrm{d}'+latex(m766[2][1])+'+\int_{'+latex(m766[3][2])+'}^{'+latex(m766[3][3])+'}'+latex(m766[3][0])+'\;\mathrm{d}'+latex(m766[3][1])+'\\right)')
+latexOutput.append('p766 &= ' + latex(p766))
+longLatexOutput.append('p766=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m766]).lstrip('+') + '\\right)')
 
 
 
@@ -1134,14 +1236,14 @@ p711 = r*(2+s)/pi
 # I'm pretty sure 793 and 796 are currently equal, even though this can't find that. 
 
 allComps = [
-['gas', 'p73', {s:2*pi}],
+['gas', 'p731', {s:2*pi}],
 ['gas', 'p74', {a:pi}],
-['p73', 'gas', {s:2*pi}],
-['p73', 'p75', {s:pi, a:2*pi}],
-['p73', 'p782',{s:pi}],
-['p73', 'p764',{a:pi}],
-['p73', 'p766',{a:pi}],
-['p75', 'p73', {s:pi, a:2*pi}],
+['p731', 'gas', {s:2*pi}],
+['p731', 'p75', {s:pi, a:2*pi}],
+['p731', 'p782',{s:pi}],
+['p731', 'p764',{a:pi}],
+['p731', 'p766',{a:pi}],
+['p75', 'p731', {s:pi, a:2*pi}],
 ['p75','p711',{s:pi/2,a:2*pi}],
 ['p75','p782',{a:2*pi}],
 ['p773','p711',{a:2*pi}],
@@ -1160,7 +1262,7 @@ allComps = [
 ['p782','p781',{a:2*pi-s}],
 ['p782','p781',{s:2*pi-a}],
 ['p782','p75',{a:2*pi}],
-['p782','p73',{s:pi}],
+['p782','p731',{s:pi}],
 ['p781','p772',{s:pi/2}],
 ['p781','p782',{s:2*pi-a}],
 ['p781','p782',{a:2*pi-s}],
@@ -1229,7 +1331,7 @@ allComps = [
 ['p764','p763',{s:a+pi}],
 ['p764','p766',{a:4*pi-2*s}],
 ['p764','p766',{s:2*pi-a/2}],
-['p764','p73',{a:pi}],
+['p764','p731',{a:pi}],
 ['p765','p763',{a:4*pi-2*s}],
 ['p765','p763',{s:2*pi-a/2}],
 ['p765','p766',{s:2*pi-a}],
@@ -1239,7 +1341,7 @@ allComps = [
 ['p766','p764',{s:2*pi-a/2}],
 ['p766','p765',{s:a+pi}],
 ['p766','p765',{a:s-pi}],
-['p766','p73',{a:pi}],
+['p766','p731',{a:pi}],
 ['p74','p765',{s:2*pi}],
 ['p74','gas',{a:pi, s:2*pi}]
 ]
@@ -1277,7 +1379,13 @@ for i in range(len(latexOutput)):
 
 latexFile.close()
 
+latexFile = open('/home/tim/Dropbox/phd/Analysis/REM-chapter/ModelDefinitions.tex', 'w')
 
+latexFile.write('% LaTeX output. Definitions of all REM models.\n' + '%Tim Lucas - ' + str(datetime.now()) + '\n')
+for i in range(len(longLatexOutput)):
+        latexFile.write( '\\[' + latexOutput[i] + '\\]\n')
+
+latexFile.close()
 
 '''
 ############################
