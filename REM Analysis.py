@@ -29,6 +29,61 @@ r1 = {r:1} # useful for lots of checks
 latexOutput = []
 longLatexOutput = []
 
+# Define functions to neaten up later code.
+
+# Calculate the final profile averaged over pi.
+def calcModel(model):
+        x = pi**-1 * sum( [integrate(x[0], x[1:]) for x in model] ).simplify().trigsimp()
+        return x
+
+# Do the replacements fit within the area defined by the conditions? 
+def confirmReplacements(conds, reps):
+        if not all([c.subs(reps) for c in eval(conds)]):
+                print('reps' + conds[4:] + ' incorrect')
+
+# is average profile in range 0r-2r?
+def profileRange(prof, reps):
+        if not 0 <= eval(prof).subs(dict(reps, **r1)) <= 2:
+                print('Total ' + prof + ' not in 0, 2r')
+
+# Are the individuals integrals >0r
+def intsPositive(model, reps):
+        m = eval(model)
+        for i in range(len(m)):
+                if not integrate(m[i][0], m[i][1:]).subs(dict(reps, **r1)) > 0:
+                    print('Integral ' + str(i+1) + ' in ' + model + ' is negative')
+
+# Are the individual averaged integrals between 0 and  2r
+def intsRange(model, reps):
+        m = eval(model)
+        for i in range(len(m)):
+                if not 0 <= (integrate(m[i][0], m[i][1:])/(m[i][3]-m[i][2])).subs(dict(reps, **r1)) <= 2:
+                        print('Integral ' + str(i+1) + ' in ' + model + ' has averaged integral outside 0<p<2r')
+
+# Are the bounds the correct way around
+def checkBounds(model, reps):
+        m = eval(model)
+        for i in range(len(m)):
+                if not (m[i][3]-m[i][2]).subs(reps) > 0:
+                        print('Bounds ' + str(i+1) + ' in ' + model + ' has lower bounds bigger than upper bounds')        
+
+# create latex strings with the 1) the final calculated model and 2) the integral equation that defines it.
+def parseLaTeX(prof):
+        m = eval( 'm' + prof[1:] )    
+        latexOutput.append(prof + ' = ' + latex(eval(prof)))
+        longLatexOutput.append(prof + ' =\\frac{1}{\pi} \left(\int_{'+latex(m[0][2])+'}^{'+latex(m[0][3])+'}'+latex(m[0][0])+'\;\mathrm{d}'+latex(m[0][1])+'+\int_{'+latex(m[1][2])+'}^{'+latex(m[1][3])+'}'+latex(m[1][0])+'\;\mathrm{d}'+latex(m[1][1])+'+\int_{'+latex(m[2][2])+'}^{'+latex(m[2][3])+'}'+latex(m[2][0])+'\;\mathrm{d}'+latex(m[2][1])+'\\right)')
+
+# Apply all checks.
+def allChecks(prof):
+        model = 'm' + prof[1:]
+        reps = eval('rep' + prof[1:])
+        conds = 'cond' + prof[1:]
+        confirmReplacements(conds, reps)
+        profileRange(prof, reps)
+        intsPositive(model, reps)
+        intsRange(model, reps)
+        checkBounds(model, reps)
+
 #########################################################
 # 221 animal: a = 2*pi.  sensor: s > pi, a > 3pi - s  #
 #########################################################
@@ -266,6 +321,111 @@ longLatexOutput.append('p131=&\\frac{1}{\pi} \left(\int_{'+latex(m131[0][2])+'}^
 #"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 
+
+#################################################################################
+# 231 animal: a > pi.  Sensor: pi/2 <= s <= pi. Condition: a/2 > pi - s/2  #
+#################################################################################
+
+
+m231 = [ [2*r*sin(s/2)*sin(g1), g1, s/2, pi/2],
+         [r - r*cos(g3-s),      g3, 0, s - pi/2],
+         [r,                    g3, s - pi/2, pi/2],
+         [r,                    g3, pi/2, 3*pi/2 - a/2],
+         [r-r*cos(g3),          g3, 3*pi/2 - a/2, s],
+         [2*r*sin(s/2)*sin(g1), g1, s/2, pi/2 ] ]
+
+
+p231 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m231] ).simplify().trigsimp()
+
+
+
+rep231 = {s:3*pi/4, a:15*pi/8} # Replacement values in range
+
+# Define conditions for model
+cond231 = [a > pi, pi/2 <= s, s <= pi, a >= 3*pi - 2*s]
+
+# Confirm replacements
+if not all([c.subs(rep231) for c in cond231]):
+        print('rep231 incorrect')
+
+# is average profile in range 0r-2r?
+if not 0 <= p231.subs(dict(rep231, **r1)) <= 2:
+        print('Total p231 not in 0, 2r')
+
+# Are the individual integrals >0r
+for i in range(len(m231)):
+        if not integrate(m231[i][0], m231[i][1:]).subs(dict(rep231, **r1)) > 0:
+                print('Integral ' + str(i+1) + ' in p231 is negative')
+
+# Are the individual averaged integrals between 0 and  2r
+for i in range(len(m231)):
+        if not 0 <= (integrate(m231[i][0], m231[i][1:])/(m231[i][3]-m231[i][2])).subs(dict(rep231, **r1)) <= 2:
+                print('Integral ' + str(i+1) + ' in p231 has averaged integral outside 0<p<2r')
+
+                
+# Are the bounds the correct way around
+for i in range(len(m231)):
+        if not (m231[i][3]-m231[i][2]).subs(rep231) > 0:
+                print('Bounds ' + str(i+1) + ' in p231 has lower bounds bigger than upper bounds')        
+
+# LaTeX output
+
+latexOutput.append('p231 &= ' + latex(p231))
+longLatexOutput.append('p231=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m231]).lstrip('+') + '\\right)')
+
+
+#################################################################################
+# 232 animal: a > pi.  Sensor: pi/2 <= s <= pi. Cond: 2pi - s < a < 3pi - 2s  #
+#################################################################################
+
+
+m232 = [ [2*r*sin(s/2)*sin(g1), g1, s/2, pi/2],
+         [r - r*cos(g3-s),      g3, 0, s - pi/2],
+         [r,                    g3, s - pi/2, pi/2],
+         [r,                    g3, pi/2, s],
+         [r*cos(g1 - s/2),      g1, s/2, 3*pi/2 - a/2 - s/2],
+         [2*r*sin(s/2)*sin(g1), g1, 3*pi/2 - a/2 - s/2, pi/2 ] ]
+
+
+
+p232 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m232] ).simplify().trigsimp()
+
+
+
+rep232 = {s:5*pi/8, a:6*pi/4} # Replacement values in range
+
+# Define conditions for model
+cond232 = [a > pi, pi/2 <= s, s <= pi, 2*pi - s <= a, a <= 3*pi - 2*s]
+# Confirm replacements
+if not all([c.subs(rep232) for c in cond232]):
+        print('rep232 incorrect')
+
+# is average profile in range 0r-2r?
+if not 0 <= p232.subs(dict(rep232, **r1)) <= 2:
+        print('Total p232 not in 0, 2r')
+
+# Are the individual integrals >0r
+for i in range(len(m232)):
+        if not integrate(m232[i][0], m232[i][1:]).subs(dict(rep232, **r1)) > 0:
+                print('Integral ' + str(i+1) + ' in p232 is negative')
+
+# Are the individual averaged integrals between 0 and  2r
+for i in range(len(m232)):
+        if not 0 <= (integrate(m232[i][0], m232[i][1:])/(m232[i][3]-m232[i][2])).subs(dict(rep232, **r1)) <= 2:
+                print('Integral ' + str(i+1) + ' in p232 has averaged integral outside 0<p<2r')
+                
+# Are the bounds the correct way around
+for i in range(len(m232)):
+        if not (m232[i][3]-m232[i][2]).subs(rep232) > 0:
+                print('Bounds ' + str(i+1) + ' in p232 has lower bounds bigger than upper bounds')        
+
+# LaTeX output
+
+latexOutput.append('p232 &= ' + latex(p232))
+longLatexOutput.append('p232=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m232]).lstrip('+') + '\\right)')
+
+
+
 #################################################################################
 # 233 animal:  a > pi.  Sensor: pi/2 <= s <= pi. Condition: a <= 2pi - s      #
 #################################################################################
@@ -312,108 +472,6 @@ latexOutput.append('p233 &= ' + latex(p233))
 longLatexOutput.append('p233=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m233]).lstrip('+') + '\\right)')
 
 
-
-#################################################################################
-# 232 animal: a > pi.  Sensor: pi/2 <= s <= pi. Cond: 2pi - s < a < 3pi - 2s  #
-#################################################################################
-
-
-m232 = [ [2*r*sin(s/2)*sin(g1), g1, s/2, pi/2],
-         [r - r*cos(g3-s),      g3, 0, s - pi/2],
-         [r,                    g3, s - pi/2, pi/2],
-         [r,                    g3, pi/2, s],
-         [r*cos(g1 - s/2),      g1, s/2, 3*pi/2 - a/2 - s/2],
-         [2*r*sin(s/2)*sin(g1), g1, 3*pi/2 - a/2 - s/2, pi/2 ] ]
-
-
-p232 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m232] ).simplify().trigsimp()
-
-
-
-rep232 = {s:5*pi/8, a:6*pi/4} # Replacement values in range
-
-# Define conditions for model
-cond232 = [a > pi, pi/2 <= s, s <= pi, 2*pi - s <= a, a <= 3*pi - 2*s]
-# Confirm replacements
-if not all([c.subs(rep232) for c in cond232]):
-        print('rep232 incorrect')
-
-# is average profile in range 0r-2r?
-if not 0 <= p232.subs(dict(rep232, **r1)) <= 2:
-        print('Total p232 not in 0, 2r')
-
-# Are the individual integrals >0r
-for i in range(len(m232)):
-        if not integrate(m232[i][0], m232[i][1:]).subs(dict(rep232, **r1)) > 0:
-                print('Integral ' + str(i+1) + ' in p232 is negative')
-
-# Are the individual averaged integrals between 0 and  2r
-for i in range(len(m232)):
-        if not 0 <= (integrate(m232[i][0], m232[i][1:])/(m232[i][3]-m232[i][2])).subs(dict(rep232, **r1)) <= 2:
-                print('Integral ' + str(i+1) + ' in p232 has averaged integral outside 0<p<2r')
-                
-# Are the bounds the correct way around
-for i in range(len(m232)):
-        if not (m232[i][3]-m232[i][2]).subs(rep232) > 0:
-                print('Bounds ' + str(i+1) + ' in p232 has lower bounds bigger than upper bounds')        
-
-# LaTeX output
-
-latexOutput.append('p232 &= ' + latex(p232))
-longLatexOutput.append('p232=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m232]).lstrip('+') + '\\right)')
-
-
-
-
-#################################################################################
-# 231 animal: a > pi.  Sensor: pi/2 <= s <= pi. Condition: a/2 > pi - s/2  #
-#################################################################################
-
-
-m231 = [ [2*r*sin(s/2)*sin(g1), g1, s/2, pi/2],
-         [r - r*cos(g3-s),      g3, 0, s - pi/2],
-         [r,                    g3, s - pi/2, pi/2],
-         [r,                    g3, pi/2, 3*pi/2 - a/2],
-         [r-r*cos(g3),          g3, 3*pi/2 - a/2, s],
-         [2*r*sin(s/2)*sin(g1), g1, s/2, pi/2 ] ]
-
-
-p231 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m231] ).simplify().trigsimp()
-
-
-
-rep231 = {s:3*pi/4, a:15*pi/8} # Replacement values in range
-
-# Define conditions for model
-cond231 = [a > pi, pi/2 <= s, s <= pi, a >= 3*pi - 2*s]
-
-# Confirm replacements
-if not all([c.subs(rep231) for c in cond231]):
-        print('rep231 incorrect')
-
-# is average profile in range 0r-2r?
-if not 0 <= p231.subs(dict(rep231, **r1)) <= 2:
-        print('Total p231 not in 0, 2r')
-
-# Are the individual integrals >0r
-for i in range(len(m231)):
-        if not integrate(m231[i][0], m231[i][1:]).subs(dict(rep231, **r1)) > 0:
-                print('Integral ' + str(i+1) + ' in p231 is negative')
-
-# Are the individual averaged integrals between 0 and  2r
-for i in range(len(m231)):
-        if not 0 <= (integrate(m231[i][0], m231[i][1:])/(m231[i][3]-m231[i][2])).subs(dict(rep231, **r1)) <= 2:
-                print('Integral ' + str(i+1) + ' in p231 has averaged integral outside 0<p<2r')
-                
-# Are the bounds the correct way around
-for i in range(len(m231)):
-        if not (m231[i][3]-m231[i][2]).subs(rep231) > 0:
-                print('Bounds ' + str(i+1) + ' in p231 has lower bounds bigger than upper bounds')        
-
-# LaTeX output
-
-latexOutput.append('p231 &= ' + latex(p231))
-longLatexOutput.append('p231=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m231]).lstrip('+') + '\\right)')
 
 
 
@@ -720,7 +778,7 @@ p1 = (2*r*sin(s - 3*pi/2 + g1)*sin((g1 - pi/2 - s + a)/2) - \
 p2 = (2*r*sin(s/2)*sin(g1) - 2*r*sin((pi - a - 2*g1 + s)/4)*sin((pi - a + 2*g1 - s)/4)).simplify()
 
 # p-l for g2 profile. 
-p3 = (r*sin(g2) - 2*r*sin(g2/2 - a/4)*sin((pi - a + 2*g2 - s)/4)).simplify()
+p3 = r*sin(g2) - (2*r*sin(g2/2 - a/4)*sin((pi - a + 2*g2 - s)/4)).simplify()
 
 
 
@@ -870,6 +928,158 @@ for i in range(len(m333)):
 latexOutput.append('p333 &= ' + latex(p333))
 longLatexOutput.append('p333=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m333]).lstrip('+') + '\\right)')
 
+
+##################################################################################
+# 341 animal: a <= pi.  Sensor: s <= pi/2. Condition: a > pi - 2s &  a <= s      #
+##################################################################################
+
+
+m341 = [ [p1,         g1, pi/2 - s/2 + a/2, pi/2            ],
+         [p2,         g1, pi/2 - s/2,       pi/2 - s/2 + a/2],
+         [p3,         g2, s,                pi/2            ],
+         [r*sin(a/2), g3, 0,                a/2 + s - pi/2  ] ]
+
+p341 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m341] ).simplify().trigsimp()
+
+rep341 = {s:pi/2-0.1, a:pi/4} # Replacement values in range
+
+# Define conditions for model
+cond341 = [a <= pi,  s <= pi/2,  a >= pi - 2*s,  a <= s]
+# Confirm replacements
+if not all([c.subs(rep341) for c in cond341]):
+        print('rep341 incorrect')
+
+# is average profile in range 0r-2r?
+if not 0 <= p341.subs(dict(rep341, **r1)) <= 2:
+        print('Total p341 not in 0, 2r')
+
+# Are the individual integrals >0r
+for i in range(len(m341)):
+        if not integrate(m341[i][0], m341[i][1:]).subs(dict(rep341, **r1)) > 0:
+
+                print('Integral ' + str(i+1) + ' in p341 is negative')
+
+# Are the individual averaged integrals between 0 and  2r
+for i in range(len(m341)):
+        if not 0 <= (integrate(m341[i][0], m341[i][1:])/(m341[i][3]-m341[i][2])).subs(dict(rep341, **r1)) <= 2:
+                print('Integral ' + str(i+1) + ' in p341 has averaged integral outside 0<p<2r')
+                
+# Are the bounds the correct way around
+for i in range(len(m341)):
+        if not (m341[i][3]-m341[i][2]).subs(rep341) > 0:
+                print('Bounds ' + str(i+1) + ' in p341 has lower bounds bigger than upper bounds')        
+
+# LaTeX output
+
+latexOutput.append('p341 &= ' + latex(p341))
+longLatexOutput.append('p341=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m341]).lstrip('+') + '\\right)')
+
+######################################################################################
+# 342 animal: a <= pi.  Sensor: s <= pi/2. Condition: a > pi - 2s &  s <= a <= 2s  #
+######################################################################################
+
+
+m342 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 + s/2 - a/2, pi/2            ],
+         [p2,                   g1, pi/2 - s/2,       pi/2 + s/2 - a/2],
+         [p3,                   g2, s,                pi/2        ],
+         [r*sin(a/2),           g3, 0,                a/2 + s -pi/2   ] ]
+
+p342 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m342] ).simplify().trigsimp()
+
+
+
+rep342 = {s:pi/2-0.1, a:pi/2} # Replacement values in range
+
+# Confirm replacements
+if not (a.subs(rep342) <= pi and s.subs(rep342) <= pi/2 and a.subs(rep342) >= pi - 2*s.subs(rep342) and s.subs(rep342) <= a.subs(rep342) <= 2*s.subs(rep342)):
+        print('rep342 incorrect')
+
+# Define conditions for model
+
+cond342 = [a <= pi,  s <= pi/2,  a >= pi - 2*s,  s <= a, a <= 2*s]
+# Confirm replacements
+if not all([c.subs(rep342) for c in cond342]):
+        print('rep342 incorrect')
+
+# is average profile in range 0r-2r?
+if not 0 <= p342.subs(dict(rep342, **r1)) <= 2:
+        print('Total p342 not in 0, 2r')
+
+# Are the individual integrals >0r
+for i in range(len(m342)):
+        if not integrate(m342[i][0], m342[i][1:]).subs(dict(rep342, **r1)) > 0:
+                print('Integral ' + str(i+1) + ' in p342 is negative')
+
+# Are the individual averaged integrals between 0 and  2r
+for i in range(len(m342)):
+        if not 0 <= (integrate(m342[i][0], m342[i][1:])/(m342[i][3]-m342[i][2])).subs(dict(rep342, **r1)) <= 2:
+                print('Integral ' + str(i+1) + ' in p342 has averaged integral outside 0<p<2r')
+                
+# Are the bounds the correct way around
+for i in range(len(m342)):
+        if not (m342[i][3]-m342[i][2]).subs(rep342) > 0:
+                print('Bounds ' + str(i+1) + ' in p342 has lower bounds bigger than upper bounds')        
+
+# LaTeX output
+
+latexOutput.append('p342 &= ' + latex(p342))
+longLatexOutput.append('p342=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m342]).lstrip('+') + '\\right)')
+
+
+
+
+
+##################################################################################
+# 343 animal: a <= pi.  Sensor: s <= pi/2. Condition: a > pi - 2s &  a > 2s      #
+##################################################################################
+
+
+
+m343 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 - s/2, pi/2            ],
+         [r*sin(g2),            g2, s,          a/2             ],
+         [p3,                   g2, a/2,        pi/2            ],
+         [r*sin(a/2),           g3, 0,          a/2 + s -pi/2   ] ]
+
+p343 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m343] ).simplify().trigsimp()
+
+
+
+rep343 = {s:pi/4, a:3*pi/4} # Replacement values in range
+
+
+# Define conditions for model
+cond343 = [a <= pi,  s <= pi/2,  a >= pi - 2*s,  a > 2*s]
+# Confirm replacements
+if not all([c.subs(rep343) for c in cond343]):
+        print('rep343 incorrect')
+
+# is average profile in range 0r-2r?
+if not 0 <= p343.subs(dict(rep343, **r1)) <= 2:
+        print('Total p343 not in 0, 2r')
+
+# Are the individual integrals >0r
+for i in range(len(m343)):
+        if not integrate(m343[i][0], m343[i][1:]).subs(dict(rep343, **r1)) > 0:
+
+                print('Integral ' + str(i+1) + ' in p343 is negative')
+
+# Are the individual averaged integrals between 0 and  2r
+for i in range(len(m343)):
+        if not 0 <= (integrate(m343[i][0], m343[i][1:])/(m343[i][3]-m343[i][2])).subs(dict(rep343, **r1)) <= 2:
+                print('Integral ' + str(i+1) + ' in p343 has averaged integral outside 0<p<2r')
+                
+# Are the bounds the correct way around
+for i in range(len(m343)):
+        if not (m343[i][3]-m343[i][2]).subs(rep343) > 0:
+                print('Bounds ' + str(i+1) + ' in p343 has lower bounds bigger than upper bounds')        
+
+# LaTeX output
+
+latexOutput.append('p343 &= ' + latex(p343))
+longLatexOutput.append('p343=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m343]).lstrip('+') + '\\right)')
+
+
+
 ###################################################################################
 # 344 animal: a <= pi.  Sensor: s <= pi/2. Condition: a <= pi - 2s & a <= s     #
 ###################################################################################
@@ -1009,154 +1219,6 @@ pl.close()
 latexOutput.append('p346 &= ' + latex(p346))
 longLatexOutput.append('p346=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m346]).lstrip('+') + '\\right)')
 
-##################################################################################
-# 341 animal: a <= pi.  Sensor: s <= pi/2. Condition: a > pi - 2s &  a <= s       #
-##################################################################################
-
-
-m341 = [ [p1,         g1, pi/2 - s/2 + a/2, pi/2            ],
-         [p2,         g1, pi/2 - s/2,       pi/2 - s/2 + a/2],
-         [p3,         g2, s,                pi/2            ],
-         [r*sin(a/2), g3, 0,                a/2 + s - pi/2  ] ]
-
-p341 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m341] ).simplify().trigsimp()
-
-rep341 = {s:pi/2-0.1, a:pi/4} # Replacement values in range
-
-# Define conditions for model
-cond341 = [a <= pi,  s <= pi/2,  a >= pi - 2*s,  a <= s]
-# Confirm replacements
-if not all([c.subs(rep341) for c in cond341]):
-        print('rep341 incorrect')
-
-# is average profile in range 0r-2r?
-if not 0 <= p341.subs(dict(rep341, **r1)) <= 2:
-        print('Total p341 not in 0, 2r')
-
-# Are the individual integrals >0r
-for i in range(len(m341)):
-        if not integrate(m341[i][0], m341[i][1:]).subs(dict(rep341, **r1)) > 0:
-                print('Integral ' + str(i+1) + ' in p341 is negative')
-
-# Are the individual averaged integrals between 0 and  2r
-for i in range(len(m341)):
-        if not 0 <= (integrate(m341[i][0], m341[i][1:])/(m341[i][3]-m341[i][2])).subs(dict(rep341, **r1)) <= 2:
-                print('Integral ' + str(i+1) + ' in p341 has averaged integral outside 0<p<2r')
-                
-# Are the bounds the correct way around
-for i in range(len(m341)):
-        if not (m341[i][3]-m341[i][2]).subs(rep341) > 0:
-                print('Bounds ' + str(i+1) + ' in p341 has lower bounds bigger than upper bounds')        
-
-# LaTeX output
-
-latexOutput.append('p341 &= ' + latex(p341))
-longLatexOutput.append('p341=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m341]).lstrip('+') + '\\right)')
-
-######################################################################################
-# 342 animal: a <= pi.  Sensor: s <= pi/2. Condition: a > pi - 2s &  s <= a <= 2s  #
-######################################################################################
-
-
-m342 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 + s/2 - a/2, pi/2            ],
-         [p2,                   g1, pi/2 - s/2,       pi/2 + s/2 - a/2],
-         [p3,                   g2, s,                pi/2        ],
-         [r*sin(a/2),           g3, 0,                a/2 + s -pi/2   ] ]
-
-p342 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m342] ).simplify().trigsimp()
-
-
-
-rep342 = {s:pi/2-0.1, a:pi/2} # Replacement values in range
-
-# Confirm replacements
-if not (a.subs(rep342) <= pi and s.subs(rep342) <= pi/2 and a.subs(rep342) >= pi - 2*s.subs(rep342) and s.subs(rep342) <= a.subs(rep342) <= 2*s.subs(rep342)):
-        print('rep342 incorrect')
-
-# Define conditions for model
-
-cond342 = [a <= pi,  s <= pi/2,  a >= pi - 2*s,  s <= a, a <= 2*s]
-# Confirm replacements
-if not all([c.subs(rep342) for c in cond342]):
-        print('rep342 incorrect')
-
-# is average profile in range 0r-2r?
-if not 0 <= p342.subs(dict(rep342, **r1)) <= 2:
-        print('Total p342 not in 0, 2r')
-
-# Are the individual integrals >0r
-for i in range(len(m342)):
-        if not integrate(m342[i][0], m342[i][1:]).subs(dict(rep342, **r1)) > 0:
-                print('Integral ' + str(i+1) + ' in p342 is negative')
-
-# Are the individual averaged integrals between 0 and  2r
-for i in range(len(m342)):
-        if not 0 <= (integrate(m342[i][0], m342[i][1:])/(m342[i][3]-m342[i][2])).subs(dict(rep342, **r1)) <= 2:
-                print('Integral ' + str(i+1) + ' in p342 has averaged integral outside 0<p<2r')
-                
-# Are the bounds the correct way around
-for i in range(len(m342)):
-        if not (m342[i][3]-m342[i][2]).subs(rep342) > 0:
-                print('Bounds ' + str(i+1) + ' in p342 has lower bounds bigger than upper bounds')        
-
-# LaTeX output
-
-latexOutput.append('p342 &= ' + latex(p342))
-longLatexOutput.append('p342=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m342]).lstrip('+') + '\\right)')
-
-
-
-
-
-##################################################################################
-# 343 animal: a <= pi.  Sensor: s <= pi/2. Condition: a > pi - 2s &  a > 2s      #
-##################################################################################
-
-
-
-m343 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 - s/2, pi/2            ],
-         [r*sin(g2),            g2, s,          a/2             ],
-         [p3,                   g2, a/2,        pi/2            ],
-         [r*sin(a/2),           g3, 0,          a/2 + s -pi/2   ] ]
-
-p343 = pi**-1 * sum( [integrate(x[0], x[1:]) for x in m343] ).simplify().trigsimp()
-
-
-
-rep343 = {s:pi/4, a:3*pi/4} # Replacement values in range
-
-
-# Define conditions for model
-cond343 = [a <= pi,  s <= pi/2,  a >= pi - 2*s,  a > 2*s]
-# Confirm replacements
-if not all([c.subs(rep343) for c in cond343]):
-        print('rep343 incorrect')
-
-# is average profile in range 0r-2r?
-if not 0 <= p343.subs(dict(rep343, **r1)) <= 2:
-        print('Total p343 not in 0, 2r')
-
-# Are the individual integrals >0r
-for i in range(len(m343)):
-        if not integrate(m343[i][0], m343[i][1:]).subs(dict(rep343, **r1)) > 0:
-                print('Integral ' + str(i+1) + ' in p343 is negative')
-
-# Are the individual averaged integrals between 0 and  2r
-for i in range(len(m343)):
-        if not 0 <= (integrate(m343[i][0], m343[i][1:])/(m343[i][3]-m343[i][2])).subs(dict(rep343, **r1)) <= 2:
-                print('Integral ' + str(i+1) + ' in p343 has averaged integral outside 0<p<2r')
-                
-# Are the bounds the correct way around
-for i in range(len(m343)):
-        if not (m343[i][3]-m343[i][2]).subs(rep343) > 0:
-                print('Bounds ' + str(i+1) + ' in p343 has lower bounds bigger than upper bounds')        
-
-# LaTeX output
-
-latexOutput.append('p343 &= ' + latex(p343))
-longLatexOutput.append('p343=&\\frac{1}{\pi} \left(' + ' '.join(['+\int_{'+latex(x[2])+'}^{'+latex(x[3])+'}'+latex(x[0])+'\;\mathrm{d}'+latex(x[1]) for x in m343]).lstrip('+') + '\\right)')
-
-
 
 ##################################################################################################################
 
@@ -1191,11 +1253,11 @@ allComps = [
 ['p222', 'p221',{s:3*pi-a}],
 ['p222', 'p223',{a:4*pi-2*s}],
 ['p222', 'p223',{s:2*pi-a/2}],
-['p222', 'p321',{s:pi}],
+['p222', 'p321',{a:pi}],
 
 ['p223', 'p222',{a:4*pi-2*s}],
 ['p223', 'p222',{s:2*pi-a/2}],
-['p223', 'p232',{a:pi}],
+['p223', 'p322',{a:pi}],
 ['p223', 'p231',{s:pi}],
 
 ['p131','p221', {s:pi}],
@@ -1218,7 +1280,7 @@ allComps = [
 ['p233','p331',{a:pi}],
 
 ['p141','p131', {s:pi/2}],
-['p141','p241',{s:2*pi}],
+['p141','p241',{a:2*pi}],
 
 ['p241','p141',{a:2*pi}],
 ['p241','p242',{a:2*pi-s}],
@@ -1238,9 +1300,9 @@ allComps = [
 ['p311','p321',{s:2*pi}],
 ['p311','gas',{a:pi}],
 
-['p321','p322',{s:a-pi}],
+['p321','p322',{s:2*pi-a/2}],
 ['p321','p322',{a:4*pi-2*s}],
-['p321','p311',{s:2*pi-a/2}],
+['p321','p311',{s:2*pi}],
 ['p321','p222',{a:pi}],
 
 ['p322','p321',{a:4*pi-2*s}],
@@ -1310,10 +1372,10 @@ allComps = [
 
 # Run through all the comparisons. Need simplify(). Even together() gives some false negatives.
 
-checkFile = open('/home/tim/Dropbox/PhD/Analysis/REM-chapter/imgs/checksFile.tex','w')
+checkFile = open('/home/tim/Dropbox/PhD/Analysis/REM-chapter/checksFile.tex','w')
 
 checkFile.write('All checks evaluated.\nTim Lucas - ' + str(datetime.now()) + '\n')
-checkFile.write('I\'m pretty sure 346 and 343 are currently equal, even though this can\'t find that.')
+checkFile.write('I\'m pretty sure 346 and 343 are currently equal, even though this can\'t find that.\n')
 for i in range(len(allComps)):
         if (eval(allComps[i][0]).subs(allComps[i][2]) - eval(allComps[i][1]).subs(allComps[i][2])).simplify() == 0:
                 checkFile.write(str(i) + ': ' + allComps[i][0]+ ' and ' +allComps[i][1]+': OK\n')
@@ -1356,7 +1418,7 @@ pl.close()
 
 # write out full latex model solutions and model statements
 
-latexFile = open('/home/tim/Dropbox/PhD/Analysis/REM-chapter/imgs/ModelSolutions.tex', 'w')
+latexFile = open('/home/tim/Dropbox/PhD/Analysis/REM-chapter/ModelSolutions.tex', 'w')
 
 latexFile.write('% LaTeX output. Solutions of all REM models.\n' + '%Tim Lucas - ' + str(datetime.now()) + '\n')
 for i in range(len(latexOutput)):
@@ -1364,7 +1426,7 @@ for i in range(len(latexOutput)):
 
 latexFile.close()
 
-latexFile = open('/home/tim/Dropbox/PhD/Analysis/REM-chapter/imgs/ModelDefinitions.tex', 'w')
+latexFile = open('/home/tim/Dropbox/PhD/Analysis/REM-chapter/ModelDefinitions.tex', 'w')
 
 latexFile.write('% LaTeX output. Definitions of all REM models.\n' + '%Tim Lucas - ' + str(datetime.now()) + '\n')
 for i in range(len(longLatexOutput)):
