@@ -237,8 +237,7 @@ m233 = [ [2*r*sin(s/2)*sin(g1), g1, s/2, pi/2],
          [r - r*cos(g3-s),      g3, 0, s - pi/2],
          [r,                    g3, s - pi/2, pi/2],
          [r,                    g3, pi/2, s],
-         [r*cos(g1 - s/2),      g1, s/2, a/2 + s/2 - pi/2],
-         [0,                    g1, a/2 + s/2 - pi/2, pi/2 ] ]
+         [r*cos(g1 - s/2),      g1, s/2, a/2 + s/2 - pi/2] ]
 
 rep233 = {s:3*pi/4, a:9*pi/8} # Replacement values in range
 
@@ -390,14 +389,14 @@ Complex profiles for a <= pi/2
 """
 
 # p-l-r for g1 profil. Calculated by AE in fig 22.4 minus AE in fig 22.3
-p1 = (2*r*sin(s - 3*pi/2 + g1)*sin((g1 - pi/2 - s + a)/2) - \
+p1 = (2*r*sin(s/4 - g1/2 + pi/4 + a/4)*sin(a/4 + pi/4 + g1/2 - s/4) - \
      2*r*sin((pi - a - 2*g1 + s)/4)*sin((pi - a + 2*g1 - s)/4)).simplify()
 
 # p-l for g1 profiles
 p2 = (2*r*sin(s/2)*sin(g1) - 2*r*sin((pi - a - 2*g1 + s)/4)*sin((pi - a + 2*g1 - s)/4)).simplify()
 
 # p-l for g2 profile. 
-p3 = r*sin(g2) - (2*r*sin(g2/2 - a/4)*sin((pi - a + 2*g2 - s)/4)).simplify()
+p3 = (r*sin(g2) - (2*r*sin(g2/2 - a/4)*sin(pi/2 - g2/2 - a/4)).simplify()).trigsimp()
 
 
 
@@ -406,7 +405,7 @@ p3 = r*sin(g2) - (2*r*sin(g2/2 - a/4)*sin((pi - a + 2*g2 - s)/4)).simplify()
 ###########################################################################################
 
 
-m331 = [ [2*r*sin(s/2)*sin(g1),              g1, pi/2 - a/2 + s/2, pi/2            ],
+m331 =  [ [2*r*sin(s/2)*sin(g1),              g1, pi/2 - a/2 + s/2, pi/2            ],
           [p2,                                g1, s/2,              pi/2 - a/2 + s/2],
           [r*sin(a/2) + r*sin(s - pi/2 - g3), g3, 0,                s - pi/2        ],
           [r*sin(a/2),                        g3, s-pi/2,           s - pi/2 + a/2  ] ]
@@ -418,7 +417,7 @@ rep331 = {s:5*pi/8, a:6*pi/8} # Replacement values in range
 cond331 = [a <= pi, pi/2 <= s, s <= pi, a >= s, a/2 >= s - pi/2]
 
 # Calculate model, run checks, write output.
-p331 = calcModel(m331
+p331 = calcModel(m331)
 allChecks('p331')
 parseLaTeX('p331')
 
@@ -429,10 +428,15 @@ parseLaTeX('p331')
 # 332 animal: a <= pi.  Sensor: pi/2 <= s <= pi. Condition: a <= s and a/2 >= s- pi/2 #
 ##########################################################################################
 
+m341 = [ [p1,         g1, pi/2 - s/2 + a/2, pi/2            ],
+         [p2,         g1, pi/2 - s/2,       pi/2 - s/2 + a/2], # dissappears
+         [p3,         g2, s,                pi/2            ],
+         [r*sin(a/2), g3, 0,                a/2 + s - pi/2  ] ]
 
-m332 = [ [p2,                              g1, s/2,      pi/2           ],
-          [r*sin(a/2) + r*sin(s - pi/2 - g3), g3, 0,        s - pi/2       ],
-          [r*sin(a/2),                      g3, s - pi/2, s - pi/2 + a/2 ] ]
+
+m332 =  [ [p2,                                g1, s/2,      pi/2           ],
+          [r*sin(a/2) - r*cos(g3 - s),        g3, 0,        s - pi/2       ],
+          [r*sin(a/2),                        g3, s - pi/2, s - pi/2 + a/2 ] ]
 
 
 rep332 = {s:7*pi/8, a:7*pi/8} # Replacement values in range
@@ -456,6 +460,7 @@ parseLaTeX('p332')
 ##########################################################################################
 
 
+
 m333 = [ [p2,                                g1, s/2,            pi/2           ],
           [2*r*sin(a/2),                      g3, 0,              s - pi/2 - a/2 ],
           [r*sin(a/2) + r*sin(s - pi/2 - g3), g3, s - pi/2 - a/2, s - pi/2       ],
@@ -470,6 +475,9 @@ cond333 = [a <= pi, pi/2 <= s, s <= pi, a/2 <= s/2, a/2 <= s - pi/2]
 p333 = calcModel(m333)
 allChecks('p333')
 parseLaTeX('p333')
+
+
+
 
 
 ##################################################################################
@@ -507,7 +515,8 @@ m342 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 + s/2 - a/2, pi/2            ],
 rep342 = {s:pi/2-0.1, a:pi/2} # Replacement values in range
 
 # define conditions for model
-cond342 = [a <= pi,  s <= pi/2,  a >= pi - 2*s,  s <= a, s <= 2*s]
+cond342 = [a <= pi,  s <= pi/2,  a >= pi - 2*s,  s <= a, a <= 2*s]
+
 
 # Calculate model, run checks, write output.
 p342 = calcModel(m342)
@@ -591,8 +600,6 @@ parseLaTeX('p345')
 # 346 animal: a <= pi.  Sensor: s <= pi/2. Condition: a <= pi - 2s &  2s <= a      #
 ##################################################################################
 
-# This DOES = 343, just can't show it.
-
 m346 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 - s/2, pi/2    ],
          [r*sin(g2),            g2, s,          a/2     ],
          [p3,                   g2, a/2,        s + a/2 ] ]
@@ -627,9 +634,6 @@ p141 = r*(2+s)/pi
 # Contains duplicatea but better for avoiding missed comparisons.
 # Also contains replacement s->a and a->s just in case. 
 
-
-# I'm pretty sure 346 and 343 are currently equal, even though this can't find that. 
-# p344 not right for values close to zero?
 
 allComps = [
 ['gas', 'p221', {s:2*pi}],
@@ -719,7 +723,7 @@ allComps = [
 
 ['p333','p332',{s:a/2+pi/2}],
 ['p333','p332',{a:2*s-pi}],
-['p333','p326',{s:pi}],
+['p333','p323',{s:pi}],
 
 
 ['p341','p344',{a:pi-2*s}],
@@ -761,17 +765,26 @@ allComps = [
 ['p346','p343',{s:pi/2-a/2}]
 ]
 
+
+# List of regions that cover a=0. Should equal 0 when a=0.
+zeroRegions = ['p346', 'p345', 'p344', 'p341', 'p332', 'p333', 'p323', 'p322', 'p321', 'p311']
+
 # Run through all the comparisons. Need simplify(). Even together() gives some false negatives.
 
 checkFile = open('/home/tim/Dropbox/PhD/Analysis/REM-chapter/checksFile.tex','w')
 
 checkFile.write('All checks evaluated.\nTim Lucas - ' + str(datetime.now()) + '\n')
-checkFile.write('I\'m pretty sure 346 and 343 are currently equal, even though this can\'t find that.\n')
 for i in range(len(allComps)):
         if (eval(allComps[i][0]).subs(allComps[i][2]) - eval(allComps[i][1]).subs(allComps[i][2])).simplify() == 0:
                 checkFile.write(str(i) + ': ' + allComps[i][0]+ ' and ' +allComps[i][1]+': OK\n')
         else:
                 checkFile.write(str(i) + ': ' + allComps[i][0]+ ' and ' +allComps[i][1]+': Incorrect\n')
+
+for i in range(len(zeroRegions)):
+        if eval(zeroRegions[i]).subs({a:0}).simplify() == 0:
+                checkFile.write(zeroRegions[i] + ' at a=0: OK\n')
+        else:
+                checkFile.write(zeroRegions[i] + ' at a=0: Incorrect\n')
 
 checkFile.close()
 
