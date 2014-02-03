@@ -323,8 +323,8 @@ parseLaTeX('p243')
 
 
 m321 = [ [ 2*r*sin(a/2),                        g4, pi/2,         s/2 + pi/2 - a/2       ],
-         [ r*sin(a/2) + r*sin(s/2 + pi/2 - g4), g4, s/2 + pi/2 - a/2, 5*pi/2 - a/2 - s/2  ], 
-         [ 2*r*sin(a/2),                        g4, 5*pi/2 - a/2 - s/2,         3*pi/2] ]
+         [ r*sin(a/2) + r*cos(g4 - s/2),        g4, s/2 + pi/2 - a/2, 5*pi/2 - a/2 - s/2 ], 
+         [ 2*r*sin(a/2),                        g4, 5*pi/2 - a/2 - s/2,         3*pi/2]  ]
 
 
 rep321 = {s:19*pi/10, a:pi/2} # Replacement values in range
@@ -364,9 +364,9 @@ parseLaTeX('p322')
 # 323 animal: a <= pi.  Sensor: s > pi. Condition: a <= s - pi and a < 2*pi - s #
 ###################################################################################
 
-m323 = [ [ 2*r*sin(a/2),                       g4, pi/2,         s/2 + pi/2 - a/2       ],
-         [ r*sin(a/2) + r*sin(s/2 + pi/2 - g4), g4, s/2 + pi/2 - a/2, s/2 + pi/2      ], 
-         [ r*sin(a/2),                         g4, s/2 + pi/2,         s/2 + pi/2 + a/2] ]
+m323 = [ [ 2*r*sin(a/2),                       g4, pi/2,             s/2 + pi/2 - a/2  ],
+         [ r*sin(a/2) + r*cos(g4 - s/2),       g4, s/2 + pi/2 - a/2, s/2 + pi/2        ], 
+         [ r*sin(a/2),                         g4, s/2 + pi/2,       s/2 + pi/2 + a/2  ] ]
 
 
 rep323 = {s:3*pi/2, a:pi/3} # Replacement values in range
@@ -428,18 +428,14 @@ parseLaTeX('p331')
 # 332 animal: a <= pi.  Sensor: pi/2 <= s <= pi. Condition: a <= s and a/2 >= s- pi/2 #
 ##########################################################################################
 
-m341 = [ [p1,         g1, pi/2 - s/2 + a/2, pi/2            ],
-         [p2,         g1, pi/2 - s/2,       pi/2 - s/2 + a/2], # dissappears
-         [p3,         g2, s,                pi/2            ],
-         [r*sin(a/2), g3, 0,                a/2 + s - pi/2  ] ]
+
+m332 =  [ [p1,                       g1, pi/2 + a/2 - s/2, pi/2             ],
+          [p2,                       g1, s/2,              pi/2 + a/2 - s/2],
+          [r*sin(a/2) - r*cos(g3-s), g3, 0*s,              s - pi/2       ],
+          [r*sin(a/2),               g3, s - pi/2,         s - pi/2 + a/2 ] ]
 
 
-m332 =  [ [p2,                                g1, s/2,      pi/2           ],
-          [r*sin(a/2) - r*cos(g3 - s),        g3, 0,        s - pi/2       ],
-          [r*sin(a/2),                        g3, s - pi/2, s - pi/2 + a/2 ] ]
-
-
-rep332 = {s:7*pi/8, a:7*pi/8} # Replacement values in range
+rep332 = {s:7*pi/8, a:7*pi/8-0.1} # Replacement values in range
 
 # Define conditions for model
 cond332 = [a <= pi, pi/2 <= s, s <= pi, a/2 <= s/2, a/2 >= s - pi/2]
@@ -461,9 +457,9 @@ parseLaTeX('p332')
 
 
 
-m333 = [ [p2,                                g1, s/2,            pi/2           ],
+m333 =  [ [p1,                                g1, s/2,            pi/2           ],
           [2*r*sin(a/2),                      g3, 0,              s - pi/2 - a/2 ],
-          [r*sin(a/2) + r*sin(s - pi/2 - g3), g3, s - pi/2 - a/2, s - pi/2       ],
+          [r*sin(a/2) - r*cos(g3-s),          g3, s - pi/2 - a/2, s - pi/2       ],
           [r*sin(a/2),                        g3, s - pi/2,       s - pi/2 + a/2 ] ]
 
 rep333 = {s:7*pi/8, a:2*pi/8} # Replacement values in range
@@ -837,6 +833,155 @@ for i in range(len(longLatexOutput)):
         latexFile.write( '\\[' + longLatexOutput[i] + '\\]\n')
 
 latexFile.close()
+
+
+
+
+####################################################################
+### Define a a function that calculates your answer.            ####
+####################################################################
+
+def calcP(A, S, R): 
+	assert (A <= 2*pi and A >= 0), "a is out of bounds. Should be in 0<a<2*pi"
+	assert (S <= 2*pi and S >= 0), "s is out of bounds. Should be in 0<s<2*pi"
+ 	
+	if A > pi:
+		if A < 4*pi - 2*S:
+			p = p243.subs({a:A, s:S, r:R}).n()
+		elif A <= 3*pi - S:
+                        p = p222.subs({a:A, s:S, r:R}).n()
+		else:
+                        p = p221.subs({a:A, s:S, r:R}).n()
+	else:
+		if A < 4*pi - 2*S:
+                        p = p322.subs({a:A, s:S, r:R}).n()
+		else:
+                        p = p321.subs({a:A, s:S, r:R}).n()
+        return p
+
+
+#############################
+## Apply to entire grid   ###
+#############################
+
+# How many values for each parameter
+nParas = 100
+
+# Make a vector for a and s. Make an empty nParas x nParas array. 
+# Calculated profile sizes will go in pArray
+sVec = np.linspace(0, 2*pi, nParas)
+aVec = np.linspace(0, 2*pi, nParas)
+pArray = np.zeros((nParas,nParas))
+
+# Calculate profile size for each combination of parameters
+for i in range(nParas):
+        for j in range(nParas):
+                pArray[i][j] = calcP(aVec[i], sVec[j], 1)
+
+# Turn the array upside down so origin is at bottom left.
+pImage = np.flipud(pArray)
+
+# Plot and save.
+pl.imshow(pImage, interpolation='none', cmap=pl.get_cmap('Blues') )
+#pl.show()
+
+pl.savefig('/home/tim/Dropbox/PhD/Analysis/REM-chapter/imgs/profilesCalculated.png')
+
+
+
+############################
+#### Output R function.  ###
+############################
+
+# To reduce mistakes, output R function directly from python.
+# However, the if statements are not automatic.
+
+Rfunc = open('/home/tim/Dropbox/PhD/Analysis/REM-chapter/calculateProfileWidth.R', 'w')
+
+Rfunc.write("""calcProfileWidth <- function(theta_a, theta_s, r){
+        if(theta_a > 2*pi | theta_a < 0) 
+		stop('theta_a is out of bounds. theta_a should be in 0<a<2*pi')
+        if(theta_s > 2*pi | theta_s < 0) 
+		stop('theta_s is out of bounds. theta_s should be in 0<a<2*pi')
+
+	if(theta_a > pi){
+	        if(theta_a < 4*pi - 2*theta_s){
+""" +
+'		        p <- ' + str(p243) +
+'\n                } else if(theta_a <= 3*pi - theta_s){'  
+'\n                        p <- ' + str(p222) +
+'\n                } else {'
+'\n                        p <- ' + str(p221) +
+'\n                }'
+'\n        } else {' 
+'\n        	if(theta_a < 4*pi - 2*theta_s){'
+'\n                        p <- ' + str(p322) +
+'\n 		} else {'
+'\n                        p <- ' + str(p321) +
+'\n                }'
+'\n        }'
+'\n        return(p)'
+'\n}'
+
+
+)
+
+Rfunc.close()
+
+
+
+
+
+
+
+Rfunc.close()
+
+
+
+		elif theta_a <= 3*pi - theta_s:
+                        p = p222.subs({a:theta_a, s:theta_s, r:R}).n()
+		else:
+                        p = p221.subs({a:theta_a, s:theta_s, r:R}).n()
+	else:
+		if theta_a < 4*pi - 2*theta_s:
+                        p = p322.subs({a:theta_a, s:theta_s, r:R}).n()
+
+		else:
+                        p = p321.subs({a:theta_a, s:theta_s, r:R}).n()
+        return p        
+""")
+
+
+
+Rfunc.close()
+
+
+
+def calcP(A, S, R): 
+	assert (theta_a <= 2*pi and theta_a >= 0), "a is out of bounds. theta_should be in 0<a<2*pi"
+	assert (theta_s <= 2*pi and theta_s >= 0), "s is out of bounds. theta_should be in 0<s<2*pi"
+ 	
+	if theta_a > pi:
+		if theta_a < 4*pi - 2*theta_s:
+			p = p243.subs({a:theta_a, s:theta_s, r:R}).n()
+		elif theta_a <= 3*pi - theta_s:
+                        p = p222.subs({a:theta_a, s:theta_s, r:R}).n()
+		else:
+                        p = p221.subs({a:theta_a, s:theta_s, r:R}).n()
+	else:
+		if theta_a < 4*pi - 2*theta_s:
+                        p = p322.subs({a:theta_a, s:theta_s, r:R}).n()
+		else:
+                        p = p321.subs({a:theta_a, s:theta_s, r:R}).n()
+        return p
+
+
+
+
+
+
+
+
 
 
 
