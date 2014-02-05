@@ -386,7 +386,6 @@ parseLaTeX('p323')
 
 """
 Complex profiles for a <= pi/2 
-"""
 
 # p-l-r for g1 profil. Calculated by AE in fig 22.4 minus AE in fig 22.3
 p1 = (2*r*sin(s/4 - g1/2 + pi/4 + a/4)*sin(a/4 + pi/4 + g1/2 - s/4) - \
@@ -397,7 +396,7 @@ p2 = (2*r*sin(s/2)*sin(g1) - 2*r*sin((pi - a - 2*g1 + s)/4)*sin((pi - a + 2*g1 -
 
 # p-l for g2 profile. 
 p3 = (r*sin(g2) - (2*r*sin(g2/2 - a/4)*sin(pi/2 - g2/2 - a/4)).simplify()).trigsimp()
-
+"""
 
 
 ###########################################################################################
@@ -406,7 +405,7 @@ p3 = (r*sin(g2) - (2*r*sin(g2/2 - a/4)*sin(pi/2 - g2/2 - a/4)).simplify()).trigs
 
 
 m331 =  [ [2*r*sin(s/2)*sin(g1),              g1, pi/2 - a/2 + s/2, pi/2            ],
-          [p2,                                g1, s/2,              pi/2 - a/2 + s/2],
+          [r*sin(a/2) - r*cos(g1 + s/2),      g1, s/2,              pi/2 - a/2 + s/2],
           [r*sin(a/2) + r*sin(s - pi/2 - g3), g3, 0,                s - pi/2        ],
           [r*sin(a/2),                        g3, s-pi/2,           s - pi/2 + a/2  ] ]
 
@@ -429,10 +428,10 @@ parseLaTeX('p331')
 ##########################################################################################
 
 
-m332 =  [ [p1,                       g1, pi/2 + a/2 - s/2, pi/2             ],
-          [p2,                       g1, s/2,              pi/2 + a/2 - s/2],
-          [r*sin(a/2) - r*cos(g3-s), g3, 0*s,              s - pi/2       ],
-          [r*sin(a/2),               g3, s - pi/2,         s - pi/2 + a/2 ] ]
+m332 =  [ [2*r*sin(a/2),                 g1, pi/2 + a/2 - s/2, pi/2             ],
+          [r*sin(a/2) - r*cos(g1 + s/2), g1, s/2,              pi/2 + a/2 - s/2],
+          [r*sin(a/2) - r*cos(g3-s),     g3, 0*s,              s - pi/2       ],
+          [r*sin(a/2),                   g3, s - pi/2,         s - pi/2 + a/2 ] ]
 
 
 rep332 = {s:7*pi/8, a:7*pi/8-0.1} # Replacement values in range
@@ -457,7 +456,7 @@ parseLaTeX('p332')
 
 
 
-m333 =  [ [p1,                                g1, s/2,            pi/2           ],
+m333 =  [ [2*r*sin(a/2),                                g1, s/2,            pi/2           ],
           [2*r*sin(a/2),                      g3, 0,              s - pi/2 - a/2 ],
           [r*sin(a/2) - r*cos(g3-s),          g3, s - pi/2 - a/2, s - pi/2       ],
           [r*sin(a/2),                        g3, s - pi/2,       s - pi/2 + a/2 ] ]
@@ -481,10 +480,10 @@ parseLaTeX('p333')
 ##################################################################################
 
 
-m341 = [ [p1,         g1, pi/2 - s/2 + a/2, pi/2            ],
-         [p2,         g1, pi/2 - s/2,       pi/2 - s/2 + a/2],
-         [p3,         g2, s,                pi/2            ],
-         [r*sin(a/2), g3, 0,                a/2 + s - pi/2  ] ]
+m341 = [ [2*r*sin(a/2),                 g1, pi/2 - s/2 + a/2, pi/2            ],
+         [r*sin(a/2) - r*cos(g1 + s/2), g1, pi/2 - s/2,       pi/2 - s/2 + a/2],
+         [r*sin(a/2),                   g2, s,                pi/2            ],
+         [r*sin(a/2),                   g3, 0,                a/2 + s - pi/2  ] ]
 
 rep341 = {s:pi/2-0.1, a:pi/4} # Replacement values in range
 
@@ -502,10 +501,10 @@ parseLaTeX('p341')
 ######################################################################################
 
 
-m342 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 + s/2 - a/2, pi/2            ],
-         [p2,                   g1, pi/2 - s/2,       pi/2 + s/2 - a/2],
-         [p3,                   g2, s,                pi/2        ],
-         [r*sin(a/2),           g3, 0,                a/2 + s -pi/2   ] ]
+m342 = [ [2*r*sin(s/2)*sin(g1),         g1, pi/2 + s/2 - a/2, pi/2            ],
+         [r*sin(a/2) - r*cos(g1 + s/2), g1, pi/2 - s/2,       pi/2 + s/2 - a/2],
+         [r*sin(a/2),                   g2, s,                pi/2        ],
+         [r*sin(a/2),                   g3, 0,                a/2 + s -pi/2   ] ]
 
 
 rep342 = {s:pi/2-0.1, a:pi/2} # Replacement values in range
@@ -531,7 +530,7 @@ parseLaTeX('p342')
 
 m343 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 - s/2, pi/2            ],
          [r*sin(g2),            g2, s,          a/2             ],
-         [p3,                   g2, a/2,        pi/2            ],
+         [r*sin(a/2),           g2, a/2,        pi/2            ],
          [r*sin(a/2),           g3, 0,          a/2 + s -pi/2   ] ]
 
 
@@ -553,9 +552,9 @@ parseLaTeX('p343')
 # 344 animal: a <= pi.  Sensor: s <= pi/2. Condition: a <= pi - 2s & a <= s     #
 ###################################################################################
 
-m344 = [ [p1, g1, pi/2 - s/2 + a/2, pi/2            ],
-         [p2, g1, pi/2 - s/2,       pi/2 - s/2 + a/2],
-         [p3, g2, s,                s + a/2         ] ]
+m344 = [ [2*r*sin(a/2),                 g1, pi/2 - s/2 + a/2, pi/2            ],
+         [r*sin(a/2) - r*cos(g1 + s/2), g1, pi/2 - s/2,       pi/2 - s/2 + a/2],
+         [r*sin(a/2),                   g2, s,                s + a/2         ] ]
 
 
 rep344 = {s:2*pi/8, a:pi/8} # Replacement values in range
@@ -576,9 +575,9 @@ parseLaTeX('p344')
 #######################################################################################
 
 
-m345 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 + s/2 - a/2, pi/2            ],
-         [p2,                   g1, pi/2 - s/2,       pi/2 + s/2 - a/2],
-         [p3,                   g2, s,                s + a/2         ] ]
+m345 = [ [2*r*sin(s/2)*sin(g1),         g1, pi/2 + s/2 - a/2, pi/2            ],
+         [r*sin(a/2) - r*cos(g1 + s/2), g1, pi/2 - s/2,       pi/2 + s/2 - a/2],
+         [r*sin(a/2),                   g2, s,                s + a/2         ] ]
 
 rep345 = {s:2*pi/8, a:pi/2-0.1} # Replacement values in range
 
@@ -598,7 +597,7 @@ parseLaTeX('p345')
 
 m346 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 - s/2, pi/2    ],
          [r*sin(g2),            g2, s,          a/2     ],
-         [p3,                   g2, a/2,        s + a/2 ] ]
+         [r*sin(a/2),           g2, a/2,        s + a/2 ] ]
 
 
 rep346 = {s:1*pi/8, a:pi/2} # Replacement values in range
