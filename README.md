@@ -27,7 +27,7 @@ regionsPlot.R is a script for plotting where the different models are located in
 
 #### Models
 
-This [pdf](ModelRegions.pdf) shows the qualitatively different model regions.
+This [pdf](imgs/regions.pdf) shows the qualitatively different model regions. Despite independant derivations, many of the models end up with the same solution. This is shown [here](imgs/equalRegions.pdf)
 
 A number of functions are defined near the top of the script. These include a function for calculating the model solution named `calcModel`, a number of tests of the model (which are then all run from the function `allChecks` and some latex outputting utilities in `parseLaTeX`. 
 
