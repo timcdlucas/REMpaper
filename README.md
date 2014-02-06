@@ -21,13 +21,17 @@ The case for detectors with detection angles &#8804;&#960;/2 has been examined b
 
 ## The code
 
-This script solves many of the more complicated REM models. It uses the symbolic algebra package sympy.
+The main script is REM Analysis.py. This script solves the complicated REM models and uses a variety of tests to check that they are correct. It uses the symbolic algebra package sympy in python.
+
+regionsPlot.R is a script for plotting where the different models are located in parameter space.
 
 #### Models
 
 This [pdf](ModelRegions.pdf) shows the qualitatively different model regions.
 
-For most models in the pdf, there should be a section in the script that gives
+A number of functions are defined near the top of the script. These include a function for calculating the model solution named `calcModel`, a number of tests of the model (which are then all run from the function `allChecks` and some latex outputting utilities in `parseLaTeX`. 
+
+Each model should then have
 
 ##### Model number and region
 The model number relates to the numbers in the pdf and my notebook. Each model should have the all the inequalities that define the region in the top code block as well. 
@@ -44,29 +48,39 @@ A list of the conditions where the model is valid (i.e. the parameter space) is 
 ##### Example values
 A dictionary named `repModelNumber` with an example parameter set which is then used to test aspects of the models. The values in the dictionary should be tested against the conditions (or inequalities) in `condModelNumber`.)
 
-##### Individual integrals
+##### Call to `allchecks`
+
+This runs the following tests: 
+
+###### Individual integrals
 Total of each integral in the model solution should be positive. If this is not true either the expression in the integral is wrong or the limits are wrong or *wrong way around*.
 
-##### Individual integrals.
+###### Individual integrals.
 Average of each integral (sum divided by difference between bounds) should be between 0 and 2r.
 
-##### Potentiall a plot of the function. 
+###### Potentiall a plot of the function. 
 The results should always be increasing for either angle parameter
 
 ##### LaTeX
-A LaTeX output that is currently appended to `latexOutput`
+A LaTeX output by running `parseLaTeX`.
 
 
 
 ### Model Testing
 
-I test each model against each other. Models that are adjacent in the modelRegions [pdf](ModelRegions.pdf) should be equal when we substitute the equation along which they are adjacent.
+I test each model against each other. Models that are adjacent in the modelRegions [pdf](ModelRegions.pdf) should be equal when we substitute the equation along which they are adjacent. These tests are outputted to `checksFile.tex`
 
+All models that touch the line a=0 are tested with this value as the profile width should be 0 when a=0. Note that s=0 does not necessarily imply p=0.
 
 
 ### Plotting
 
-I want to plot the regions of each model as in the [pdf] as made in Mathematica.
+A function is defined that calculates p given any combination of parameters. This is used to plot a full grid of values to check for odd behaviour.
+
+
+### Output R function
+
+Finally, an R function is saved from within the python script. This isn't fully automatic as the structure of the if statements and the conditions are hard to extract from the model solutions. However, automatically parsing the function solutions goes some way to avoiding typing errors.
 
 
 
