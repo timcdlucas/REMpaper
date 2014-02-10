@@ -24,11 +24,6 @@ s, a, r, g1, g2, g3, g4 = symbols('theta_s theta_a r gamma_1 gamma_2 gamma_3 gam
 r1 = {r:1} # useful for lots of checks
 
 
-# A list that will recieve the latex ouput of each model
-
-latexOutput = []
-longLatexOutput = []
-
 # Define functions to neaten up later code.
 
 # Calculate the final profile averaged over pi.
@@ -67,11 +62,22 @@ def checkBounds(model, reps):
                 if not (m[i][3]-m[i][2]).subs(reps) > 0:
                         print('Bounds ' + str(i+1) + ' in ' + model + ' has lower bounds bigger than upper bounds')        
 
-# create latex strings with the 1) the final calculated model and 2) the integral equation that defines it.
+# create latex strings with the 1) the integral equation that defines it and 2)  the final calculated model.
+# There's some if statements to split longer equations on two lines and get +s in the right place.
 def parseLaTeX(prof):
-        m = eval( 'm' + prof[1:] )    
-        latexOutput.append(prof + ' = ' + latex(eval(prof)))
-        longLatexOutput.append(prof + ' =\\frac{1}{\pi} \left(\int_{'+latex(m[0][2])+'}^{'+latex(m[0][3])+'}'+latex(m[0][0])+'\;\mathrm{d}'+latex(m[0][1])+'+\int_{'+latex(m[1][2])+'}^{'+latex(m[1][3])+'}'+latex(m[1][0])+'\;\mathrm{d}'+latex(m[1][1])+'+\int_{'+latex(m[2][2])+'}^{'+latex(m[2][3])+'}'+latex(m[2][0])+'\;\mathrm{d}'+latex(m[2][1])+'\\right)')
+        m = eval( 'm' + prof[1:] )
+        f = open('/home/tim/Dropbox/PhD/Analysis/REM-chapter/latexFiles/'+prof+'.tex', 'w')
+        f.write('\\begin{align}\n    ' + prof + ' =&\\frac{1}{\pi} \left(')
+        for i in range(len(m)):
+                f.write('\int\limits_{'+latex(m[i][2])+'}^{'+latex(m[i][3])+'}'+latex(m[i][0])+'\;\mathrm{d}' +latex(m[i][1]))
+                if len(m)>3 and i==(len(m)/2)-1:
+                        f.write( '\\right.\\\\\n &\left.' )
+                if i<len(m)-1:
+                        f.write('+')                                            
+        f.write('\\right)\\\\\n    ')
+        f.write(prof + ' =& ' + latex(eval(prof)) + '\n\\end{align}')
+        f.close()
+
 
 # Apply all checks.
 def allChecks(prof):
@@ -187,7 +193,7 @@ parseLaTeX('p131')
 
 
 m231 = [ [2*r*sin(s/2)*sin(g1), g1, s/2, pi/2],
-         [r - r*cos(g3-s),      g3, 0, s - pi/2],
+         [r - r*cos(g3 - s),      g3, 0, s - pi/2],
          [r,                    g3, s - pi/2, pi/2],
          [r,                    g3, pi/2, 3*pi/2 - a/2],
          [r-r*cos(g3),          g3, 3*pi/2 - a/2, s],
@@ -211,7 +217,7 @@ parseLaTeX('p231')
 
 
 m232 = [ [2*r*sin(s/2)*sin(g1), g1, s/2, pi/2],
-         [r - r*cos(g3-s),      g3, 0, s - pi/2],
+         [r - r*cos(g3 - s),      g3, 0, s - pi/2],
          [r,                    g3, s - pi/2, pi/2],
          [r,                    g3, pi/2, s],
          [r*cos(g1 - s/2),      g1, s/2, 3*pi/2 - a/2 - s/2],
@@ -234,7 +240,7 @@ parseLaTeX('p232')
 #################################################################################
 
 m233 = [ [2*r*sin(s/2)*sin(g1), g1, s/2, pi/2],
-         [r - r*cos(g3-s),      g3, 0, s - pi/2],
+         [r - r*cos(g3 - s),      g3, 0, s - pi/2],
          [r,                    g3, s - pi/2, pi/2],
          [r,                    g3, pi/2, s],
          [r*cos(g1 - s/2),      g1, s/2, a/2 + s/2 - pi/2] ]
@@ -300,9 +306,9 @@ parseLaTeX('p242')
 #####################################################################
 
 m243 = [ [2*r*sin(s/2)*sin(g1), g1, pi/2 - s/2, pi/2],
-          [r*sin(g2),            g2, s,          pi/2],
-          [r,                    g3, 0,          s],
-          [r*sin(g2),            g2, pi - a/2,   pi/2] ]
+         [r*sin(g2),            g2, s,          pi/2],
+         [r,                    g3, 0,          s   ],
+         [r*sin(g2),            g2, pi - a/2,   pi/2] ]
 
 
 rep243 = {s:pi/9, a:10*pi/9} # Replacement values in range
@@ -318,13 +324,13 @@ parseLaTeX('p243')
 
 
 ###############################################################################
-# 321 animal: a <= pi.  Sensor: s > pi. Condition: a < s - pi, 4pi - 2s < a #
+# 321 animal: a <= pi.  Sensor: s > pi. Condition: a < s - pi, 4pi - 2s > a   #
 ###############################################################################
 
 
-m321 = [ [ 2*r*sin(a/2),                        g4, pi/2,         s/2 + pi/2 - a/2       ],
-         [ r*sin(a/2) + r*cos(g4 - s/2),        g4, s/2 + pi/2 - a/2, 5*pi/2 - a/2 - s/2 ], 
-         [ 2*r*sin(a/2),                        g4, 5*pi/2 - a/2 - s/2,         3*pi/2]  ]
+m321 = [ [ 2*r*sin(a/2),                        g4, pi/2,               s/2 + pi/2 - a/2       ],
+         [ r*sin(a/2) + r*cos(g4 - s/2),        g4, s/2 + pi/2 - a/2,   5*pi/2 - a/2 - s/2 ], 
+         [ 2*r*sin(a/2),                        g4, 5*pi/2 - a/2 - s/2, 3*pi/2]  ]
 
 
 rep321 = {s:19*pi/10, a:pi/2} # Replacement values in range
@@ -406,7 +412,7 @@ p3 = (r*sin(g2) - (2*r*sin(g2/2 - a/4)*sin(pi/2 - g2/2 - a/4)).simplify()).trigs
 
 m331 =  [ [2*r*sin(s/2)*sin(g1),              g1, pi/2 - a/2 + s/2, pi/2            ],
           [r*sin(a/2) - r*cos(g1 + s/2),      g1, s/2,              pi/2 - a/2 + s/2],
-          [r*sin(a/2) + r*sin(s - pi/2 - g3), g3, 0,                s - pi/2        ],
+          [r*sin(a/2) - r*cos(g3 - s),        g3, 0,                s - pi/2        ],
           [r*sin(a/2),                        g3, s-pi/2,           s - pi/2 + a/2  ] ]
 
 
@@ -430,7 +436,7 @@ parseLaTeX('p331')
 
 m332 =  [ [2*r*sin(a/2),                 g1, pi/2 + a/2 - s/2, pi/2             ],
           [r*sin(a/2) - r*cos(g1 + s/2), g1, s/2,              pi/2 + a/2 - s/2],
-          [r*sin(a/2) - r*cos(g3-s),     g3, 0*s,              s - pi/2       ],
+          [r*sin(a/2) - r*cos(g3 - s),     g3, 0*s,              s - pi/2       ],
           [r*sin(a/2),                   g3, s - pi/2,         s - pi/2 + a/2 ] ]
 
 
@@ -456,9 +462,9 @@ parseLaTeX('p332')
 
 
 
-m333 =  [ [2*r*sin(a/2),                                g1, s/2,            pi/2           ],
+m333 =  [ [2*r*sin(a/2),                      g1, s/2,            pi/2           ],
           [2*r*sin(a/2),                      g3, 0,              s - pi/2 - a/2 ],
-          [r*sin(a/2) - r*cos(g3-s),          g3, s - pi/2 - a/2, s - pi/2       ],
+          [r*sin(a/2) - r*cos(g3 - s),        g3, s - pi/2 - a/2, s - pi/2       ],
           [r*sin(a/2),                        g3, s - pi/2,       s - pi/2 + a/2 ] ]
 
 rep333 = {s:7*pi/8, a:2*pi/8} # Replacement values in range
@@ -929,50 +935,6 @@ Rfunc.close()
 
 
 
-
-
-
-
-Rfunc.close()
-
-
-
-		elif theta_a <= 3*pi - theta_s:
-                        p = p222.subs({a:theta_a, s:theta_s, r:R}).n()
-		else:
-                        p = p221.subs({a:theta_a, s:theta_s, r:R}).n()
-	else:
-		if theta_a < 4*pi - 2*theta_s:
-                        p = p322.subs({a:theta_a, s:theta_s, r:R}).n()
-
-		else:
-                        p = p321.subs({a:theta_a, s:theta_s, r:R}).n()
-        return p        
-""")
-
-
-
-Rfunc.close()
-
-
-
-def calcP(A, S, R): 
-	assert (theta_a <= 2*pi and theta_a >= 0), "a is out of bounds. theta_should be in 0<a<2*pi"
-	assert (theta_s <= 2*pi and theta_s >= 0), "s is out of bounds. theta_should be in 0<s<2*pi"
- 	
-	if theta_a > pi:
-		if theta_a < 4*pi - 2*theta_s:
-			p = p243.subs({a:theta_a, s:theta_s, r:R}).n()
-		elif theta_a <= 3*pi - theta_s:
-                        p = p222.subs({a:theta_a, s:theta_s, r:R}).n()
-		else:
-                        p = p221.subs({a:theta_a, s:theta_s, r:R}).n()
-	else:
-		if theta_a < 4*pi - 2*theta_s:
-                        p = p322.subs({a:theta_a, s:theta_s, r:R}).n()
-		else:
-                        p = p321.subs({a:theta_a, s:theta_s, r:R}).n()
-        return p
 
 
 
