@@ -80,7 +80,8 @@ dev.off()
 type = c(1, 2, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 6, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8)
 
 
-pdf('~/Dropbox/PhD/Analysis/REM-chapter/imgs/equalRegions.pdf')
+#pdf('~/Dropbox/PhD/Analysis/REM-chapter/imgs/equalRegions.pdf')
+png('~/Dropbox/PhD/Analysis/REM-chapter/imgs/equalRegions.png')
 
 plot(c(0,0), c(0,0) , type='l', ylim=c(0,2.3*pi), xlim=c(0,2.3*pi),
       xlab=expression(theta[s]), ylab=expression(theta[a]), xaxt='n', yaxt='n')

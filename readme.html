@@ -1,0 +1,25 @@
+<h1>REM paper</h1>
+
+<p>The analytical work (mostly) for REM paper.</p>
+
+<h2>Background</h2>
+
+<h4>Motivation</h4>
+
+<ul>
+<li>Camera traps and acoustic sensors are becoming cheap and widely used</li>
+<li>Without individual recognition mark-recapture methods cannot be used</li>
+<li>For widely moving animals, transect methods or occupancy models are unsuited</li>
+<li>Currently Random Encounter Models do not account for complexities in detection</li>
+</ul>
+
+<h4>REM models</h4>
+
+<p>Ideal gas models assume that animals move randomly through space. If we examine our sensors motion relative to the animal population, we can work out the area covered by the sensor in a given period of time. This is the 'width' of the sensors detection region multiplied by average animal speed. If however the sensor has different widths depending on the angle of approach (i.e. a segment shape detection area of a camera trap) we must integrate the width for all approach angles, and then find the average width.</p>
+
+<p>The case for detectors with detection angles &#8804;&#960;/2 has been 
+<a href="http://onlinelibrary.wiley.com/doi/10.1111/j.1365-2664.2008.01473.x/abstract">Rowcliffe 2008</a></p>
+
+<h2>The code</h2>
+
+<p>This script solves many of the more complicated REM models. It uses the symbolic algebra </p>

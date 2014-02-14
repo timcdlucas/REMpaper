@@ -1,0 +1,5 @@
+\begin{align}
+    p221 =& \frac{r}{\pi} \left(\theta_{s} + 2 \sin{\left (\frac{\theta_{s}}{2} \right )}\right)\\
+    p221 =&\frac{1}{\pi} \left(\int\limits_{\frac{\pi}{2}}^{\frac{\theta_{s}}{2}}2 r\;\mathrm{d} +\int\limits_{\frac{\pi}{2}}^{\frac{\theta_{s}}{2}}2 r\;\mathrm{d} +amma_{4} - \frac{\theta_{s}}{2} \right )} + r\;\mathrm{d}\gamma_{4} + \int\limits_{\pi}^{- \frac{\theta_{s}}{2} + 2 \pi}r \cos{\left (\gamma_{4} + \frac{\theta_{s}}{2} \right )} + r\;\mathrm{d}\gamma_{4} + \right.\\
+ &\left.\int\limits_{- \frac{\theta_{s}}{2} + 2 \pi}^{\frac{3 \pi}{2}}2 r\;\mathrm{d}\gamma_{4} + \right)
+\end{align}

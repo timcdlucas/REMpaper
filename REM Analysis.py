@@ -69,7 +69,7 @@ def parseLaTeX(prof):
         f = open('/home/tim/Dropbox/PhD/Analysis/REM-chapter/latexFiles/'+prof+'.tex', 'w')
         f.write('\\begin{align}\n    ' + prof + ' =&\\frac{1}{\pi} \left(')
         for i in range(len(m)):
-                f.write('\int\limits_{'+latex(m[i][2])+'}^{'+latex(m[i][3])+'}'+latex(m[i][0])+'\;\mathrm{d}' +latex(m[i][1]))
+                f.write('\int\limits_{'+latex(m[i][2], order='rev-lex')+'}^{'+latex(m[i][3], order='rev-lex')+'}'+latex(m[i][0])+'\;\mathrm{d}' +latex(m[i][1]))
                 if len(m)>3 and i==(len(m)/2)-1:
                         f.write( '\\right.\\\\\n &\left.' )
                 if i<len(m)-1:
@@ -125,7 +125,7 @@ m222 = [ [2*r,                 g4, pi/2, s/2        ],
 
 
 # Replacement values in range
-rep222 = {s:5*pi/3, a:4*pi/3} 
+rep222 = {s:5*pi/3, a:4*pi/3-0.1} 
 
 # Define conditions for model
 cond222 = [pi <= s, a >= pi, a <= 3*pi - s, a >= 4*pi - 2*s]
@@ -142,12 +142,11 @@ parseLaTeX('p222')
 
 
 
-m223 = [ [2*r,                g4, pi/2, s/2        ],
-        [r + r*cos(g4 - s/2), g4, s/2,  pi         ],
-        [r + r*cos(g4 - s/2), g4, pi,   s/2 + pi/2 ],
-        [r                  , g4, s/2 + pi/2,   5*pi/2 - s/2 - a/2 ],
-        [r + r*cos(g4 + s/2), g4, 5*pi/2 - s/2 - a/2,   2*pi-s/2 ],
-        [2*r,                 g4, 2*pi-s/2, 3*pi/2 ] ]
+m223 = [ [2*r,                 g4, pi/2, s/2        ],
+         [r + r*cos(g4 - s/2), g4, s/2,  s/2 + pi/2         ],
+         [r                  , g4, s/2 + pi/2,   5*pi/2 - s/2 - a/2 ],
+         [r + r*cos(g4 + s/2), g4, 5*pi/2 - s/2 - a/2,   2*pi-s/2 ],
+         [2*r,                 g4, 2*pi-s/2, 3*pi/2 ] ]
 
 
 # Replacement values in range
@@ -193,9 +192,8 @@ parseLaTeX('p131')
 
 
 m231 = [ [2*r*sin(s/2)*sin(g1), g1, s/2, pi/2],
-         [r - r*cos(g3 - s),      g3, 0, s - pi/2],
-         [r,                    g3, s - pi/2, pi/2],
-         [r,                    g3, pi/2, 3*pi/2 - a/2],
+         [r - r*cos(g3 - s),    g3, 0, s - pi/2],
+         [r,                    g3, s - pi/2, 3*pi/2 - a/2],
          [r-r*cos(g3),          g3, 3*pi/2 - a/2, s],
          [2*r*sin(s/2)*sin(g1), g1, s/2, pi/2 ] ]
 
@@ -217,9 +215,8 @@ parseLaTeX('p231')
 
 
 m232 = [ [2*r*sin(s/2)*sin(g1), g1, s/2, pi/2],
-         [r - r*cos(g3 - s),      g3, 0, s - pi/2],
-         [r,                    g3, s - pi/2, pi/2],
-         [r,                    g3, pi/2, s],
+         [r - r*cos(g3 - s),    g3, 0, s - pi/2],
+         [r,                    g3, s - pi/2, s],
          [r*cos(g1 - s/2),      g1, s/2, 3*pi/2 - a/2 - s/2],
          [2*r*sin(s/2)*sin(g1), g1, 3*pi/2 - a/2 - s/2, pi/2 ] ]
 
@@ -241,8 +238,7 @@ parseLaTeX('p232')
 
 m233 = [ [2*r*sin(s/2)*sin(g1), g1, s/2, pi/2],
          [r - r*cos(g3 - s),      g3, 0, s - pi/2],
-         [r,                    g3, s - pi/2, pi/2],
-         [r,                    g3, pi/2, s],
+         [r,                    g3, s - pi/2, s],
          [r*cos(g1 - s/2),      g1, s/2, a/2 + s/2 - pi/2] ]
 
 rep233 = {s:3*pi/4, a:9*pi/8} # Replacement values in range
@@ -392,6 +388,8 @@ parseLaTeX('p323')
 
 """
 Complex profiles for a <= pi/2 
+These were specified using a very roundabout way that I realised isn't necessary.
+Worth keeping them here just for the record.
 
 # p-l-r for g1 profil. Calculated by AE in fig 22.4 minus AE in fig 22.3
 p1 = (2*r*sin(s/4 - g1/2 + pi/4 + a/4)*sin(a/4 + pi/4 + g1/2 - s/4) - \
@@ -466,6 +464,7 @@ m333 =  [ [2*r*sin(a/2),                      g1, s/2,            pi/2          
           [2*r*sin(a/2),                      g3, 0,              s - pi/2 - a/2 ],
           [r*sin(a/2) - r*cos(g3 - s),        g3, s - pi/2 - a/2, s - pi/2       ],
           [r*sin(a/2),                        g3, s - pi/2,       s - pi/2 + a/2 ] ]
+
 
 rep333 = {s:7*pi/8, a:2*pi/8} # Replacement values in range
 
@@ -817,27 +816,6 @@ pl.close()
 
 
 
-######################
-### Write output   ###
-######################
-
-# write out full latex model solutions and model statements
-
-latexFile = open('/home/tim/Dropbox/PhD/Analysis/REM-chapter/ModelSolutions.tex', 'w')
-
-latexFile.write('% LaTeX output. Solutions of all REM models.\n' + '%Tim Lucas - ' + str(datetime.now()) + '\n')
-for i in range(len(latexOutput)):
-        latexFile.write( '\\[' + latexOutput[i] + '\\]\n')
-
-latexFile.close()
-
-latexFile = open('/home/tim/Dropbox/PhD/Analysis/REM-chapter/ModelDefinitions.tex', 'w')
-
-latexFile.write('% LaTeX output. Definitions of all REM models.\n' + '%Tim Lucas - ' + str(datetime.now()) + '\n')
-for i in range(len(longLatexOutput)):
-        latexFile.write( '\\[' + longLatexOutput[i] + '\\]\n')
-
-latexFile.close()
 
 
 
