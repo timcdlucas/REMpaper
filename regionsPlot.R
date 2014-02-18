@@ -4,6 +4,7 @@
 ####################################
 
 library(RColorBrewer)
+library('tikzDevice')
 
 polys <- list(
               gas=list(c(2*pi, 2*pi, 2.3*pi, 2.3*pi),c(pi, 2.3*pi, 2.3*pi, pi)),
@@ -39,7 +40,7 @@ cols <- c( brewer.pal(9, 'Pastel1'), brewer.pal(10, 'Set3'), brewer.pal(9, 'Pair
 pdf('~/Dropbox/PhD/Analysis/REM-chapter/imgs/regions.pdf')
 
 plot(c(0,0), c(0,0) , type='l', ylim=c(0,2.3*pi), xlim=c(0,2.3*pi),
-      xlab=expression(theta[s]), ylab=expression(theta[a]), xaxt='n', yaxt='n')
+      xlab=expression(theta), ylab=expression(alpha), xaxt='n', yaxt='n')
 
 axis(1, c(0, pi, 2*pi), c(0,expression(pi), expression(paste('2', pi))) )
 axis(2, c(0, pi, 2*pi), c(0,expression(pi), expression(paste('2', pi))) )
@@ -81,10 +82,12 @@ type = c(1, 2, 2, 3, 4, 5, 5, 5, 5, 5, 5, 5, 6, 7, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
 
 
 #pdf('~/Dropbox/PhD/Analysis/REM-chapter/imgs/equalRegions.pdf')
-png('~/Dropbox/PhD/Analysis/REM-chapter/imgs/equalRegions.png')
+#png('~/Dropbox/PhD/Analysis/REM-chapter/imgs/equalRegions.png')
+setEPS()
+postscript('~/Dropbox/PhD/Analysis/REM-chapter/imgs/equalRegions.eps')
 
 plot(c(0,0), c(0,0) , type='l', ylim=c(0,2.3*pi), xlim=c(0,2.3*pi),
-      xlab=expression(theta[s]), ylab=expression(theta[a]), xaxt='n', yaxt='n')
+      xlab=expression(theta), ylab=expression(alpha), xaxt='n', yaxt='n')
 
 axis(1, c(0, pi, 2*pi), c(0,expression(pi), expression(paste('2', pi))) )
 axis(2, c(0, pi, 2*pi), c(0,expression(pi), expression(paste('2', pi))) )
@@ -111,6 +114,59 @@ for( i in 1: length(polys)){
 }
 
 dev.off()
+
+
+
+
+
+# New regions plot showing the result of each region
+
+
+#pdf('~/Dropbox/PhD/Analysis/REM-chapter/imgs/equalModelResults.pdf')
+#png('~/Dropbox/PhD/Analysis/REM-chapter/imgs/equalModelResults.png')
+
+
+#tikz('~/Dropbox/PhD/Analysis/REM-chapter/imgs/equalModelResults.tex', standalone=TRUE)
+
+
+cols <- c( brewer.pal(9, 'Pastel1'), brewer.pal(10, 'Set3'), brewer.pal(9, 'Paired'))
+
+
+
+
+tikz("~/Dropbox/PhD/Analysis/REM-chapter/imgs/equalModelResults.tex", width = 6, height = 6, 
+standAlone = TRUE,
+packages = c("\\usepackage{tikz}",
+"\\usepackage[active,tightpage,psfixbb]{preview}",
+"\\PreviewEnvironment{pgfpicture}",
+"\\setlength\\PreviewBorder{0pt}",
+"\\usepackage{amssymb}"))
+
+plot(c(0,0), c(0,0) , type='l', ylim=c(0,2.3*pi), xlim=c(0,2.3*pi),
+      xlab='$\\theta$', ylab='$\\alpha$', xaxt='n', yaxt='n')
+for(i in 1:length(polys)){
+     polygon(polys[[i]][[1]], polys[[i]][[2]], col=cols[type[i]], border=cols[type[i]])
+}
+
+
+axis(1, c(0, pi, 2*pi), c(0,'$\\pi$', '$2\\pi$') )
+axis(2, c(0, pi, 2*pi), c(0,'$\\pi$', '$2\\pi$') )
+
+
+text(pi/2, 3*pi/2,    "$\\frac{r}{\\pi} \\left(\\theta - \\cos{\\left (\\frac{\\alpha}{2} \\right )} + 1\\right)$") # p242
+text(pi/2, pi/2, "$\\frac{r}{\\pi} \\left(\\theta \\sin{\\left (\\frac{\\alpha}{2} \\right )} - \\cos{\\left (\\frac{\\alpha}{2} \\right )} + 1\\right)$") #p332
+text(pi/2, 2.15*pi, "$\\frac{r}{\\pi} \\left(\\theta + 2\\right)$") #p141
+text(2.15*pi, 5*pi/3, "$2r$") #gas
+text(2.15*pi, pi/2, "$2r\\sin\\left(\\frac{\\alpha}{2} \\right)$") #p311
+text(6*pi/4, 5*pi/4, "$\\frac{r}{\\pi} \\left(\\theta - \\cos{\\left (\\frac{\\alpha}{2} \\right )} + \\cos{\\left (\\frac{\\alpha}{2} + \\theta \\right )}\\right)$") #p222
+text(3*pi/2, 2*pi, "$\\frac{r}{\\pi} \\left(\\theta + 2 \\sin{\\left (\\frac{\\theta}{2} \\right )}\\right)$") #p221
+text(7*pi/4, 3*pi/4, "$\\frac{r}{\\pi} \\left(\\theta \\sin{\\left (\\frac{\\alpha}{2} \\right )} - \\cos{\\left (\\frac{\\alpha}{2} \\right )} + \\cos{\\left (\\frac{\\alpha}{2} + \\theta \\right )}\\right)$") #p321
+
+
+dev.off()
+
+
+
 
 
 
