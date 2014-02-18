@@ -319,9 +319,9 @@ parseLaTeX('p243')
 
 
 
-###############################################################################
-# 321 animal: a <= pi.  Sensor: t > pi. Condition: a < t - pi, 4pi - 2t > a   #
-###############################################################################
+#################################################################################
+# 321 animal: a <= pi.  Sensor: t > pi. Condition: a > 2pi - t, a > 4pi - 2t    #
+#################################################################################
 
 
 m321 = [ [ 2*r*sin(a/2),                        x1, pi/2,               t/2 + pi/2 - a/2       ],
@@ -332,7 +332,7 @@ m321 = [ [ 2*r*sin(a/2),                        x1, pi/2,               t/2 + pi
 rep321 = {t:19*pi/10, a:pi/2} # Replacement values in range
 
 # Define conditions for model
-cond321 = [a <= pi, t >= pi, a <= t - pi, a >= 4*pi - 2*t]
+cond321 = [a <= pi, t >= pi,  a >= 4*pi - 2*t]
 
 # Calculate model, run checks, write output.
 p321 = calcModel(m321)
@@ -342,7 +342,7 @@ parseLaTeX('p321')
 
 
 #########################################################################################
-# 322 animal: a <= pi.  Sensor: t > pi. Condition: a < t - pi, 2pi - t < a < 4pi - 2t #
+# 322 animal: a <= pi.  Sensor: t > pi. Condition: 2pi - t < a < 4pi - 2t #
 #########################################################################################
 
 m322 = [ [ 2*r*sin(a/2),                        x1, pi/2,               t/2 + pi/2 - a/2  ],
@@ -353,7 +353,7 @@ m322 = [ [ 2*r*sin(a/2),                        x1, pi/2,               t/2 + pi
 rep322 = {t:3*pi/2 + 0.1, a:pi/2} # Replacement values in range
 
 # Define conditions for model
-cond322 = [a <= pi, t >= pi, a <= t - pi, a >= 2*pi - t, a <= 4*pi - 2*t]
+cond322 = [a <= pi, t >= pi,  a >= 2*pi - t, a <= 4*pi - 2*t]
 
 # Calculate model, run checks, write output.
 p322 = calcModel(m322)
@@ -363,7 +363,7 @@ parseLaTeX('p322')
 
 
 ###################################################################################
-# 323 animal: a <= pi.  Sensor: t > pi. Condition: a <= t - pi and a < 2*pi - t #
+# 323 animal: a <= pi.  Sensor: t > pi. Condition: a <= 4*pi - 2*t and a < 2*pi - t #
 ###################################################################################
 
 m323 = [ [ 2*r*sin(a/2),                       x1, pi/2,             t/2 + pi/2 - a/2  ],
@@ -375,7 +375,7 @@ rep323 = {t:3*pi/2, a:pi/3} # Replacement values in range
 
 
 # Define conditions for model
-cond323 = [a <= pi, t >= pi/2, a <= t - pi, a <= 2*pi - t]
+cond323 = [a <= pi, t >= pi/2, a <= 4*pi - 2*t , a <= 2*pi - t]
 
 # Calculate model, run checks, write output.
 p323 = calcModel(m323)
