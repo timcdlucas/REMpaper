@@ -69,7 +69,7 @@ def parseLaTeX(prof):
         f = open('/home/tim/Dropbox/PhD/Analysis/REM-chapter/latexFiles/'+prof+'.tex', 'w')
         f.write('\\begin{align}\n    ' + prof + ' =&\\frac{1}{\pi} \left(')
         for i in range(len(m)):
-                f.write('\int\limits_{'+latex(m[i][2], order='rev-lex')+'}^{'+latex(m[i][3], order='rev-lex')+'}'+latex(m[i][0])+'\;\mathrm{d}' +latex(m[i][1]))
+                f.write('\int\limits_{'+latex(m[i][2], order='rev-lex')+'}^{'+latex(m[i][3], order='rev-lex')+'}'+latex(m[i][0], order='rev-lex')+'\;\mathrm{d}' +latex(m[i][1]))
                 if len(m)>3 and i==(len(m)/2)-1:
                         f.write( '\\right.\\notag\\\\\n &\left.' )
                 if i<len(m)-1:
