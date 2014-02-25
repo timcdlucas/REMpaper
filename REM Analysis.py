@@ -167,11 +167,11 @@ parseLaTeX('p223')
 # 131 animal: a = 2*pi.   sensor:  pi/2 <= t <= pi      #
 ########################################################
 
-m131 = [ [2*r*sin(t/2)*sin(x2), x2, t/2, pi/2],
-        [r - r*cos(x4 - t),    x4, 0, t - pi/2],
-        [r,                    x4, t - pi/2, pi/2],
-        [r - r*cos(x4),    x4, pi/2, t],
-        [2*r*sin(t/2)*sin(x2),  x2, t/2, pi/2] ]
+m131 = [ [2*r*sin(t/2)*sin(x2), x2, t/2,      pi/2     ],
+        [r - r*cos(x4 - t),     x4, 0,        t - pi/2 ],
+        [r,                     x4, t - pi/2, pi/2     ],
+        [r - r*cos(x4),         x4, pi/2,     t        ],
+        [2*r*sin(t/2)*sin(x2),  x2, t/2,      pi/2     ] ]
 
 # Replacement values in range
 rep131 = {t:3*pi/4} 
@@ -187,15 +187,15 @@ parseLaTeX('p131')
 
 
 #################################################################################
-# 231 animal: a > pi.  Sensor: pi/2 <= t <= pi. Condition: a/2 > pi - t/2  #
+# 231 animal: a > pi.  Sensor: pi/2 <= t <= pi. Condition: a > 2pi - t          #
 #################################################################################
 
 
-m231 = [ [2*r*sin(t/2)*sin(x2), x2, t/2, pi/2],
-         [r - r*cos(x4 - t),    x4, 0, t - pi/2],
-         [r,                    x4, t - pi/2, 3*pi/2 - a/2],
-         [r-r*cos(x4),          x4, 3*pi/2 - a/2, t],
-         [2*r*sin(t/2)*sin(x2), x2, t/2, pi/2 ] ]
+m231 = [ [2*r*sin(t/2)*sin(x2), x2, t/2,          pi/2        ],
+         [r - r*cos(x4 - t),    x4, 0,            t - pi/2    ],
+         [r,                    x4, t - pi/2,     3*pi/2 - a/2],
+         [r - r*cos(x4),        x4, 3*pi/2 - a/2, t           ],
+         [2*r*sin(t/2)*sin(x2), x2, t/2,          pi/2        ] ]
 
 
 rep231 = {t:3*pi/4, a:15*pi/8} # Replacement values in range
@@ -210,15 +210,15 @@ parseLaTeX('p231')
 
 
 #################################################################################
-# 232 animal: a > pi.  Sensor: pi/2 <= t <= pi. Cond: 2pi - t < a < 3pi - 2t  #
+# 232 animal: a > pi.  Sensor: pi/2 <= t <= pi. Cond: 2pi - t < a < 3pi - 2t    #
 #################################################################################
 
 
-m232 = [ [2*r*sin(t/2)*sin(x2), x2, t/2, pi/2],
-         [r - r*cos(x4 - t),    x4, 0, t - pi/2],
-         [r,                    x4, t - pi/2, t],
-         [r*cos(x2 - t/2),      x2, t/2, 3*pi/2 - a/2 - t/2],
-         [2*r*sin(t/2)*sin(x2), x2, 3*pi/2 - a/2 - t/2, pi/2 ] ]
+m232 = [ [2*r*sin(t/2)*sin(x2), x2, t/2,                pi/2              ],
+         [r - r*cos(x4 - t),    x4, 0,                  t - pi/2          ],
+         [r,                    x4, t - pi/2,           t                 ],
+         [r*cos(x2 - t/2),      x2, t/2,                3*pi/2 - a/2 - t/2],
+         [2*r*sin(t/2)*sin(x2), x2, 3*pi/2 - a/2 - t/2, pi/2              ] ]
 
 
 rep232 = {t:5*pi/8, a:6*pi/4} # Replacement values in range
@@ -237,7 +237,7 @@ parseLaTeX('p232')
 #################################################################################
 
 m233 = [ [2*r*sin(t/2)*sin(x2), x2, t/2, pi/2],
-         [r - r*cos(x4 - t),      x4, 0, t - pi/2],
+         [r - r*cos(x4 - t),    x4, 0, t - pi/2],
          [r,                    x4, t - pi/2, t],
          [r*cos(x2 - t/2),      x2, t/2, a/2 + t/2 - pi/2] ]
 
@@ -251,11 +251,30 @@ p233 = calcModel(m233)
 allChecks('p233')
 parseLaTeX('p233')
 
+###############################################################################
+# 141 animal: a=2pi.  Sensor: t <= pi/2.                                      #
+###############################################################################
 
+m141 = [ [2*r*sin(t/2)*sin(x2), x2, pi/2 - t/2, pi/2],
+         [r*sin(x3),            x3, t,          pi/2],
+         [r,                    x4, 0*t,          t],
+         [r*sin(x3),            x3, t,          pi/2],
+         [2*r*sin(t/2)*sin(x2), x2, pi/2 - t/2, pi/2] ]
+
+
+rep141 = {t:3*pi/8, a:2*pi} # Replacement values in range
+
+# Define conditions for model
+cond141 = [ t <= pi/2  ]
+
+# Calculate model, run checks, write output.
+p141 = calcModel(m141)
+allChecks('p141')
+parseLaTeX('p141')
 
 
 ###############################################################################
-# 241 animal: a>pi.  Sensor: t <= pi/2. Condition: 2*pi - t < a             #
+# 241 animal: a>pi.  Sensor: t <= pi/2. Condition: 2*pi - t < a               #
 ###############################################################################
 
 m241 = [ [2*r*sin(t/2)*sin(x2), x2, pi/2 - t/2, pi/2],
@@ -316,6 +335,25 @@ cond243 = [t <= pi/2, a >= pi, a <= 2*pi - 2*t]
 p243 = calcModel(m243)
 allChecks('p243')
 parseLaTeX('p243')
+
+####################################################
+# 311 animal: a <= pi.  Sensor: t =2pi.            #
+####################################################
+
+
+m311 = [ [ 2*r*sin(a/2),                        x1, pi/2, 3*pi/2       ],
+         ]
+
+
+rep311 = {a:pi/4} # Replacement values in range
+
+# Define conditions for model
+cond311 = [a <= pi]
+
+# Calculate model, run checks, write output.
+p311 = calcModel(m311)
+allChecks('p311')
+parseLaTeX('p311')
 
 
 
@@ -387,7 +425,7 @@ parseLaTeX('p323')
 
 
 """
-Complex profiles for a <= pi/2 
+Ccomplex profiles for a <= pi/2 
 These were specified using a very roundabout way that I realised isn't necessary.
 Worth keeping them here just for the record.
 
@@ -434,7 +472,7 @@ parseLaTeX('p331')
 
 m332 =  [ [2*r*sin(a/2),                 x2, pi/2 + a/2 - t/2, pi/2             ],
           [r*sin(a/2) - r*cos(x2 + t/2), x2, t/2,              pi/2 + a/2 - t/2],
-          [r*sin(a/2) - r*cos(x4 - t),     x4, 0*t,              t - pi/2       ],
+          [r*sin(a/2) - r*cos(x4 - t),   x4, 0*t,              t - pi/2       ],
           [r*sin(a/2),                   x4, t - pi/2,         t - pi/2 + a/2 ] ]
 
 
@@ -626,8 +664,6 @@ parseLaTeX('p346')
 
 # create gas model object
 gas = 2*r
-p311 = 2*r*sin(a/2)
-p141 = r*(2+t)/pi
 
 
 # for each model run through every adjacent model. 
