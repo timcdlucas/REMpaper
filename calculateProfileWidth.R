@@ -1,22 +1,22 @@
-calcProfileWidth <- function(theta_a, theta_s, r){
-        if(theta_a > 2*pi | theta_a < 0) 
-		stop('theta_a is out of bounds. theta_a should be in 0<a<2*pi')
-        if(theta_s > 2*pi | theta_s < 0) 
-		stop('theta_s is out of bounds. theta_s should be in 0<a<2*pi')
+calcProfileWidth <- function(alpha, theta, r){
+        if(alpha > 2*pi | alpha < 0) 
+		stop('alpha is out of bounds. alpha should be in 0<a<2*pi')
+        if(theta > 2*pi | theta < 0) 
+		stop('theta is out of bounds. theta should be in 0<a<2*pi')
 
-	if(theta_a > pi){
-	        if(theta_a < 4*pi - 2*theta_s){
-		        p <- r*(theta_s - cos(theta_a/2) + 1)/pi
-                } else if(theta_a <= 3*pi - theta_s){
-                        p <- r*(theta_s - cos(theta_a/2) + cos(theta_a/2 + theta_s))/pi
+	if(alpha > pi){
+	        if(alpha < 4*pi - 2*theta){
+		        p <- r*(theta - cos(alpha/2) + 1)/pi
+                } else if(alpha <= 3*pi - theta){
+                        p <- r*(theta - cos(alpha/2) + cos(alpha/2 + theta))/pi
                 } else {
-                        p <- r*(theta_s + 2*sin(theta_s/2))/pi
+                        p <- r*(theta + 2*sin(theta/2))/pi
                 }
         } else {
-        	if(theta_a < 4*pi - 2*theta_s){
-                        p <- r*(theta_s*sin(theta_a/2) - cos(theta_a/2) + 1)/pi
+        	if(alpha < 4*pi - 2*theta){
+                        p <- r*(theta*sin(alpha/2) - cos(alpha/2) + 1)/pi
  		} else {
-                        p <- r*(theta_s*sin(theta_a/2) - cos(theta_a/2) + cos(theta_a/2 + theta_s))/pi
+                        p <- r*(theta*sin(alpha/2) - cos(alpha/2) + cos(alpha/2 + theta))/pi
                 }
         }
         return(p)
