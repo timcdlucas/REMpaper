@@ -1,6 +1,14 @@
 REM paper
 ========
 
+This repo is not used anymore.
+
+All the work for this project is in [https://github.com/timcdlucas/lucasMoorcroftManuscript](https://github.com/timcdlucas/lucasMoorcroftManuscript)
+
+The paper is now published. [http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12346/abstract](http://onlinelibrary.wiley.com/doi/10.1111/2041-210X.12346/abstract)
+
+
+
 The analytical work (mostly) for REM paper.
 
 ## Background
